@@ -1,0 +1,122 @@
+<div class="min-h-screen flex flex-col lg:flex-row bg-surface font-body">
+  <div class="hidden lg:flex w-1/2 relative flex-col justify-center items-center bg-primary text-white overflow-hidden">
+    <img src="assets/images/auth-bg.png" alt="History Background" class="absolute inset-0 w-full h-full object-cover">
+    <div class="absolute inset-0 bg-primary/75"></div>
+    <div class="relative z-10 p-12 text-center text-white flex flex-col items-center">
+      <h1 class="text-4xl md:text-5xl font-headline font-bold mb-6 leading-tight">
+        تاريخ الشعوب<br>
+        <span class="text-secondary-fixed">رحلة عبر الحضارات والثقافات</span>
+      </h1>
+      <p class="text-xl font-body leading-relaxed max-w-lg mx-auto text-surface-dim">
+        نستكشف جذور الإنسان وتنوعه عبر العصور، لنبني جسراً من المعرفة يربط الماضي بالمستقبل.
+      </p>
+    </div>
+  </div>
+
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-8 mt-20 bg-surface text-on-surface">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl font-headline font-bold text-primary mb-2">إنشاء حساب جديد</h2>
+        <!-- <p class="text-outline">انضم إلى مجتمعنا المعرفي وابدأ رحلتك في أعماق التاريخ.</p> -->
+      </div>
+
+      <form class="space-y-6" (submit)="$event.preventDefault()">
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <div class="space-y-1.5 w-full">
+            <label class="block text-sm font-semibold text-primary/80 mr-1" for="first_name">الاسم الأول</label>
+            <div class="relative group">
+              <input
+                class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+                id="first_name" name="first_name" placeholder="أدخل اسمك الأول" type="text" />
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">person</span>
+            </div>
+          </div>
+          <div class="space-y-1.5 w-full">
+            <label class="block text-sm font-semibold text-primary/80 mr-1" for="last_name">الاسم الأخير</label>
+            <div class="relative group">
+              <input
+                class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+                id="last_name" name="last_name" placeholder="أدخل اسمك الأخير" type="text" />
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">badge</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-primary/80 mr-1" for="username">اسم المستخدم</label>
+          <div class="relative group">
+            <input
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              id="username" name="username" placeholder="أدخل اسم المستخدم" type="text" />
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">alternate_email</span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-primary/80 mr-1" for="email">البريد الإلكتروني</label>
+          <div class="relative group">
+            <input
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              id="email" name="email" placeholder="example@history.com" type="email" />
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">mail</span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-primary/80 mr-1" for="password">كلمة المرور</label>
+          <div class="relative group">
+            <input
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 pl-10 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              id="password" name="password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'" />
+            <span (click)="showPassword = !showPassword" [class.text-secondary]="showPassword"
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
+              {{ showPassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-primary/80 mr-1" for="confirm_password">تأكيد كلمة
+            المرور</label>
+          <div class="relative group">
+            <input
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 pl-10 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              id="confirm_password" name="confirm_password" placeholder="••••••••"
+              [type]="showConfirmPassword ? 'text' : 'password'" />
+            <span (click)="showConfirmPassword = !showConfirmPassword" [class.text-secondary]="showConfirmPassword"
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
+              {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 py-2">
+          <input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20 bg-surface"
+            id="terms" name="terms" type="checkbox" />
+          <label class="text-sm text-on-surface-variant cursor-pointer select-none" for="terms">
+            أوافق على
+            <a class="text-secondary font-semibold hover:underline decoration-2" href="#">الشروط والأحكام</a>
+            و سياسة الخصوصية
+          </label>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-primary text-white py-3 px-4 rounded-xl hover:bg-inverse-surface transition-colors font-medium text-lg">
+          تسجيل الدخول
+        </button>
+        <div class="mt-2 text-center">
+          <p class="text-on-surface-variant text-sm">
+            لديك حساب بالفعل؟
+            <a routerLink="/auth/login" class="text-secondary font-bold mr-1 hover:underline underline-offset-4 transition-all" href="#">سجل
+              الدخول.</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

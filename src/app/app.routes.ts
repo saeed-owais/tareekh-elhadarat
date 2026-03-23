@@ -7,6 +7,21 @@ export const routes: Routes = [
     title: 'تاريخ الشعوب | منصة للوعي الحضاري المعاصر'
   },
   {
+    path: 'auth/login',
+    loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent),
+    title: 'تسجيل الدخول | تاريخ الشعوب'
+  },
+  {
+    path: 'auth/register',
+    loadComponent: () => import('./pages/auth/register/register.component').then(m => m.RegisterComponent),
+    title: 'حساب جديد | تاريخ الشعوب'
+  },
+  {
+    path: 'auth/forgot-password',
+    loadComponent: () => import('./pages/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
+    title: 'نسيت كلمة المرور | تاريخ الشعوب'
+  },
+  { 
     path: 'articles',
     loadComponent: () => import('./pages/articles/articles.component').then(m => m.ArticlesComponent),
     title: 'المقالات | تاريخ الشعوب'
@@ -36,9 +51,9 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/write-with-us/write-with-us.component').then(m => m.WriteWithUsComponent),
     title: 'اكتب معنا | تاريخ الشعوب'
   },
-  {
-    path: '**',
-    redirectTo: '',
-    pathMatch: 'full'
-  }
+  // {
+  //   path: '**',
+  //   redirectTo: '',
+  //   pathMatch: 'full'
+  // }
 ];
