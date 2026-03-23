@@ -1,0 +1,63 @@
+<main class="pt-28 pb-20">
+  <div class="container mx-auto px-8 max-w-4xl">
+    <!-- Page Header -->
+    <div class="text-center mb-16">
+      <h1 class="text-5xl font-headline font-bold text-primary mb-4">من نحن</h1>
+      <div class="w-20 h-[2px] bg-linear-to-r from-[#CFAF5B] to-[#E6C97A] mx-auto"></div>
+    </div>
+
+    <!-- Vision -->
+    <section class="mb-20">
+      <div class="bg-surface-container-low p-12 rounded-3xl">
+        <h2 class="text-3xl font-headline font-bold text-primary mb-6">رؤيتنا</h2>
+        <p class="text-lg text-on-surface-variant font-body leading-relaxed mb-6">
+          نسعى في "تاريخ الشعوب" لبناء وعي حضاري يجمع بين الأصالة والمعاصرة. نؤمن أن المعرفة هي جسر التواصل بين الماضي والمستقبل، وأن إعادة قراءة تراثنا الفكري بعيون معاصرة هو السبيل لفهم حاضرنا واستشراف مستقبلنا.
+        </p>
+        <p class="text-lg text-on-surface-variant font-body leading-relaxed">
+          منصة "تاريخ الشعوب" ليست مجرد مدونة إلكترونية، بل هي مجتمع فكري يجمع الباحثين والمثقفين والقراء حول طاولة واحدة، نتبادل فيها الأفكار ونتحاور حول القضايا التي تشكل وعينا الجمعي.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-headline font-bold text-primary mb-8">رسالتنا</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-surface-container-low p-8 rounded-2xl text-center">
+          <span class="material-symbols-outlined text-4xl text-secondary mb-4">auto_stories</span>
+          <h3 class="font-headline font-bold text-lg mb-3">نشر المعرفة</h3>
+          <p class="text-sm text-on-surface-variant font-body">تقديم محتوى فكري وثقافي رصين يثري الوعي العربي.</p>
+        </div>
+        <div class="bg-surface-container-low p-8 rounded-2xl text-center">
+          <span class="material-symbols-outlined text-4xl text-secondary mb-4">forum</span>
+          <h3 class="font-headline font-bold text-lg mb-3">الحوار البناء</h3>
+          <p class="text-sm text-on-surface-variant font-body">خلق مساحات للحوار الفكري المتنوع والمتعدد الأبعاد.</p>
+        </div>
+        <div class="bg-surface-container-low p-8 rounded-2xl text-center">
+          <span class="material-symbols-outlined text-4xl text-secondary mb-4">diversity_3</span>
+          <h3 class="font-headline font-bold text-lg mb-3">بناء المجتمع</h3>
+          <p class="text-sm text-on-surface-variant font-body">تكوين مجتمع من المثقفين والباحثين والقراء المهتمين.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-headline font-bold text-primary mb-12 text-center">فريق العمل</h2>
+      <div class="flex flex-wrap justify-center gap-12 lg:gap-20">
+        @for (author of authors; track author.id) {
+          <div class="text-center group">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-4 p-1 ring-2 ring-outline-variant ring-offset-4 ring-offset-surface group-hover:ring-secondary transition-all">
+              <img loading="lazy"
+                   [alt]="author.name"
+                   class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all"
+                   [src]="author.avatar">
+            </div>
+            <p class="font-headline font-bold text-lg">{{ author.name }}</p>
+            <p class="text-xs font-label text-on-surface-variant uppercase tracking-wider">{{ author.title }}</p>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</main>

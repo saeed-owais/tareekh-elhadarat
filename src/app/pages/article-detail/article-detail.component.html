@@ -1,0 +1,154 @@
+@if (post) {
+  <main class="pt-28 pb-20">
+    <article class="container mx-auto px-8 max-w-4xl">
+      <!-- Category & Meta -->
+      <div class="mb-8">
+        <span class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label text-sm font-bold tracking-widest uppercase mb-4">
+          {{ post.categoryName }}
+        </span>
+        <h1 class="text-4xl lg:text-5xl font-headline font-bold text-primary leading-[1.4] mb-6">
+          {{ post.title }}
+        </h1>
+        <div class="flex items-center gap-6 text-sm text-on-surface-variant font-label border-b border-outline-variant/20 pb-6">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">person</span>
+            {{ post.authorName }}
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">calendar_today</span>
+            {{ post.createdAt | date:'longDate' }}
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">timer</span>
+            {{ post.readTime }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Featured Image -->
+      <div class="rounded-xl overflow-hidden mb-12 aspect-[16/9] shadow-2xl">
+        <img [src]="post.imageUrl" [alt]="post.title" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Article Content -->
+      <div class="prose prose-lg max-w-none font-body text-on-surface leading-[1.8] space-y-6 mb-16">
+        <p class="text-xl leading-relaxed">{{ post.content }}</p>
+        <p>في إطار هذا النقاش، نستعرض الأبعاد المختلفة لهذا الموضوع، ونسعى لتقديم رؤية شاملة تجمع بين التحليل الأكاديمي والنقد البناء، مع الحرص على تقديم وجهات نظر متعددة تثري النقاش الفكري.</p>
+        <p>إن التأمل العميق في هذه المسألة يكشف لنا عن طبقات متعددة من المعنى، كل طبقة تفتح أمامنا آفاقاً جديدة للفهم والتحليل. وقد سعى العديد من المفكرين والباحثين عبر العصور لفهم هذه الظاهرة من زوايا مختلفة، مما أثرى الإنتاج الفكري في هذا المجال بشكل ملحوظ.</p>
+        <blockquote class="border-r-4 border-secondary pr-6 my-8 italic text-on-surface-variant">
+          "المعرفة الحقيقية ليست مجرد تراكم للمعلومات، بل هي القدرة على ربط الأفكار وتوليد رؤى جديدة تسهم في بناء الوعي الحضاري."
+        </blockquote>
+        <p>من هذا المنطلق، نؤكد على أهمية إعادة قراءة تراثنا الفكري بعيون معاصرة، لا لنقلده حرفياً، بل لنستلهم منه القيم والمبادئ التي يمكن أن تسهم في معالجة قضايانا المعاصرة. فتاريخ الشعوب ليس ماضياً ميتاً، بل هو ذاكرة حية تواصل حوارها مع الحاضر والمستقبل.</p>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-3 mb-12 border-t border-outline-variant/20 pt-8">
+        <span class="px-4 py-2 bg-surface-container-low rounded-full text-sm font-label text-on-surface-variant">{{ post.categoryName }}</span>
+        <span class="px-4 py-2 bg-surface-container-low rounded-full text-sm font-label text-on-surface-variant">فكر</span>
+        <span class="px-4 py-2 bg-surface-container-low rounded-full text-sm font-label text-on-surface-variant">ثقافة</span>
+      </div>
+
+      <!-- Share -->
+      <div class="flex items-center gap-4 mb-16 border-b border-outline-variant/20 pb-8">
+        <span class="font-label font-bold text-on-surface-variant">شارك المقال:</span>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary transition-all">
+          <span class="material-symbols-outlined text-xl">public</span>
+        </a>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary transition-all">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </a>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary transition-all">
+          <span class="material-symbols-outlined text-xl">link</span>
+        </a>
+      </div>
+    </article>
+
+    <!-- Comments Section -->
+    <section class="container mx-auto px-8 max-w-4xl mb-16">
+      <h2 class="text-3xl font-headline font-bold text-primary mb-10">التعليقات</h2>
+      
+      <!-- Existing Comments -->
+      <div class="space-y-6 mb-12">
+        @for (comment of comments; track comment.id) {
+          <div class="p-6 rounded-2xl bg-surface-container-low text-on-surface shadow-sm">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">
+                {{ comment.authorName.charAt(0) }}
+              </div>
+              <div>
+                <h4 class="font-headline font-bold text-lg">{{ comment.authorName }}</h4>
+                <p class="text-sm text-on-surface-variant">{{ comment.createdAt | date:'longDate' }}</p>
+              </div>
+            </div>
+            <p class="font-body leading-relaxed">{{ comment.content }}</p>
+          </div>
+        } @empty {
+          <p class="text-on-surface-variant italic">لا توجد تعليقات بعد. كن أول من يعلق!</p>
+        }
+      </div>
+
+      <!-- Add Comment Form -->
+      <div class="bg-surface-container p-8 rounded-2xl shadow-sm">
+        <h3 class="text-2xl font-headline font-bold mb-6 text-primary">أضف تعليقاً</h3>
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Name -->
+            <div class="flex flex-col gap-2">
+              <label class="font-label font-bold text-on-surface">الاسم</label>
+              <input type="text" formControlName="authorName" class="px-4 py-3 rounded-xl border border-outline-variant bg-surface focus:outline-none focus:border-primary transition-colors text-on-surface" placeholder="الاسم الكامل">
+            </div>
+            <!-- Email -->
+            <div class="flex flex-col gap-2">
+              <label class="font-label font-bold text-on-surface">البريد الإلكتروني</label>
+              <input type="email" formControlName="email" class="px-4 py-3 rounded-xl border border-outline-variant bg-surface focus:outline-none focus:border-primary transition-colors text-on-surface" placeholder="example@domain.com">
+            </div>
+          </div>
+          <!-- Content -->
+          <div class="flex flex-col gap-2">
+            <label class="font-label font-bold text-on-surface">التعليق</label>
+            <textarea formControlName="content" rows="4" class="px-4 py-3 rounded-xl border border-outline-variant bg-surface focus:outline-none focus:border-primary transition-colors text-on-surface resize-none" placeholder="اكتب تعليقك هنا..."></textarea>
+          </div>
+          
+          <button type="submit" [disabled]="!commentForm.valid" class="px-8 py-3 bg-primary text-on-primary rounded-xl font-headline font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            إرسال التعليق
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Related Posts -->
+    @if (relatedPosts.length > 0) {
+      <section class="container mx-auto px-8 max-w-4xl">
+        <h2 class="text-3xl font-headline font-bold text-primary mb-10">مقالات ذات صلة</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          @for (related of relatedPosts; track related.id) {
+            <article class="group">
+              <a [routerLink]="['/articles', related.id]" class="block">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3] mb-6 shadow-[0_8px_32px_rgba(6,27,14,0.04)] group-hover:shadow-[0_16px_48px_rgba(115,92,0,0.1)] transition-all">
+                  <img loading="lazy" [alt]="related.title"
+                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                       [src]="related.imageUrl">
+                </div>
+                <h3 class="text-xl font-headline font-bold mb-2 group-hover:text-secondary transition-colors leading-snug">
+                  {{ related.title }}
+                </h3>
+              </a>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </main>
+} @else {
+  <main class="pt-28 pb-20">
+    <div class="container mx-auto px-8 text-center py-20">
+      <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6">article</span>
+      <h1 class="text-3xl font-headline font-bold text-primary mb-4">المقال غير موجود</h1>
+      <p class="text-on-surface-variant mb-8">عذراً، لم نتمكن من العثور على المقال المطلوب.</p>
+      <a routerLink="/articles" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-lg font-headline text-lg hover:bg-primary-container transition-all">
+        <span class="material-symbols-outlined">arrow_forward</span>
+        العودة للمقالات
+      </a>
+    </div>
+  </main>
+}
