@@ -1,0 +1,69 @@
+# =========================
+# Operating System Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Angular / Node.js (Frontend)
+# =========================
+# Dependencies
+frontend/node_modules/
+node_modules/
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build output
+frontend/dist/
+frontend/tmp/
+frontend/out-tsc/
+frontend/bazel-out/
+dist/
+
+# Node/npm logs
+npm-debug.log
+yarn-error.log
+frontend/npm-debug.log*
+frontend/yarn-error.log*
+frontend/yarn.lock
+frontend/package-lock.json
+
+# Angular cache
+frontend/.angular/
+.angular/
+
+# =========================
+# .NET / C# (Backend)
+# =========================
+# Build results
+backend/**/bin/
+backend/**/obj/
+bin/
+obj/
+
+# Visual Studio / IDE specific
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+
+# NuGet Packages
+*.nupkg
+**/packages/
+!**/packages/build/
+
+# AppSettings (Optional: Ignore environment-specific settings so you don't commit local connection strings)
+backend/**/appsettings.Development.json
+backend/**/appsettings.Local.json
+
+# Rider / ReSharper
+.idea/
+*.sln.iml
+
+# Mac
+.DS_Store
