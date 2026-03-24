@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "5PN5KG4+2uI=",
+  "success": true,
+  "projectFilePath": "G:\\المدونة\\مدونة v2\\world-civilizations\\backend\\TareekhElhadarat.Api\\TareekhElhadarat.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\saide\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.2\\microsoft.aspnetcore.openapi.10.0.2.nupkg.sha512",
+    "C:\\Users\\saide\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
