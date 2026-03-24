@@ -5,6 +5,10 @@
 /* Dark mode (optional لو هتستخدمه) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+.gold-gradient {
+  background: linear-gradient(135deg, #735C00 0%, #B18D48 100%)
+}
+
 /* Theme */
 @theme {
   /* Colors */

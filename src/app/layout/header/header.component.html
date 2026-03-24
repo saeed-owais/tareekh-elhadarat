@@ -1,59 +1,73 @@
 <!-- Header & TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
-  <nav dir="rtl" aria-label="التنقل الرئيسي" class="flex flex-row-reverse justify-between items-center w-full px-8  max-w-[1440px] mx-auto">
+  <nav dir="rtl" aria-label="التنقل الرئيسي"
+    class="flex flex-row-reverse justify-between items-center w-full px-8  max-w-[1440px] mx-auto">
 
     <!-- Icons & Mobile Menu -->
     <div class="flex items-center gap-3">
       <!-- Hamburger Menu (Mobile Only) -->
-      <button
-        aria-label="القائمة الرئيسية"
-        class="md:hidden p-2 rounded-lg hover:bg-primary/5 transition"
+      <button aria-label="القائمة الرئيسية" class="md:hidden p-2 rounded-lg hover:bg-primary/5 transition"
         (click)="toggleMenu()">
         <span class="material-symbols-outlined text-[#1F3D2B]">
           {{ mobileMenuOpen ? 'close' : 'menu' }}
         </span>
       </button>
 
-      <button aria-label="البحث" class="p-2 rounded-lg hover:bg-primary/5 transition">
+      <!-- <button aria-label="البحث" class="p-2 rounded-lg hover:bg-primary/5 transition">
         <span class="material-symbols-outlined text-[#1F3D2B]">search</span>
-      </button>
+      </button> -->
 
-      <button aria-label="الملف الشخصي" class="p-2 rounded-lg hover:bg-primary/5 transition">
+      <div class="relative flex items-center bg-surface-container-high rounded-full px-4 py-4 border border-outline/10">
+        <span class="material-symbols-outlined text-on-surface-variant text-xl">search</span>
+        <input class="bg-transparent border-none outline-none focus:ring-0 text-sm w-48 text-right pr-2"
+          placeholder="بحث في الأرشيف..." type="text">
+      </div>
+
+      <div class="hidden lg:flex items-center gap-4">
+        <a routerLink="/auth/login"
+          class="text-[#1B3022] dark:text-[#FBFBE2]/80 font-bold hover:text-[#735C00] active:opacity-80 active:scale-95 transition-all">تسجيل
+          الدخول</a>
+        <a routerLink="/auth/register"
+          class="gold-gradient text-white px-6 py-2 rounded-lg font-bold hover:opacity-90 active:opacity-80 active:scale-95 transition-all">إنشاء
+          حساب</a>
+      </div>
+
+      <a routerLink="/profile" aria-label="الملف الشخصي" class="p-2 rounded-lg hover:bg-primary/5 transition">
         <span class="material-symbols-outlined text-[#1F3D2B]">account_circle</span>
-      </button>
+      </a>
     </div>
 
     <!-- Links (Desktop) -->
     <div class="hidden md:flex gap-8 items-center">
       <a routerLink="/"
-         routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="relative text-lg font-medium text-[#1F3D2B] hover:text-[#CFAF5B] transition-colors duration-300">
+        routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="relative text-lg font-medium text-[#1F3D2B] hover:text-[#CFAF5B] transition-colors duration-300">
         الرئيسية
       </a>
       <a routerLink="/articles"
-         routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-         class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
+        routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
         المقالات
       </a>
       <a routerLink="/books"
-         routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-         class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
+        routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
         الكتب
       </a>
       <a routerLink="/write-with-us"
-         routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-         class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
+        routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
         اكتب معنا
       </a>
       <a routerLink="/about"
-         routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-         class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
+        routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
         من نحن
       </a>
       <a routerLink="/contact"
-         routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-         class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
+        routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        class="relative text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors duration-300">
         تواصل معنا
       </a>
     </div>
@@ -63,40 +77,40 @@
       <!-- تاريخ الشعوب -->
       <!-- <img width="150px" src="./image.png" alt=""> -->
       <img width="80px" src="./logo3.png" alt="">
-       
+
       <!-- <img width="50px" src="./logo.jpg" alt=""> -->
     </a>
   </nav>
 
   <!-- Mobile Menu -->
   @if (mobileMenuOpen) {
-    <div class="md:hidden bg-surface/95 backdrop-blur-md border-t border-outline-variant/20 animate-fade-in-up">
-      <div class="flex flex-col gap-4 px-8 py-6">
-        <a routerLink="/" (click)="closeMenu()"
-           class="text-lg font-medium text-[#1F3D2B] hover:text-[#CFAF5B] transition-colors py-2">
-          الرئيسية
-        </a>
-        <a routerLink="/articles" (click)="closeMenu()"
-           class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
-          المقالات
-        </a>
-        <a routerLink="/books" (click)="closeMenu()"
-           class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
-          الكتب
-        </a>
-        <a routerLink="/write-with-us" (click)="closeMenu()"
-           class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
-          اكتب معنا
-        </a>
-        <a routerLink="/about" (click)="closeMenu()"
-           class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
-          من نحن
-        </a>
-        <a routerLink="/contact" (click)="closeMenu()"
-           class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
-          تواصل معنا
-        </a>
-      </div>
+  <div class="md:hidden bg-surface/95 backdrop-blur-md border-t border-outline-variant/20 animate-fade-in-up">
+    <div class="flex flex-col gap-4 px-8 py-6">
+      <a routerLink="/" (click)="closeMenu()"
+        class="text-lg font-medium text-[#1F3D2B] hover:text-[#CFAF5B] transition-colors py-2">
+        الرئيسية
+      </a>
+      <a routerLink="/articles" (click)="closeMenu()"
+        class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
+        المقالات
+      </a>
+      <a routerLink="/books" (click)="closeMenu()"
+        class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
+        الكتب
+      </a>
+      <a routerLink="/write-with-us" (click)="closeMenu()"
+        class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
+        اكتب معنا
+      </a>
+      <a routerLink="/about" (click)="closeMenu()"
+        class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
+        من نحن
+      </a>
+      <a routerLink="/contact" (click)="closeMenu()"
+        class="text-lg font-medium text-[#1F3D2B]/70 hover:text-[#CFAF5B] transition-colors py-2">
+        تواصل معنا
+      </a>
     </div>
+  </div>
   }
 </header>

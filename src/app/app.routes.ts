@@ -51,6 +51,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/write-with-us/write-with-us.component').then(m => m.WriteWithUsComponent),
     title: 'اكتب معنا | تاريخ الشعوب'
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
+    title: 'الملف الشخصي | تاريخ الشعوب'
+  },
   // {
   //   path: '**',
   //   redirectTo: '',
