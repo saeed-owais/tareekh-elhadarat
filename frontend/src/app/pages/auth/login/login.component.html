@@ -3,14 +3,13 @@
    <!-- Right Side: Image and Text -->
   <div class="hidden lg:flex w-1/2 relative flex-col justify-center items-center bg-primary text-white overflow-hidden">
     <!-- Background Image -->
-    <img src="assets/images/auth-bg.png" alt="History Background" class="absolute inset-0 w-full h-full object-cover">
+    <img src="bg-tareekh-alsho3ob.jpg" alt="History Background" class="absolute inset-0 w-full h-full object-cover">
 
     <!-- Dark Overlay -->
-    <div class="absolute inset-0 bg-primary/75"></div>
+    <!-- <div class="absolute inset-0 bg-primary/75"></div> -->
 
     <!-- Content -->
-    <div class="relative z-10 p-12 text-center text-white flex flex-col items-center">
-      <!-- You can add a logo here if needed -->
+    <!-- <div class="relative z-10 p-12 text-center text-white flex flex-col items-center">
       <h1 class="text-4xl md:text-5xl font-headline font-bold mb-6 leading-tight">
         تاريخ الشعوب<br>
         <span class="text-secondary-fixed">رحلة عبر الحضارات والثقافات</span>
@@ -18,7 +17,7 @@
       <p class="text-xl font-body leading-relaxed max-w-lg mx-auto text-surface-dim">
         نستكشف جذور الإنسان وتنوعه عبر العصور، لنبني جسراً من المعرفة يربط الماضي بالمستقبل.
       </p>
-    </div>
+    </div> -->
   </div>
 
   <!-- Left Side: Login Form -->
@@ -26,34 +25,72 @@
     <div class="w-full max-w-md">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-headline font-bold text-primary mb-2">مرحباً بعودتك!</h2>
-        <!-- <p class="text-outline">سجل دخولك لمتابعة رحلتك في تاريخ الشعوب</p> -->
       </div>
 
-      <form class="space-y-6" (submit)="$event.preventDefault()">
+      <!-- Error Alert -->
+      @if (errorMessage()) {
+        <div class="bg-error/10 border border-error/30 text-error rounded-xl p-4 mb-6 flex items-center gap-3">
+          <span class="material-symbols-outlined text-[20px]">error</span>
+          <span class="text-sm font-medium">{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <!-- Email Field -->
         <div class="space-y-2">
-          <label class="block text-sm font-semibold text-primary/80 mr-1" for="email">البريد الإلكتروني</label>
+          <label class="block text-sm font-semibold text-primary/80 mr-1" for="login-email">البريد الإلكتروني</label>
           <div class="relative group">
             <span
+              [ngClass]="{'text-error': emailControl?.invalid && emailControl?.touched}"
               class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors">mail</span>
             <input
+              formControlName="email"
+              [ngClass]="{'ring-2 ring-error/40': emailControl?.invalid && emailControl?.touched}"
               class="w-full pr-12 pl-4 py-3.5 bg-surface-container border-none focus:ring-2 focus:ring-secondary/20 rounded-lg text-primary placeholder-outline transition-all"
-              id="email" placeholder="example@history.com" type="email" />
+              id="login-email" placeholder="example&#64;history.com" type="email" />
           </div>
+          @if (emailControl?.invalid && emailControl?.touched) {
+            <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">error</span>
+              @if (emailControl?.errors?.['required']) {
+                <span>البريد الإلكتروني مطلوب.</span>
+              }
+              @if (emailControl?.errors?.['email']) {
+                <span>يرجى إدخال بريد إلكتروني صحيح.</span>
+              }
+            </div>
+          }
         </div>
         <!-- Password Field -->
         <div class="space-y-2">
           <div class="flex justify-between items-center px-1">
-            <label class="block text-sm font-semibold text-primary/80" for="password">كلمة المرور</label>
-
+            <label class="block text-sm font-semibold text-primary/80" for="login-password">كلمة المرور</label>
           </div>
           <div class="relative group">
             <span
+              [ngClass]="{'text-error': passwordControl?.invalid && passwordControl?.touched}"
               class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors">lock</span>
             <input
-              class="w-full pr-12 pl-4 py-3.5 bg-surface-container border-none focus:ring-2 focus:ring-secondary/20 rounded-lg text-primary placeholder-outline transition-all"
-              id="password" placeholder="••••••••" type="password" />
+              formControlName="password"
+              [ngClass]="{'ring-2 ring-error/40': passwordControl?.invalid && passwordControl?.touched}"
+              class="w-full pr-12 pl-10 py-3.5 bg-surface-container border-none focus:ring-2 focus:ring-secondary/20 rounded-lg text-primary placeholder-outline transition-all"
+              id="login-password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'" />
+            <span (click)="showPassword = !showPassword" [class.text-secondary]="showPassword"
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
+              {{ showPassword ? 'visibility_off' : 'visibility' }}
+            </span>
           </div>
+          @if (passwordControl?.invalid && passwordControl?.touched) {
+            <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">error</span>
+              @if (passwordControl?.errors?.['required']) {
+                <span>كلمة المرور مطلوبة.</span>
+              }
+              @if (passwordControl?.errors?.['minlength']) {
+                <span>كلمة المرور يجب أن تكون 6 أحرف على الأقل.</span>
+              }
+            </div>
+          }
         </div>
 
 
@@ -68,8 +105,12 @@
         </div>
 
         <button type="submit"
-          class="w-full bg-primary text-white py-3 px-4 rounded-xl hover:bg-inverse-surface transition-colors font-medium text-lg">
-          تسجيل الدخول
+          [disabled]="isLoading()"
+          class="w-full bg-primary text-white py-3 px-4 rounded-xl hover:bg-inverse-surface transition-colors font-medium text-lg flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+          @if (isLoading()) {
+            <span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+          }
+          <span>{{ isLoading() ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول' }}</span>
         </button>
 
         <p class="text-center text-sm text-on-surface-variant mt-6">

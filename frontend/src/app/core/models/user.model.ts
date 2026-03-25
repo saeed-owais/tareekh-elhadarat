@@ -1,9 +1,9 @@
 export interface User {
-  id: number;
-  name: string;
   email: string;
-  role: 'admin' | 'author' | 'reader';
-  createdAt: Date;
-  avatar?: string;
-  title?: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  profilePhoto: string | null;
+  exp: number;
 }

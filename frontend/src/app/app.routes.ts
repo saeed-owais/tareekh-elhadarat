@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { guestGuard } from './core/guards/guest.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -9,17 +11,20 @@ export const routes: Routes = [
   {
     path: 'auth/login',
     loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent),
-    title: 'تسجيل الدخول | تاريخ الشعوب'
+    title: 'تسجيل الدخول | تاريخ الشعوب',
+    canActivate: [guestGuard]
   },
   {
     path: 'auth/register',
     loadComponent: () => import('./pages/auth/register/register.component').then(m => m.RegisterComponent),
-    title: 'حساب جديد | تاريخ الشعوب'
+    title: 'حساب جديد | تاريخ الشعوب',
+    canActivate: [guestGuard]
   },
   {
     path: 'auth/forgot-password',
     loadComponent: () => import('./pages/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
-    title: 'نسيت كلمة المرور | تاريخ الشعوب'
+    title: 'نسيت كلمة المرور | تاريخ الشعوب',
+    canActivate: [guestGuard]
   },
   { 
     path: 'articles',
@@ -54,7 +59,8 @@ export const routes: Routes = [
   {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
-    title: 'الملف الشخصي | تاريخ الشعوب'
+    title: 'الملف الشخصي | تاريخ الشعوب',
+    canActivate: [authGuard]
   },
   // {
   //   path: '**',
