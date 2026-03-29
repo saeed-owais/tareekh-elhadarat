@@ -12,3 +12,5 @@ export type { ResetPasswordRequest } from './reset-password.model';
 export type { LoginRequest } from './login.model';
 export type { AuthResponse } from './auth-response.model';
 export type { DecodedToken } from './decoded-token.model';
+export type { ArticleRequest } from './article-request.model';
+export type { Tag } from './tag.model';

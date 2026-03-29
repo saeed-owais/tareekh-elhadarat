@@ -5,6 +5,16 @@
 
     <!-- Icons & Mobile Menu -->
     <div class="flex items-center gap-3">
+      
+            <!-- <button aria-label="البحث" class="p-2 rounded-lg hover:bg-primary/5 transition">
+              <span class="material-symbols-outlined text-[#1F3D2B]">search</span>
+            </button> -->
+      
+            <div class="relative flex items-center bg-surface-container-high rounded-full px-4 py-4 border border-outline/10">
+              <span class="material-symbols-outlined text-on-surface-variant text-xl">search</span>
+              <input class="bg-transparent border-none outline-none focus:ring-0 text-sm w-28 sm:w-16  lg:w-48 text-right pr-2"
+                placeholder="بحث في الأرشيف..." type="text">
+            </div>
       <!-- Hamburger Menu (Mobile Only) -->
       <button aria-label="القائمة الرئيسية" class="md:hidden p-2 rounded-lg hover:bg-primary/5 transition"
         (click)="toggleMenu()">
@@ -12,16 +22,6 @@
           {{ mobileMenuOpen ? 'close' : 'menu' }}
         </span>
       </button>
-
-      <!-- <button aria-label="البحث" class="p-2 rounded-lg hover:bg-primary/5 transition">
-        <span class="material-symbols-outlined text-[#1F3D2B]">search</span>
-      </button> -->
-
-      <div class="relative flex items-center bg-surface-container-high rounded-full px-4 py-4 border border-outline/10">
-        <span class="material-symbols-outlined text-on-surface-variant text-xl">search</span>
-        <input class="bg-transparent border-none outline-none focus:ring-0 text-sm w-48 text-right pr-2"
-          placeholder="بحث في الأرشيف..." type="text">
-      </div>
 
       <div class="hidden lg:flex items-center gap-4">
         @if (!isLoggedIn) {
@@ -81,12 +81,8 @@
     </div>
 
     <!-- Logo -->
-    <a routerLink="/" class="text-2xl font-bold text-[#1F3D2B] tracking-wide font-headline">
-      <!-- تاريخ الشعوب -->
-      <!-- <img width="150px" src="./image.png" alt=""> -->
-      <img width="80px" src="./logo3.png" alt="">
-
-      <!-- <img width="50px" src="./logo.jpg" alt=""> -->
+    <a routerLink="/" class=" flex-shrink-0 font-bold text-[#1F3D2B] tracking-wide font-headline">
+      <img class="w-20 sm:w-20 md:w-24 lg:w-24 xl:w-24" src="./logo3.png" alt="">
     </a>
   </nav>
 
