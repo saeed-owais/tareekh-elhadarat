@@ -8,13 +8,14 @@ import { ApiResponse } from '../models/api-response.model';
 import { RegisterRequest } from '../models/register.model';
 import { ChangePasswordRequest } from '../models/change-password.model';
 import { ResetPasswordRequest } from '../models/reset-password.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    private baseUrl = 'http://modawanty.runasp.net/api/Auth';
+    private baseUrl = `${environment.apiBaseUrl}/api/Auth`;
 
     constructor(
         private http: HttpClient,

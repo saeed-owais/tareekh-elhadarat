@@ -37,7 +37,7 @@
     </section>
 
     <!-- Auth Check: Not Logged In -->
-    @if (!isLoggedIn) {
+    @if (!isLoggedIn()) {
       <section class="mb-12">
         <div class="bg-surface-container-lowest p-8 md:p-12 rounded-2xl ambient-shadow text-center relative overflow-hidden">
           <div class="absolute inset-0 pattern-bg"></div>
@@ -58,16 +58,16 @@
     }
 
     <!-- Submission Form (Logged In Only) -->
-    @if (isLoggedIn && !submitted) {
+    @if (isLoggedIn() && !submitted()) {
       <section>
         <h2 class="text-2xl font-headline font-bold text-primary mb-8">أرسل مقالك</h2>
         <form class="bg-surface-container-low p-10 rounded-2xl space-y-8" (submit)="onSubmit($event)">
 
           <!-- Error Message -->
-          @if (errorMessage) {
+          @if (errorMessage()) {
             <div class="flex items-center gap-3 bg-error/10 text-error px-5 py-3 rounded-lg border border-error/20 animate-fade-in">
               <span class="material-symbols-outlined">error</span>
-              <p class="font-medium">{{ errorMessage }}</p>
+              <p class="font-medium">{{ errorMessage() }}</p>
             </div>
           }
 
@@ -95,7 +95,7 @@
                     required
                     class="w-full bg-surface-container-high px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body">
               <option [ngValue]="null" disabled>اختر التصنيف</option>
-              @for (category of categories; track category.id) {
+              @for (category of categories(); track category.id) {
                 <option [ngValue]="category.id">{{ category.name }}</option>
               }
             </select>
@@ -106,9 +106,9 @@
             <label class="block font-label font-bold text-sm mb-2">
               الوسوم <span class="text-error">*</span>
             </label>
-            @if (tags.length > 0) {
+            @if (tags().length > 0) {
               <div class="flex flex-wrap gap-3">
-                @for (tag of tags; track tag.id) {
+                @for (tag of tags(); track tag.id) {
                   <button type="button"
                           (click)="toggleTag(tag.id)"
                           [class]="isTagSelected(tag.id)
@@ -124,8 +124,8 @@
             } @else {
               <p class="text-on-surface-variant text-sm">لا توجد وسوم متاحة حالياً</p>
             }
-            @if (selectedTagIds.length > 0) {
-              <p class="text-xs text-on-surface-variant mt-2">تم اختيار {{ selectedTagIds.length }} وسم</p>
+            @if (selectedTagIds().length > 0) {
+              <p class="text-xs text-on-surface-variant mt-2">تم اختيار {{ selectedTagIds().length }} وسم</p>
             }
           </div>
 
@@ -134,7 +134,7 @@
             <label class="block font-label font-bold text-sm mb-2">
               الصورة البارزة <span class="text-error">*</span>
             </label>
-            @if (!imagePreviewUrl) {
+            @if (!imagePreviewUrl()) {
               <label class="relative w-full aspect-[21/9] bg-surface-container-high rounded-xl border-2 border-dashed border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer hover:bg-surface-variant transition-colors overflow-hidden group">
                 <input type="file"
                        accept="image/jpeg,image/png,image/webp"
@@ -148,7 +148,7 @@
               </label>
             } @else {
               <div class="relative w-full aspect-[21/9] rounded-xl overflow-hidden group">
-                <img [src]="imagePreviewUrl"
+                <img [src]="imagePreviewUrl()"
                      alt="معاينة الصورة"
                      class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -214,11 +214,11 @@
           <div class="bg-surface-container-high p-5 rounded-lg flex flex-row-reverse justify-between items-center text-sm border-r-4 border-secondary">
             <div class="flex flex-row-reverse items-center gap-4">
               <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-lg">
-                {{ user?.firstName?.charAt(0) || 'م' }}
+                {{ user()?.firstName?.charAt(0) || 'م' }}
               </div>
               <div>
-                <p class="font-bold text-primary">الكاتب: {{ user?.name || user?.firstName + ' ' + user?.lastName }}</p>
-                <p class="text-on-surface-variant">{{ user?.email }}</p>
+                <p class="font-bold text-primary">الكاتب: {{ user()?.name || user()?.firstName + ' ' + user()?.lastName }}</p>
+                <p class="text-on-surface-variant">{{ user()?.email }}</p>
               </div>
             </div>
             <span class="text-secondary-fixed-dim italic text-xs">معلومات الحساب المسجل حالياً</span>
@@ -227,11 +227,11 @@
           <!-- Submit Button -->
           <div class="flex flex-col items-center gap-4 pt-4">
             <button type="submit"
-                    [disabled]="isSubmitting"
-                    [class]="isSubmitting
+                    [disabled]="isSubmitting()"
+                    [class]="isSubmitting()
                       ? 'w-full md:w-auto px-16 py-4 bg-outline/50 text-on-surface/50 font-extrabold text-xl rounded-lg cursor-not-allowed'
                       : 'w-full md:w-auto px-16 py-4 bg-gradient-to-r from-secondary to-secondary-fixed-dim text-on-secondary-fixed font-extrabold text-xl rounded-lg ambient-shadow hover:scale-[1.02] transition-transform'">
-              @if (isSubmitting) {
+              @if (isSubmitting()) {
                 <span class="flex items-center justify-center gap-3">
                   <span class="inline-block w-5 h-5 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin"></span>
                   جارٍ الإرسال...
@@ -246,7 +246,7 @@
     }
 
     <!-- Success State -->
-    @if (isLoggedIn && submitted) {
+    @if (isLoggedIn() && submitted()) {
       <div class="bg-surface-container-low p-16 rounded-2xl text-center animate-fade-in">
         <span class="material-symbols-outlined text-6xl text-secondary mb-6 block"
               style="font-variation-settings: 'FILL' 1;">check_circle</span>

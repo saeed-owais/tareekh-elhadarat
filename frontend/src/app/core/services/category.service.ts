@@ -1,24 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Category } from '../models/category.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  private categories: Category[] = [
-    { id: 1, name: 'فكر', icon: 'psychology' },
-    { id: 2, name: 'تاريخ', icon: 'history_edu' },
-    { id: 3, name: 'فلسفة', icon: 'menu_book' },
-    { id: 4, name: 'أدب', icon: 'auto_stories' },
-    { id: 5, name: 'قضايا معاصرة', icon: 'public' }
-  ];
+  private apiUrl = `${environment.apiBaseUrl}/api/Categories`;
 
-  getCategories(): Category[] {
-    return this.categories;
-  }
+  constructor(private http: HttpClient) { }
 
-  getCategoryById(id: number): Category | undefined {
-    return this.categories.find(c => c.id === id);
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.apiUrl).pipe(
+      catchError(err => {
+        return throwError(() => 'فشل تحميل التصنيفات');
+      })
+    );
   }
 }

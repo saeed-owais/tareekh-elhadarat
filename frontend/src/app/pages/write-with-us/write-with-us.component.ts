@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewEncapsulation, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -30,37 +30,49 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   private tagService = inject(TagService);
 
   // State
-  isLoggedIn = false;
-  user: User | null = null;
-  submitted = false;
-  isSubmitting = false;
-  errorMessage = '';
-  successMessage = '';
+  isLoggedIn = signal(false);
+  user = signal<User | null>(null);
+  submitted = signal(false);
+  isSubmitting = signal(false);
+  errorMessage = signal('');
+  successMessage = signal('');
 
   // Form data
-  title = '';
-  categoryId: number | null = null;
-  selectedTagIds: number[] = [];
-  imageFile: File | null = null;
-  imagePreviewUrl: string | null = null;
+  title = signal('');
+  categoryId = signal<number | null>(null);
+  selectedTagIds = signal<number[]>([]);
+  imageFile = signal<File | null>(null);
+  imagePreviewUrl = signal<string | null>(null);
 
   // Reference data
-  categories: Category[] = [];
-  tags: Tag[] = [];
+  categories = signal<Category[]>([]);
+  tags = signal<Tag[]>([]);
 
   // Quill editor
   private quillEditor: any = null;
   private quillLoaded = false;
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.isLoggedIn();
-    this.user = this.authService.getUser();
-    this.categories = this.categoryService.getCategories();
+    this.isLoggedIn.set(this.authService.isLoggedIn());
+    this.user.set(this.authService.getUser());
+    this.loadCategories();
     this.loadTags();
   }
 
+  // ================= LOAD CATEGORIES =================
+  private loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (cats) => {
+        this.categories.set(cats.filter(c => c.isAvailable));
+      },
+      error: () => {
+        this.categories.set([]);
+      }
+    });
+  }
+
   ngAfterViewInit(): void {
-    if (this.isLoggedIn) {
+    if (this.isLoggedIn()) {
       this.loadQuill();
     }
   }
@@ -75,11 +87,11 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   private loadTags(): void {
     this.tagService.getTags().subscribe({
       next: (tags) => {
-        this.tags = tags.filter(t => t.isAvailable);
+        this.tags.set(tags.filter(t => t.isAvailable));
       },
       error: () => {
         // Fallback - use empty tags
-        this.tags = [];
+        this.tags.set([]);
       }
     });
   }
@@ -136,55 +148,55 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Validate file size (5MB max)
       if (file.size > 5 * 1024 * 1024) {
-        this.errorMessage = 'حجم الصورة يجب ألا يتجاوز 5 ميجابايت';
+        this.errorMessage.set('حجم الصورة يجب ألا يتجاوز 5 ميجابايت');
         return;
       }
 
       // Validate file type
       if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-        this.errorMessage = 'يُسمح فقط بصور JPG أو PNG أو WebP';
+        this.errorMessage.set('يُسمح فقط بصور JPG أو PNG أو WebP');
         return;
       }
 
-      this.imageFile = file;
-      this.errorMessage = '';
+      this.imageFile.set(file);
+      this.errorMessage.set('');
 
       // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.imagePreviewUrl = e.target?.result as string;
+        this.imagePreviewUrl.set(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
   }
 
   removeImage(): void {
-    this.imageFile = null;
-    this.imagePreviewUrl = null;
+    this.imageFile.set(null);
+    this.imagePreviewUrl.set(null);
   }
 
   // ================= TAG HANDLING =================
   toggleTag(tagId: number): void {
-    const idx = this.selectedTagIds.indexOf(tagId);
+    const idx = this.selectedTagIds().indexOf(tagId);
     if (idx > -1) {
-      this.selectedTagIds.splice(idx, 1);
+      this.selectedTagIds.update(tags => tags.filter(t => t !== tagId));
     } else {
-      this.selectedTagIds.push(tagId);
+      this.selectedTagIds.update(tags => [...tags, tagId]);
     }
   }
 
   isTagSelected(tagId: number): boolean {
-    return this.selectedTagIds.includes(tagId);
+    return this.selectedTagIds().includes(tagId);
   }
 
   // ================= FORM VALIDATION =================
   get isFormValid(): boolean {
     const content = this.getEditorContent();
     return !!(
-      this.title.trim() &&
-      this.categoryId &&
-      this.selectedTagIds.length > 0 &&
-      this.imageFile &&
+      this.title().trim() &&
+      this.categoryId() &&
+      this.selectedTagIds().length > 0 &&
+      this.imageFile() &&
       content && content.trim().length > 10
     );
   }
@@ -205,45 +217,45 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
     event.preventDefault();
 
     if (!this.isFormValid) {
-      this.errorMessage = 'يرجى ملء جميع الحقول المطلوبة';
+      this.errorMessage.set('يرجى ملء جميع الحقول المطلوبة');
       return;
     }
 
-    this.isSubmitting = true;
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.isSubmitting.set(true);
+    this.errorMessage .set('');
+    this.successMessage .set('');
 
     const content = this.getEditorContent();
 
     this.articleService.addArticleUser(
-      this.title,
+      this.title(),
       content,
-      this.imageFile!,
-      this.categoryId!,
-      this.selectedTagIds
+      this.imageFile()!,
+      this.categoryId()!,
+      this.selectedTagIds()
     ).subscribe({
       next: () => {
-        this.isSubmitting = false;
-        this.submitted = true;
-        this.successMessage = 'تم إرسال مقالك بنجاح وهو بانتظار مراجعة الإدارة';
+        this.isSubmitting.set(false);
+        this.submitted.set(true);
+        this.successMessage.set('تم إرسال مقالك بنجاح وهو بانتظار مراجعة الإدارة');
       },
       error: (err) => {
-        this.isSubmitting = false;
-        this.errorMessage = typeof err === 'string' ? err : 'حدث خطأ أثناء إرسال المقال. يرجى المحاولة مرة أخرى.';
+        this.isSubmitting.set(false);
+        this.errorMessage.set(typeof err === 'string' ? err : 'حدث خطأ أثناء إرسال المقال. يرجى المحاولة مرة أخرى.');
       }
     });
   }
 
   // ================= RESET FORM =================
   resetForm(): void {
-    this.title = '';
-    this.categoryId = null;
-    this.selectedTagIds = [];
-    this.imageFile = null;
-    this.imagePreviewUrl = null;
-    this.submitted = false;
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.title.set('');
+    this.categoryId.set(null);
+    this.selectedTagIds.set([]);
+    this.imageFile.set(null);
+    this.imagePreviewUrl.set(null);
+    this.submitted.set(false);
+    this.errorMessage.set('');
+    this.successMessage.set('');
 
     if (this.quillEditor) {
       this.quillEditor.setContents([]);

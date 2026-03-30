@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of, throwError } from 'rxjs';
 import { Tag } from '../models/tag.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TagService {
 
-    private baseUrl = 'http://modawanty.runasp.net/api/Tags';
+    private baseUrl = `${environment.apiBaseUrl}/api/Tags`;
 
     constructor(private http: HttpClient) { }
 

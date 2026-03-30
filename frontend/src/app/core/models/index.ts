@@ -1,5 +1,6 @@
 export type { Category } from './category.model';
 export type { Post } from './post.model';
+export type { Article } from './article.model';
 export type { Book } from './book.model';
 export type { User } from './user.model';
 export type { Comment } from './comment.model';
