@@ -1,4 +1,6 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
 /* Pattern background for the login prompt */
 app-write-with-us .pattern-bg {
@@ -14,8 +16,15 @@ app-write-with-us .ambient-shadow {
 
 /* Fade in animation */
 @keyframes writeWithUsFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 app-write-with-us .animate-fade-in {
@@ -131,9 +140,55 @@ app-write-with-us .quill-wrapper .ql-snow .ql-picker.ql-expanded .ql-picker-opti
 
 /* Spinner animation */
 @keyframes writeWithUsSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 app-write-with-us .animate-spin {
   animation: writeWithUsSpin 0.8s linear infinite;
+}
+
+
+/* Fix header buttons labels */
+app-write-with-us .ql-toolbar button.ql-header[value="2"]::after {
+  content: "H1";
+  font-size: 14px;
+  color: #494947;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+app-write-with-us .ql-toolbar button.ql-header[value="3"]::after {
+  content: "H2";
+  color: #494947;
+  font-size: 14px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+app-write-with-us .ql-toolbar button.ql-header[value="2"]:hover::after,
+app-write-with-us .ql-toolbar button.ql-header[value="2"].ql-active::after {
+  color: #735c00;
+}
+
+app-write-with-us .ql-toolbar button.ql-header[value="3"]:hover::after,
+app-write-with-us .ql-toolbar button.ql-header[value="3"].ql-active::after {
+  color: #735c00;
+}
+/* Hide default icon */
+app-write-with-us .ql-toolbar button.ql-header svg {
+  display: none;
+}
+
+/* Center text inside button */
+app-write-with-us .ql-toolbar button.ql-header {
+  position: relative;
+  width: 32px;
+  height: 32px;
 }

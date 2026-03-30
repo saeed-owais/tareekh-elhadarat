@@ -120,6 +120,11 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
         placeholder: 'ابدأ كتابة رحلتك المعرفية هنا...',
         theme: 'snow'
       });
+
+
+      // ✅ default RTL + right align
+      this.quillEditor.format('direction', 'rtl');
+      this.quillEditor.format('align', 'right');
     }, 100);
   }
 
