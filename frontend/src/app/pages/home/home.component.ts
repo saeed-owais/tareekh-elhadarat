@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ArticleService } from '../../core/services/article.service';
 import { CategoryService } from '../../core/services/category.service';
@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
   private bookService = inject(BookService);
   private authorService = inject(AuthorService);
   private subscriberService = inject(SubscriberService);
+
+  @ViewChild('categoriesSlider') categoriesSlider!: ElementRef<HTMLDivElement>;
 
   featuredArticle = signal<Article | null>(null);
   latestArticles = signal<Article[]>([]);
@@ -81,6 +83,16 @@ export class HomeComponent implements OnInit {
       next: (articles) => {
         this.popularArticles.set(articles);
       }
+    });
+  }
+
+  scrollCategories(direction: 'left' | 'right'): void {
+    const el = this.categoriesSlider?.nativeElement;
+    if (!el) return;
+    const scrollAmount = 200;
+    el.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
     });
   }
 

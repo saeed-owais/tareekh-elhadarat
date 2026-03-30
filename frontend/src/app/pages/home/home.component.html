@@ -45,17 +45,49 @@
     </section>
   }
 
-  <!-- Categories -->
+  <!-- Categories Slider -->
   <section class="container mx-auto px-8 mb-32">
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-      <div class="bg-surface-container-low group hover:bg-surface-bright transition-all p-8 text-center rounded-xl cursor-pointer">
-        <span class="text-xl font-headline font-bold block">كل المقالات</span>
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-headline font-bold text-primary">تصفح حسب التصنيف</h2>
+      <div class="flex gap-2">
+        <button (click)="scrollCategories('right')"
+                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300 shadow-sm">
+          <span class="material-symbols-outlined text-xl">chevron_right</span>
+        </button>
+        <button (click)="scrollCategories('left')"
+                class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300 shadow-sm">
+          <span class="material-symbols-outlined text-xl">chevron_left</span>
+        </button>
       </div>
-      @for (category of categories(); track category.id) {
-        <div class="bg-surface-container-low group hover:bg-surface-bright transition-all p-8 text-center rounded-xl cursor-pointer">
-          <span class="text-xl font-headline font-bold block">{{ category.name }}</span>
-        </div>
-      }
+    </div>
+    <div class="relative">
+      <div class="absolute right-0 top-0 bottom-0 w-16 bg-linear-to-l from-surface to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute left-0 top-0 bottom-0 w-16 bg-linear-to-r from-surface to-transparent z-10 pointer-events-none"></div>
+      <div #categoriesSlider
+           class="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth py-2 px-1"
+           style="scrollbar-width: none; -ms-overflow-style: none;">
+        <!-- All Articles Card -->
+        <a routerLink="/articles"
+           class="shrink-0 group relative w-44 h-28 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-[0_8px_32px_rgba(115,92,0,0.15)]">
+          <div class="absolute inset-0 bg-linear-to-br from-secondary to-secondary-fixed-dim"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-on-secondary">
+            <span class="material-symbols-outlined text-2xl">apps</span>
+            <span class="text-base font-headline font-bold">كل المقالات</span>
+          </div>
+        </a>
+        <!-- Category Cards -->
+        @for (category of categories(); track category.id) {
+          <a [routerLink]="['/articles']"
+             [queryParams]="{ category: category.id }"
+             class="shrink-0 group relative w-44 h-28 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-[0_8px_32px_rgba(115,92,0,0.15)]">
+            <div class="absolute inset-0 bg-surface-container-low group-hover:bg-primary transition-colors duration-500"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+              <span class="text-lg font-headline font-bold group-hover:text-on-primary transition-colors duration-500">{{ category.name }}</span>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-secondary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></div>
+          </a>
+        }
+      </div>
     </div>
   </section>
 

@@ -1,54 +1,87 @@
 <main class="pt-28 pb-20">
   <div class="container mx-auto px-8">
     <!-- Page Header -->
-    <div class="text-center mb-16">
+    <div class="text-center mb-12">
       <h1 class="text-5xl font-headline font-bold text-primary mb-4">المقالات</h1>
       <p class="text-xl text-on-surface-variant font-body max-w-2xl mx-auto">
         استكشف مجموعة متنوعة من المقالات الفكرية والتاريخية والأدبية التي تثري الوعي الحضاري.
       </p>
     </div>
 
-    <!-- Search Bar -->
-    <div class="max-w-xl mx-auto mb-12">
-      <div class="relative">
-        <input
-          type="text"
-          [(ngModel)]="searchQuery"
-          (keyup.enter)="onSearch()"
-          class="w-full px-6 py-4 pr-14 rounded-xl border border-outline-variant bg-surface-container-low focus:outline-none focus:border-primary transition-colors text-on-surface font-body text-lg"
-          placeholder="ابحث عن مقال...">
-        <button
-          (click)="onSearch()"
-          class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-primary text-on-primary hover:bg-primary/90 transition-colors">
-          <span class="material-symbols-outlined text-xl">search</span>
+    <!-- Active Search Indicator -->
+    @if (activeSearchQuery()) {
+      <div class="flex items-center justify-center gap-3 mb-8">
+        <span class="text-on-surface-variant font-label">نتائج البحث عن:</span>
+        <span class="px-4 py-1.5 bg-primary/10 text-primary font-bold font-label rounded-full text-sm flex items-center gap-2">
+          "{{ activeSearchQuery() }}"
+          <button (click)="clearSearch()" class="hover:text-error transition-colors">
+            <span class="material-symbols-outlined text-sm">close</span>
+          </button>
+        </span>
+      </div>
+    }
+  </div>
+
+  <!-- Sticky Category Tabs -->
+  <div class="sticky top-[72px] z-30 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 mb-16 transition-all">
+    <div class="container mx-auto px-8">
+      <div class="flex items-center gap-3">
+        <!-- Scroll Arrows -->
+        <button (click)="scrollCategories('right')"
+                class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+          <span class="material-symbols-outlined text-lg">chevron_right</span>
+        </button>
+        <!-- Slider -->
+        <div class="relative flex-1 min-w-0">
+          <div class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none"></div>
+          <div class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none"></div>
+          <div #categorySlider
+               class="flex gap-2 overflow-x-auto py-3 scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <button
+              (click)="filterByCategory(null)"
+              class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold transition-all duration-300 rounded-lg"
+              [class]="selectedCategoryId() === null
+                ? 'text-primary bg-primary/8'
+                : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">grid_view</span>
+                الكل
+              </span>
+              @if (selectedCategoryId() === null) {
+                <span class="absolute bottom-0 left-2 right-2 h-[3px] bg-primary rounded-full"></span>
+              }
+            </button>
+            @for (category of categories(); track category.id) {
+              <button
+                (click)="filterByCategory(category.id)"
+                class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold transition-all duration-300 rounded-lg"
+                [class]="selectedCategoryId() === category.id
+                  ? 'text-primary bg-primary/8'
+                  : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'">
+                {{ category.name }}
+                @if (selectedCategoryId() === category.id) {
+                  <span class="absolute bottom-0 left-2 right-2 h-[3px] bg-primary rounded-full"></span>
+                }
+              </button>
+            }
+          </div>
+        </div>
+        <!-- Scroll Arrows -->
+        <button (click)="scrollCategories('left')"
+                class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+          <span class="material-symbols-outlined text-lg">chevron_left</span>
         </button>
       </div>
     </div>
+  </div>
 
-    <!-- Category Filters -->
-    <div class="flex flex-wrap justify-center gap-4 mb-16">
-      <button
-        (click)="filterByCategory(null)"
-        class="px-6 py-2 rounded-full font-label text-sm font-bold transition-all"
-        [class]="selectedCategoryId() === null ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-bright'">
-        الكل
-      </button>
-      @for (category of categories(); track category.id) {
-        <button
-          (click)="filterByCategory(category.id)"
-          class="px-6 py-2 rounded-full font-label text-sm font-bold transition-all"
-          [class]="selectedCategoryId() === category.id ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-bright'">
-          {{ category.name }}
-        </button>
-      }
-    </div>
-
+  <div class="container mx-auto px-8">
     <!-- Loading State -->
     @if (isLoading()) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         @for (i of [1, 2, 3, 4, 5, 6]; track i) {
           <div class="animate-pulse">
-            <div class="bg-surface-container-low rounded-xl aspect-[4/3] mb-6"></div>
+            <div class="bg-surface-container-low rounded-xl aspect-4/3 mb-6"></div>
             <div class="bg-surface-container-low h-6 rounded w-3/4 mb-3"></div>
             <div class="bg-surface-container-low h-4 rounded w-1/2"></div>
           </div>
@@ -60,7 +93,7 @@
         @for (article of articles(); track article.id) {
           <article class="group">
             <a [routerLink]="['/articles', article.id]" class="block">
-              <div class="relative overflow-hidden rounded-xl aspect-[4/3] mb-6 shadow-[0_8px_32px_rgba(6,27,14,0.04)] group-hover:shadow-[0_16px_48px_rgba(115,92,0,0.1)] transition-all">
+              <div class="relative overflow-hidden rounded-xl aspect-4/3 mb-6 shadow-[0_8px_32px_rgba(6,27,14,0.04)] group-hover:shadow-[0_16px_48px_rgba(115,92,0,0.1)] transition-all">
                 <img loading="lazy"
                      [alt]="article.title"
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -92,8 +125,9 @@
 
       @if (articles().length === 0) {
         <div class="text-center py-20">
-          <span class="material-symbols-outlined text-6xl text-on-surface-variant/30 mb-4">search_off</span>
-          <p class="text-xl text-on-surface-variant">لا توجد مقالات في هذا التصنيف حالياً.</p>
+          <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6 block">search_off</span>
+          <h3 class="text-2xl font-headline font-bold text-primary mb-3">لا توجد مقالات</h3>
+          <p class="text-lg text-on-surface-variant">لا توجد مقالات في هذا التصنيف حالياً. جرّب تصنيفاً آخر.</p>
         </div>
       }
     }
