@@ -74,10 +74,10 @@
               formControlName="password"
               [ngClass]="{'ring-2 ring-error/40': passwordControl?.invalid && passwordControl?.touched}"
               class="w-full pr-12 pl-10 py-3.5 bg-surface-container border-none focus:ring-2 focus:ring-secondary/20 rounded-lg text-primary placeholder-outline transition-all"
-              id="login-password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'" />
-            <span (click)="showPassword = !showPassword" [class.text-secondary]="showPassword"
+              id="login-password" placeholder="••••••••" [type]="showPassword() ? 'text' : 'password'" />
+            <span (click)="showPassword.set(!showPassword())" [class.text-secondary]="showPassword()"
               class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
-              {{ showPassword ? 'visibility_off' : 'visibility' }}
+              {{ showPassword() ? 'visibility_off' : 'visibility' }}
             </span>
           </div>
           @if (passwordControl?.invalid && passwordControl?.touched) {

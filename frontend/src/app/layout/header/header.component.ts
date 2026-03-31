@@ -1,22 +1,61 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { ArticleService } from '../../core/services/article.service';
+import { Article } from '../../core/models/article.model';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FormsModule],
+  imports: [RouterLink, RouterLinkActive, FormsModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
-  mobileMenuOpen = false;
-  searchOpen = false;
-  searchQuery = '';
+export class HeaderComponent implements OnDestroy {
+  mobileMenuOpen = signal(false);
+  searchOpen = signal(false);
+  searchQuery = signal('');
+  searchResults = signal<Article[]>([]);
+  isSearching = signal(false);
+  showResults = signal(false);
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private articleService = inject(ArticleService);
+
+  private searchSubject = new Subject<string>();
+  private searchSub: Subscription;
+
+  constructor() {
+    this.searchSub = this.searchSubject.pipe(
+      debounceTime(350),
+      distinctUntilChanged(),
+      switchMap(query => {
+        if (!query.trim()) {
+          this.isSearching.set(false);
+          this.showResults.set(false);
+          return of([]);
+        }
+        this.isSearching.set(true);
+        this.showResults.set(true);
+        return this.articleService.searchArticles(query).pipe(
+          catchError(() => of([]))
+        );
+      })
+    ).subscribe(results => {
+      this.searchResults.set(results.slice(0, 5)); // Limit to top 5 results for dropdown
+      this.isSearching.set(false);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.searchSub?.unsubscribe();
+  }
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
@@ -26,27 +65,50 @@ export class HeaderComponent {
     return this.authService.getUser();
   }
 
-  toggleMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
-    if (this.mobileMenuOpen) this.searchOpen = false;
-  }
-
-  closeMenu(): void {
-    this.mobileMenuOpen = false;
-  }
-
-  toggleSearch(): void {
-    this.searchOpen = !this.searchOpen;
-    if (this.searchOpen) this.mobileMenuOpen = false;
+  onSearchInput(): void {
+    this.searchSubject.next(this.searchQuery());
   }
 
   onSearch(): void {
-    const query = this.searchQuery.trim();
+    this.viewAllResults();
+  }
+
+  toggleMenu(): void {
+    this.mobileMenuOpen.set(!this.mobileMenuOpen());
+    if (this.mobileMenuOpen()) this.closeSearch();
+  }
+
+  closeMenu(): void {
+    this.mobileMenuOpen.set(false);
+  }
+
+  toggleSearch(): void {
+    this.searchOpen.set(!this.searchOpen());
+    if (this.searchOpen()) {
+      this.mobileMenuOpen.set(false);
+      setTimeout(() => document.getElementById('navbar-search-input')?.focus(), 100);
+    } else {
+      this.closeSearch();
+    }
+  }
+
+  closeSearch(): void {
+    this.searchOpen.set(false);
+    this.showResults.set(false);
+    this.searchResults.set([]);
+    this.searchQuery.set('');
+  }
+
+  goToArticle(id: number): void {
+    this.closeSearch();
+    this.router.navigate(['/articles', id]);
+  }
+
+  viewAllResults(): void {
+    const query = this.searchQuery().trim();
     if (!query) return;
-    this.searchOpen = false;
-    this.mobileMenuOpen = false;
-    this.router.navigate(['/articles'], { queryParams: { search: query } });
-    this.searchQuery = '';
+    this.closeSearch();
+    this.router.navigate(['/search'], { queryParams: { q: query } });
   }
 
   logout(): void {

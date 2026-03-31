@@ -41,7 +41,7 @@
 
       <!-- Contact Form -->
       <div class="lg:col-span-2">
-        @if (!submitted) {
+        @if (!submitted()) {
           <form class="bg-surface-container-low p-10 rounded-2xl space-y-6" (submit)="onSubmit($event)">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>

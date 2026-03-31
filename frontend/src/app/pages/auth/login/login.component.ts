@@ -12,7 +12,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class LoginComponent {
 
-  showPassword = false;
+  showPassword = signal(false);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 

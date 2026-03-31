@@ -57,6 +57,11 @@ export const routes: Routes = [
     title: 'اكتب معنا | تاريخ الشعوب'
   },
   {
+    path: 'search',
+    loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent),
+    title: 'نتائج البحث | تاريخ الشعوب'
+  },
+  {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
     title: 'الملف الشخصي | تاريخ الشعوب',

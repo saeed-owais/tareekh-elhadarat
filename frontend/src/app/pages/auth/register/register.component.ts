@@ -12,8 +12,8 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class RegisterComponent {
 
-  showPassword = false;
-  showConfirmPassword = false;
+  showPassword = signal(false);
+  showConfirmPassword = signal(false);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   isSuccess = signal(false);

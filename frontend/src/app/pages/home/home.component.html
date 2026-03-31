@@ -267,9 +267,9 @@
             اشترك الآن
           </button>
         </form>
-        @if (subscriptionMessage) {
-          <p class="mt-4 text-sm" [class]="subscriptionSuccess ? 'text-surface' : 'text-error-container'">
-            {{ subscriptionMessage }}
+        @if (subscriptionMessage()) {
+          <p class="mt-4 text-sm" [class]="subscriptionSuccess() ? 'text-surface' : 'text-error-container'">
+            {{ subscriptionMessage() }}
           </p>
         }
       </div>

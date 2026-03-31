@@ -141,10 +141,10 @@
                 formControlName="password"
                 [ngClass]="{'ring-2 ring-error/40': f.password.invalid && f.password.touched}"
                 class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 pl-10 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
-                id="reg-password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'" />
-              <span (click)="showPassword = !showPassword" [class.text-secondary]="showPassword"
+                [type]="showPassword() ? 'text' : 'password'" />
+              <span (click)="showPassword.set(!showPassword())" [class.text-secondary]="showPassword()"
                 class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
-                {{ showPassword ? 'visibility_off' : 'visibility' }}
+                {{ showPassword() ? 'visibility_off' : 'visibility' }}
               </span>
             </div>
             @if (f.password.invalid && f.password.touched) {
@@ -168,11 +168,10 @@
                 formControlName="confirmPassword"
                 [ngClass]="{'ring-2 ring-error/40': f.confirmPassword.invalid && f.confirmPassword.touched}"
                 class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 pl-10 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
-                id="confirm_password" placeholder="••••••••"
-                [type]="showConfirmPassword ? 'text' : 'password'" />
-              <span (click)="showConfirmPassword = !showConfirmPassword" [class.text-secondary]="showConfirmPassword"
+                [type]="showConfirmPassword() ? 'text' : 'password'" />
+              <span (click)="showConfirmPassword.set(!showConfirmPassword())" [class.text-secondary]="showConfirmPassword()"
                 class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
-                {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+                {{ showConfirmPassword() ? 'visibility_off' : 'visibility' }}
               </span>
             </div>
             @if (f.confirmPassword.invalid && f.confirmPassword.touched) {

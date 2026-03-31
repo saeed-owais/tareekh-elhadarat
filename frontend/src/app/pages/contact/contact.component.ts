@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-contact',
@@ -8,10 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './contact.component.css'
 })
 export class ContactComponent {
-  submitted = false;
+  submitted = signal(false);
 
   onSubmit(event: Event): void {
     event.preventDefault();
-    this.submitted = true;
+    this.submitted.set(true);
   }
 }

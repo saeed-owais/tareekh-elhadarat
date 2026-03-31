@@ -1,7 +1,7 @@
 <!-- Header & TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
   <nav dir="rtl" aria-label="التنقل الرئيسي"
-    class="flex flex-row-reverse justify-between items-center w-full px-8 max-w-[1440px] mx-auto h-[72px]">
+    class="flex flex-row-reverse justify-between items-center w-full px-8 max-w-[1440px] mx-auto ">
 
     <!-- Left Side: Search + Auth + Mobile Menu -->
     <div class="flex items-center gap-3">
@@ -9,15 +9,15 @@
       <button aria-label="البحث"
               (click)="toggleSearch()"
               class="p-2.5 rounded-xl hover:bg-primary/5 transition-all duration-300"
-              [class]="searchOpen ? 'bg-primary/10 text-primary' : 'text-on-surface-variant'">
-        <span class="material-symbols-outlined text-xl">{{ searchOpen ? 'close' : 'search' }}</span>
+              [class]="searchOpen() ? 'bg-primary/10 text-primary' : 'text-on-surface-variant'">
+        <span class="material-symbols-outlined text-xl">{{ searchOpen() ? 'close' : 'search' }}</span>
       </button>
 
       <!-- Hamburger Menu (Mobile Only) -->
       <button aria-label="القائمة الرئيسية" class="md:hidden p-2.5 rounded-xl hover:bg-primary/5 transition"
         (click)="toggleMenu()">
         <span class="material-symbols-outlined text-on-surface">
-          {{ mobileMenuOpen ? 'close' : 'menu' }}
+          {{ mobileMenuOpen() ? 'close' : 'menu' }}
         </span>
       </button>
 
@@ -80,21 +80,23 @@
     </div>
 
     <!-- Logo -->
-    <a routerLink="/" class="flex-shrink-0 font-bold text-on-surface tracking-wide font-headline">
-      <img class="w-20 sm:w-20 md:w-24 lg:w-24 xl:w-24" src="./logo3.png" alt="">
+    <a routerLink="/" class="w-20 sm:w-20 md:w-24 lg:w-24 xl:w-24 flex-shrink-0 font-bold text-on-surface tracking-wide font-headline">
+      <img class="w-full h-full object-contain" src="./logo3.png" alt="">
     </a>
   </nav>
 
   <!-- Search Overlay -->
-  @if (searchOpen) {
-  <div class="border-t border-outline-variant/10 bg-surface/95 backdrop-blur-xl animate-fade-in">
+  @if (searchOpen()) {
+  <div class="border-t border-outline-variant/10 bg-surface/95 backdrop-blur-xl animate-fade-in absolute w-full top-[72px] z-40 shadow-xl">
     <div class="container mx-auto px-8 py-5 max-w-3xl" dir="rtl">
-      <form (ngSubmit)="onSearch()" class="relative">
+      <form (ngSubmit)="onSearch()" class="relative z-50">
         <input
+          id="navbar-search-input"
           type="text"
           [(ngModel)]="searchQuery"
+          (input)="onSearchInput()"
           name="search"
-          autofocus
+          autocomplete="off"
           class="w-full px-6 py-4 pr-14 rounded-2xl bg-surface-container-low border border-outline-variant/20 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all text-on-surface font-body text-lg placeholder:text-on-surface-variant/50"
           placeholder="ابحث عن مقال، موضوع، أو كاتب...">
         <button type="submit"
@@ -103,13 +105,55 @@
         </button>
         <span class="absolute right-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40 text-2xl">search</span>
       </form>
-      <p class="text-xs text-on-surface-variant/50 mt-3 text-center font-label">اضغط Enter للبحث في المقالات</p>
+
+      <!-- Live Search Results Dropdown -->
+      @if (showResults()) {
+        <div class="mt-4 bg-surface rounded-2xl border border-outline-variant/20 shadow-lg overflow-hidden animate-fade-in-up">
+          
+          @if (isSearching()) {
+            <div class="p-6 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined animate-spin text-3xl mb-2">progress_activity</span>
+              <p class="font-body text-sm">جاري البحث...</p>
+            </div>
+          } @else if (searchResults().length > 0) {
+            <div class="flex flex-col">
+              @for (article of searchResults(); track article.id) {
+                <button (click)="goToArticle(article.id)"
+                        class="flex gap-4 p-4 hover:bg-surface-container-low transition-colors text-right border-b border-outline-variant/10 last:border-0 group">
+                  <img [src]="article.imageUrl" [alt]="article.title" class="w-16 h-16 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform">
+                  <div class="flex flex-col justify-center">
+                    <h4 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors line-clamp-1">{{ article.title }}</h4>
+                    <div class="flex items-center gap-3 mt-1 text-xs text-on-surface-variant font-label">
+                      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">category</span>{{ article.category }}</span>
+                      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span>{{ article.authorName }}</span>
+                    </div>
+                  </div>
+                </button>
+              }
+              
+              <button (click)="viewAllResults()" class="p-4 text-center text-primary font-bold hover:bg-primary/5 transition-colors text-sm font-label border-t border-outline-variant/20 bg-surface-container-lowest">
+                عرض كل نتائج البحث ({{ searchQuery() }})
+                <span class="material-symbols-outlined text-sm align-middle mr-1">arrow_forward</span>
+              </button>
+            </div>
+          } @else if (searchQuery().trim() !== '') {
+            <div class="p-8 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-4xl mb-3 opacity-50">search_off</span>
+              <p class="font-body">لم نتمكن من العثور على نتائج تطابق بحثك.</p>
+            </div>
+          }
+        </div>
+      }
+      
+      @if (!showResults()) {
+        <p class="text-xs text-on-surface-variant/50 mt-3 text-center font-label">اكتب للبحث في المقالات والتصنيفات</p>
+      }
     </div>
   </div>
   }
 
   <!-- Mobile Menu -->
-  @if (mobileMenuOpen) {
+  @if (mobileMenuOpen()) {
   <div class="md:hidden bg-surface/95 backdrop-blur-md border-t border-outline-variant/20 animate-fade-in-up">
     <div class="flex flex-col gap-4 px-8 py-6" dir="rtl">
       <!-- Mobile Search -->

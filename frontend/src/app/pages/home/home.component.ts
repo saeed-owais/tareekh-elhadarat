@@ -36,9 +36,9 @@ export class HomeComponent implements OnInit {
   // Arabic number labels for popular posts
   arabicNumbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
 
-  subscriptionEmail = '';
-  subscriptionMessage = '';
-  subscriptionSuccess = false;
+  subscriptionEmail = signal('');
+  subscriptionMessage = signal('');
+  subscriptionSuccess = signal(false);
 
   ngOnInit(): void {
     this.loadCategories();
@@ -102,10 +102,13 @@ export class HomeComponent implements OnInit {
     const emailInput = form.querySelector('input[type="email"]') as HTMLInputElement;
     if (emailInput) {
       const result = this.subscriberService.subscribe(emailInput.value);
-      this.subscriptionMessage = result.message;
-      this.subscriptionSuccess = result.success;
+      this.subscriptionMessage.set(result.message);
+      this.subscriptionSuccess.set(result.success);
       if (result.success) {
         emailInput.value = '';
+        this.subscriptionEmail.set('');
+      } else {
+        this.subscriptionEmail.set(emailInput.value);
       }
     }
   }

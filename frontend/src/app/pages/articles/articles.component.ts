@@ -23,7 +23,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   categories = signal<Category[]>([]);
   selectedCategoryId = signal<number | null>(null);
   isLoading = signal(true);
-  activeSearchQuery = signal('');
 
   @ViewChild('categorySlider') categorySlider!: ElementRef<HTMLDivElement>;
 
@@ -36,17 +35,13 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 
         // Subscribe to query param changes (fires on every navigation, even same route)
         this.queryParamsSub = this.route.queryParams.subscribe(params => {
-          const search = params['search'];
           const category = params['category'];
 
-          if (search) {
-            this.searchArticles(search);
-          } else if (category) {
+          if (category) {
             this.filterByCategory(Number(category));
           } else {
             // Only reload all if we're not already showing all
-            if (this.activeSearchQuery() || this.selectedCategoryId() !== null || this.articles().length === 0) {
-              this.activeSearchQuery.set('');
+            if (this.selectedCategoryId() !== null || this.articles().length === 0) {
               this.selectedCategoryId.set(null);
               this.isLoading.set(true);
               this.loadAllArticles();
@@ -87,7 +82,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 
   filterByCategory(categoryId: number | null): void {
     this.selectedCategoryId.set(categoryId);
-    this.activeSearchQuery.set('');
     this.isLoading.set(true);
 
     if (categoryId === null) {
@@ -104,28 +98,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  private searchArticles(query: string): void {
-    this.activeSearchQuery.set(query);
-    this.selectedCategoryId.set(null);
-    this.isLoading.set(true);
-
-    this.articleService.searchArticles(query).subscribe({
-      next: (articles) => {
-        this.articles.set(articles);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.articles.set([]);
-        this.isLoading.set(false);
-      }
-    });
-  }
-
-  clearSearch(): void {
-    this.activeSearchQuery.set('');
-    this.router.navigate(['/articles']);
   }
 
   scrollCategories(direction: 'left' | 'right'): void {
