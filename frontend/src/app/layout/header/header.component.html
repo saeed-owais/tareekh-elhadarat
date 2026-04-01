@@ -6,10 +6,9 @@
     <!-- Left Side: Search + Auth + Mobile Menu -->
     <div class="flex items-center gap-3">
       <!-- Search Toggle Button -->
-      <button aria-label="البحث"
-              (click)="toggleSearch()"
-              class="p-2.5 rounded-xl hover:bg-primary/5 transition-all duration-300"
-              [class]="searchOpen() ? 'bg-primary/10 text-primary' : 'text-on-surface-variant'">
+      <button aria-label="البحث" (click)="toggleSearch()"
+        class="search-toggle-btn p-2.5 rounded-xl hover:bg-primary/5 transition-all duration-300"
+        [class]="searchOpen() ? 'bg-primary/10 text-primary' : 'text-on-surface-variant'">
         <span class="material-symbols-outlined text-xl">{{ searchOpen() ? 'close' : 'search' }}</span>
       </button>
 
@@ -80,75 +79,82 @@
     </div>
 
     <!-- Logo -->
-    <a routerLink="/" class="w-20 sm:w-20 md:w-24 lg:w-24 xl:w-24 flex-shrink-0 font-bold text-on-surface tracking-wide font-headline">
+    <a routerLink="/"
+      class="w-20 sm:w-20 md:w-24 lg:w-24 xl:w-24 shrink-0 font-bold text-on-surface tracking-wide font-headline">
       <img class="w-full h-full object-contain" src="./logo3.png" alt="">
     </a>
   </nav>
 
   <!-- Search Overlay -->
   @if (searchOpen()) {
-  <div class="border-t border-outline-variant/10 bg-surface/95 backdrop-blur-xl animate-fade-in absolute w-full top-[72px] z-40 shadow-xl">
-    <div class="container mx-auto px-8 py-5 max-w-3xl" dir="rtl">
-      <form (ngSubmit)="onSearch()" class="relative z-50">
-        <input
-          id="navbar-search-input"
-          type="text"
-          [(ngModel)]="searchQuery"
-          (input)="onSearchInput()"
-          name="search"
-          autocomplete="off"
-          class="w-full px-6 py-4 pr-14 rounded-2xl bg-surface-container-low border border-outline-variant/20 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all text-on-surface font-body text-lg placeholder:text-on-surface-variant/50"
-          placeholder="ابحث عن مقال، موضوع، أو كاتب...">
+  <div
+    class="search-overlay-container absolute left-4 md:left-8 top-[72px] z-40 w-[calc(100%-2rem)] sm:w-[450px] bg-[#1a1e29] text-gray-200 rounded-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-[#2a2e39] animate-fade-in origin-top-left overflow-hidden">
+    <div class="flex flex-col">
+
+      <!-- Search Input Top Bar -->
+      <form (ngSubmit)="onSearch()" class="flex items-center px-2 py-2 border-b border-[#2a2e39] bg-[#1a1e29]">
+
         <button type="submit"
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary hover:bg-primary/90 transition-colors">
-          <span class="material-symbols-outlined text-xl">search</span>
+          class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">search</span>
         </button>
-        <span class="absolute right-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40 text-2xl">search</span>
+
+        <input id="navbar-search-input" type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" name="search"
+          autocomplete="off"
+          class="flex-1 w-full bg-transparent px-3 py-2 text-gray-200 font-body text-[15px] placeholder:text-gray-500 focus:outline-none border-none ring-0 focus:ring-0"
+          placeholder="ابحث في المنصة...">
+
+        <button type="button" (click)="viewAllResults()"
+          class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        </button>
       </form>
 
       <!-- Live Search Results Dropdown -->
-      @if (showResults()) {
-        <div class="mt-4 bg-surface rounded-2xl border border-outline-variant/20 shadow-lg overflow-hidden animate-fade-in-up">
-          
-          @if (isSearching()) {
-            <div class="p-6 text-center text-on-surface-variant">
-              <span class="material-symbols-outlined animate-spin text-3xl mb-2">progress_activity</span>
-              <p class="font-body text-sm">جاري البحث...</p>
-            </div>
-          } @else if (searchResults().length > 0) {
-            <div class="flex flex-col">
-              @for (article of searchResults(); track article.id) {
-                <button (click)="goToArticle(article.id)"
-                        class="flex gap-4 p-4 hover:bg-surface-container-low transition-colors text-right border-b border-outline-variant/10 last:border-0 group">
-                  <img [src]="article.imageUrl" [alt]="article.title" class="w-16 h-16 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform">
-                  <div class="flex flex-col justify-center">
-                    <h4 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors line-clamp-1">{{ article.title }}</h4>
-                    <div class="flex items-center gap-3 mt-1 text-xs text-on-surface-variant font-label">
-                      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">category</span>{{ article.category }}</span>
-                      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span>{{ article.authorName }}</span>
-                    </div>
-                  </div>
-                </button>
-              }
-              
-              <button (click)="viewAllResults()" class="p-4 text-center text-primary font-bold hover:bg-primary/5 transition-colors text-sm font-label border-t border-outline-variant/20 bg-surface-container-lowest">
-                عرض كل نتائج البحث ({{ searchQuery() }})
-                <span class="material-symbols-outlined text-sm align-middle mr-1">arrow_forward</span>
-              </button>
-            </div>
-          } @else if (searchQuery().trim() !== '') {
-            <div class="p-8 text-center text-on-surface-variant">
-              <span class="material-symbols-outlined text-4xl mb-3 opacity-50">search_off</span>
-              <p class="font-body">لم نتمكن من العثور على نتائج تطابق بحثك.</p>
-            </div>
-          }
+      <div dir="ltr" class="flex flex-col max-h-[75vh] overflow-y-auto bg-[#1a1e29]">
+        @if (isSearching()) {
+        <div class="p-8 text-center text-gray-400">
+          <span class="material-symbols-outlined animate-spin text-3xl mb-2">progress_activity</span>
+          <p class="font-body text-sm">جاري البحث...</p>
         </div>
-      }
-      
-      @if (!showResults()) {
-        <p class="text-xs text-on-surface-variant/50 mt-3 text-center font-label">اكتب للبحث في المقالات والتصنيفات</p>
-      }
+        } @else if (showResults() && searchResults().length > 0) {
+        <div class="flex flex-col">
+          @for (article of searchResults(); track article.id) {
+          <button (click)="goToArticle(article.id)"
+            class="flex gap-4 p-4 hover:bg-white/5 transition-colors text-right border-b border-[#2a2e39] last:border-0 group items-center">
+
+            <div class="flex flex-col justify-center flex-1">
+              <h4
+                class="font-headline font-bold text-[15px] text-gray-100 group-hover:text-[#cca35e] transition-colors leading-relaxed line-clamp-2">
+                {{ article.title }}</h4>
+              <div
+                class="mt-2 text-[13px] text-gray-500 font-body text-left w-full ml-auto flex items-center justify-end gap-3">
+                <span class="flex items-center gap-1"><span
+                    class="material-symbols-outlined text-[14px]">category</span>{{ article.category }}</span>
+                <span class="flex items-center gap-1"><span
+                    class="material-symbols-outlined text-[14px]">person</span>{{ article.authorName }}</span>
+              </div>
+            </div>
+
+            <img [src]="article.imageUrl" [alt]="article.title"
+              class="w-[105px] h-[65px] rounded-lg object-cover shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
+          </button>
+          }
+
+          <button (click)="viewAllResults()"
+            class="p-4 text-center text-[#cca35e] font-bold hover:bg-white/5 transition-colors text-sm font-label bg-[#1a1e29] border-t border-[#2a2e39]">
+            عرض كل نتائج البحث...
+          </button>
+        </div>
+        } @else if (showResults() && searchQuery().trim() !== '') {
+        <div class="p-8 text-center text-gray-400">
+          <span class="material-symbols-outlined text-4xl mb-3 opacity-50">search_off</span>
+          <p class="font-body">لم نتمكن من العثور على نتائج تطابق بحثك.</p>
+        </div>
+        }
+      </div>
     </div>
+
   </div>
   }
 
@@ -158,17 +164,15 @@
     <div class="flex flex-col gap-4 px-8 py-6" dir="rtl">
       <!-- Mobile Search -->
       <form (ngSubmit)="onSearch()" class="relative mb-2">
-        <input
-          type="text"
-          [(ngModel)]="searchQuery"
-          name="mobileSearch"
+        <input type="text" [(ngModel)]="searchQuery" name="mobileSearch"
           class="w-full px-5 py-3 pr-12 rounded-xl bg-surface-container-low border border-outline-variant/20 focus:outline-none focus:border-primary transition-all text-on-surface font-body"
           placeholder="ابحث عن مقال...">
         <button type="submit"
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary">
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary">
           <span class="material-symbols-outlined text-lg">search</span>
         </button>
-        <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40">search</span>
+        <span
+          class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40">search</span>
       </form>
 
       <a routerLink="/" (click)="closeMenu()"

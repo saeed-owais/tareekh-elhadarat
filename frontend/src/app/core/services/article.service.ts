@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { TokenService } from './token.service';
 import { Article } from '../models/article.model';
 import { environment } from '../../../environments/environment';
@@ -20,6 +20,7 @@ export class ArticleService {
     // ================= GET SPECIAL ARTICLE (HERO) =================
     getSpecialArticle(): Observable<Article> {
         return this.http.get<Article>(`${this.apiUrl}/Get-Special-Article`).pipe(
+            map(article => this.cleanArticle(article)),
             catchError(err => {
                 return throwError(() => 'فشل تحميل المقال المميز');
             })
@@ -29,6 +30,7 @@ export class ArticleService {
     // ================= GET NEWEST ARTICLES =================
     getNewestArticles(): Observable<Article[]> {
         return this.http.get<Article[]>(`${this.apiUrl}/Get-Newest-Article`).pipe(
+            map(articles => this.cleanArticles(articles)),
             catchError(err => {
                 return throwError(() => 'فشل تحميل أحدث المقالات');
             })
@@ -38,6 +40,7 @@ export class ArticleService {
     // ================= GET MOST VIEWED ARTICLES =================
     getMostViewedArticles(): Observable<Article[]> {
         return this.http.get<Article[]>(`${this.apiUrl}/Get-Most-Viewed-Article`).pipe(
+            map(articles => this.cleanArticles(articles)),
             catchError(err => {
                 return throwError(() => 'فشل تحميل المقالات الأكثر قراءة');
             })
@@ -47,6 +50,7 @@ export class ArticleService {
     // ================= GET ARTICLES BY CATEGORY =================
     getArticlesByCategory(categoryId: number): Observable<Article[]> {
         return this.http.get<Article[]>(`${this.apiUrl}/Get-Articles/${categoryId}`).pipe(
+            map(articles => this.cleanArticles(articles)),
             catchError(err => {
                 return throwError(() => 'فشل تحميل المقالات');
             })
@@ -58,6 +62,7 @@ export class ArticleService {
         return this.http.get<Article[]>(`${this.apiUrl}/Search-Articles`, {
             params: { title }
         }).pipe(
+            map(articles => this.cleanArticles(articles)),
             catchError(err => {
                 return throwError(() => 'فشل البحث عن المقالات');
             })
@@ -67,6 +72,7 @@ export class ArticleService {
     // ================= GET SINGLE ARTICLE =================
     getArticleById(id: number): Observable<Article> {
         return this.http.get<Article>(`${this.apiUrl}/Get-Article/${id}`).pipe(
+            map(article => this.cleanArticle(article)),
             catchError(err => {
                 return throwError(() => 'فشل تحميل المقال');
             })
@@ -112,5 +118,22 @@ export class ArticleService {
                 return throwError(() => message);
             })
         );
+    }
+    // ================= HELPER METHODS (TEMPORARY FIX FOR IMAGE URLS) =================
+    private cleanArticle(article: Article): Article {
+        if (article && typeof article.imageUrl === 'string') {
+            if (article.imageUrl.includes('/https://')) {
+                const parts = article.imageUrl.split('/https://');
+                article.imageUrl = 'https://' + parts[1];
+            } else if (article.imageUrl.includes('/http://')) {
+                const parts = article.imageUrl.split('/http://');
+                article.imageUrl = 'http://' + parts[1];
+            }
+        }
+        return article;
+    }
+
+    private cleanArticles(articles: Article[]): Article[] {
+        return articles.map(a => this.cleanArticle(a));
     }
 }

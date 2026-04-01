@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal, HostListener, ElementRef } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -23,6 +23,8 @@ export class HeaderComponent implements OnDestroy {
   searchResults = signal<Article[]>([]);
   isSearching = signal(false);
   showResults = signal(false);
+
+  private eRef = inject(ElementRef);
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -106,12 +108,28 @@ export class HeaderComponent implements OnDestroy {
 
   viewAllResults(): void {
     const query = this.searchQuery().trim();
-    if (!query) return;
     this.closeSearch();
-    this.router.navigate(['/search'], { queryParams: { q: query } });
+    if (query) {
+      this.router.navigate(['/search'], { queryParams: { q: query } });
+    } else {
+      this.router.navigate(['/search']);
+    }
   }
 
   logout(): void {
     this.authService.logout();
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    if (this.searchOpen()) {
+      const targetElement = event.target as HTMLElement;
+      const isInsideSearchOverlay = targetElement.closest('.search-overlay-container');
+      const isSearchToggleBtn = targetElement.closest('.search-toggle-btn');
+      
+      if (!isInsideSearchOverlay && !isSearchToggleBtn) {
+        this.closeSearch();
+      }
+    }
   }
 }
