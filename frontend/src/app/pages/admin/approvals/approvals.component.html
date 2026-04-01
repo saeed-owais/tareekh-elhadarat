@@ -1,0 +1,292 @@
+  <!-- Main Content Area -->
+  <main class="flex-1 lg:mr-64 min-w-0">
+    <!-- Top App Bar -->
+    <header
+      class="sticky top-0 z-40 bg-[#FBFBE2] dark:bg-[#061B0E] text-[#061B0E] shadow-[0_8px_32px_rgba(6,27,14,0.06)] px-8 py-4 flex flex-row-reverse justify-between items-center w-full font-['Newsreader'] antialiased">
+      <div class="flex items-center gap-6 flex-row-reverse">
+        <div class="relative group">
+          <input
+            class="bg-surface-container-low border-none rounded-full px-12 py-2 text-sm w-64 focus:ring-2 focus:ring-secondary/30 transition-all"
+            placeholder="البحث في الطلبات..." type="text" />
+          <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50"
+            data-icon="search">search</span>
+        </div>
+        <div class="flex items-center gap-4 flex-row-reverse">
+          <button class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors">
+            <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+            <span class="absolute top-2 left-2 w-2 h-2 bg-error rounded-full"></span>
+          </button>
+          <div class="flex items-center gap-3 border-r pr-4 border-outline-variant/20 flex-row-reverse">
+            <img alt="Admin Avatar" class="w-8 h-8 rounded-full object-cover"
+              data-alt="professional portrait of a curator in a well-lit modern office space, soft natural lighting"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDmFr8LxCpN516vqXNR3fUPfkx_AhHMXMMAMfm4mEz6gY9ecckDdmWxvMwos_eLxhocQniXXEGG18glAR6AMvE_4fM5R3veduL9mvTLRqgg7OCzmkgUCZ6Ow_jFN9H69ohdbVlS4rX8i4YXtHFaZV5ih8N0d6yXbA-Fy27Sjy-Av688YlhyTM5YtPtbOhSwCXBeRrWluEe4NXbjjNsCqZaWYaPyPDfHkE9ni8Yl0u0U7li36qaN0cBQBSW2ngblLuHQjLope_2rcF1" />
+            <span class="text-sm font-bold">أدمن المشرف</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-2xl font-bold text-[#061B0E] dark:text-[#FBFBE2]">مركز الموافقات</div>
+    </header>
+    <div class="p-8 max-w-7xl mx-auto">
+      <!-- Summary Bento Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div
+          class="bg-surface-container-lowest p-6 rounded-xl border-r-4 border-secondary transition-all hover:shadow-[0_8px_32px_rgba(6,27,14,0.06)]">
+          <div class="flex justify-between items-start flex-row-reverse">
+            <span class="material-symbols-outlined text-secondary bg-secondary/10 p-3 rounded-lg"
+              data-icon="article">article</span>
+            <div class="text-right">
+              <p class="text-on-surface/60 text-sm">مقالات معلقة</p>
+              <h3 class="text-3xl font-bold mt-1">12</h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-surface-container-lowest p-6 rounded-xl border-r-4 border-primary-container transition-all hover:shadow-[0_8px_32px_rgba(6,27,14,0.06)]">
+          <div class="flex justify-between items-start flex-row-reverse">
+            <span class="material-symbols-outlined text-primary-container bg-primary-container/10 p-3 rounded-lg"
+              data-icon="library_books">library_books</span>
+            <div class="text-right">
+              <p class="text-on-surface/60 text-sm">كتب قيد المراجعة</p>
+              <h3 class="text-3xl font-bold mt-1">5</h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-surface-container-lowest p-6 rounded-xl border-r-4 border-on-tertiary-container transition-all hover:shadow-[0_8px_32px_rgba(6,27,14,0.06)]">
+          <div class="flex justify-between items-start flex-row-reverse">
+            <span class="material-symbols-outlined text-on-tertiary-container bg-tertiary-fixed/30 p-3 rounded-lg"
+              data-icon="forum">forum</span>
+            <div class="text-right">
+              <p class="text-on-surface/60 text-sm">تعليقات بانتظار الرد</p>
+              <h3 class="text-3xl font-bold mt-1">28</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Tabs Section -->
+      <div class="mb-8">
+        <div class="flex gap-8 border-b border-outline-variant/30 flex-row-reverse">
+          <button class="pb-4 text-secondary font-bold border-b-2 border-secondary flex items-center gap-2">
+            <span class="material-symbols-outlined" data-icon="article">article</span>
+            المقالات المعلقة
+          </button>
+          <button class="pb-4 text-on-surface/60 hover:text-on-surface flex items-center gap-2 transition-colors">
+            <span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+            الكتب المعلقة
+          </button>
+          <button class="pb-4 text-on-surface/60 hover:text-on-surface flex items-center gap-2 transition-colors">
+            <span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+            التعليقات المعلقة
+          </button>
+        </div>
+      </div>
+      <!-- Table Section: Pending Articles -->
+      <div class="bg-surface-container-low rounded-2xl overflow-hidden">
+        <div class="p-6 flex justify-between items-center flex-row-reverse bg-surface-container">
+          <h3 class="text-lg font-bold">طلبات نشر المقالات</h3>
+          <div class="flex gap-2">
+            <button
+              class="text-xs bg-surface-container-lowest px-3 py-1.5 rounded border border-outline-variant/20 hover:bg-surface-bright transition-colors">تصدير
+              PDF</button>
+            <button
+              class="text-xs bg-surface-container-lowest px-3 py-1.5 rounded border border-outline-variant/20 hover:bg-surface-bright transition-colors">فلترة</button>
+          </div>
+        </div>
+        <table class="w-full text-right border-collapse">
+          <thead>
+            <tr class="text-on-surface/60 text-sm border-b border-outline-variant/10">
+              <th class="px-6 py-4 font-medium">عنوان المقال</th>
+              <th class="px-6 py-4 font-medium">الكاتب</th>
+              <th class="px-6 py-4 font-medium">التاريخ</th>
+              <th class="px-6 py-4 font-medium">التصنيف</th>
+              <th class="px-6 py-4 font-medium text-center">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-outline-variant/10">
+            <!-- Row 1 -->
+            <tr class="hover:bg-surface-container-highest/30 transition-colors group">
+              <td class="px-6 py-5">
+                <div class="font-bold text-primary">تطور العمارة في الأندلس عبر العصور</div>
+                <div class="text-xs text-on-surface/50 mt-1">تاريخ فني، معماري</div>
+              </td>
+              <td class="px-6 py-5 text-sm">د. أحمد المنصور</td>
+              <td class="px-6 py-5 text-sm text-on-surface/60">24 أكتوبر 2023</td>
+              <td class="px-6 py-5">
+                <span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-bold">دراسات
+                  تاريخية</span>
+              </td>
+              <td class="px-6 py-5">
+                <div class="flex justify-center gap-3">
+                  <button class="p-2 hover:bg-primary-container/10 rounded text-primary-container" title="عرض">
+                    <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+                  </button>
+                  <button class="p-2 hover:bg-green-100 rounded text-green-700" title="موافقة">
+                    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                  </button>
+                  <button class="p-2 hover:bg-error/10 rounded text-error" title="رفض">
+                    <span class="material-symbols-outlined" data-icon="cancel">cancel</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 2 -->
+            <tr class="hover:bg-surface-container-highest/30 transition-colors group">
+              <td class="px-6 py-5">
+                <div class="font-bold text-primary">طرق القوافل التجارية في شبه الجزيرة</div>
+                <div class="text-xs text-on-surface/50 mt-1">اقتصاد قديم، تجارة</div>
+              </td>
+              <td class="px-6 py-5 text-sm">سارة الهاشمي</td>
+              <td class="px-6 py-5 text-sm text-on-surface/60">22 أكتوبر 2023</td>
+              <td class="px-6 py-5">
+                <span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-bold">الشرق
+                  القديم</span>
+              </td>
+              <td class="px-6 py-5">
+                <div class="flex justify-center gap-3">
+                  <button class="p-2 hover:bg-primary-container/10 rounded text-primary-container" title="عرض">
+                    <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+                  </button>
+                  <button class="p-2 hover:bg-green-100 rounded text-green-700" title="موافقة">
+                    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                  </button>
+                  <button class="p-2 hover:bg-error/10 rounded text-error" title="رفض">
+                    <span class="material-symbols-outlined" data-icon="cancel">cancel</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 3 -->
+            <tr class="hover:bg-surface-container-highest/30 transition-colors group">
+              <td class="px-6 py-5">
+                <div class="font-bold text-primary">المخطوطات المفقودة في مكتبة بغداد</div>
+                <div class="text-xs text-on-surface/50 mt-1">توثيق، حضارة</div>
+              </td>
+              <td class="px-6 py-5 text-sm">ياسين العبيدي</td>
+              <td class="px-6 py-5 text-sm text-on-surface/60">21 أكتوبر 2023</td>
+              <td class="px-6 py-5">
+                <span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-bold">تراث إسلامي</span>
+              </td>
+              <td class="px-6 py-5">
+                <div class="flex justify-center gap-3">
+                  <button class="p-2 hover:bg-primary-container/10 rounded text-primary-container" title="عرض">
+                    <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+                  </button>
+                  <button class="p-2 hover:bg-green-100 rounded text-green-700" title="موافقة">
+                    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                  </button>
+                  <button class="p-2 hover:bg-error/10 rounded text-error" title="رفض">
+                    <span class="material-symbols-outlined" data-icon="cancel">cancel</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="p-6 bg-surface-container text-sm flex justify-between items-center flex-row-reverse">
+          <span class="text-on-surface/60">عرض 1-3 من أصل 12 مقال</span>
+          <div class="flex gap-2">
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors">
+              <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+            </button>
+            <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary">1</button>
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors">2</button>
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors">
+              <span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Empty State Illustration (Pending Books - Hidden/Mocked for design richness) -->
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Book Section Preview -->
+        <div class="bg-surface-container-lowest p-8 rounded-2xl">
+          <div class="flex justify-between items-center mb-6 flex-row-reverse">
+            <h4 class="font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary" data-icon="menu_book">menu_book</span>
+              الكتب بانتظار المراجعة (5)
+            </h4>
+            <button class="text-secondary text-sm font-bold underline underline-offset-4 decoration-secondary/30">عرض
+              الكل</button>
+          </div>
+          <div class="space-y-4">
+            <div
+              class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low flex-row-reverse border border-outline-variant/5">
+              <div
+                class="w-12 h-16 bg-primary-container rounded flex items-center justify-center text-on-primary text-xs shadow-md">
+                PDF</div>
+              <div class="flex-1 text-right">
+                <p class="font-bold text-sm">رحلة ابن بطوطة: قراءة معاصرة</p>
+                <p class="text-xs text-on-surface/50">المساهم: خالد القحطاني • 12.4 MB</p>
+              </div>
+              <div class="flex gap-1">
+                <button class="w-8 h-8 text-green-600 hover:bg-green-50 rounded"><span
+                    class="material-symbols-outlined text-sm" data-icon="check">check</span></button>
+                <button class="w-8 h-8 text-error hover:bg-error/5 rounded"><span
+                    class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low flex-row-reverse border border-outline-variant/5">
+              <div
+                class="w-12 h-16 bg-primary-container rounded flex items-center justify-center text-on-primary text-xs shadow-md">
+                EPUB</div>
+              <div class="flex-1 text-right">
+                <p class="font-bold text-sm">تاريخ دمشق المنسي</p>
+                <p class="text-xs text-on-surface/50">المساهم: منى السعيد • 8.1 MB</p>
+              </div>
+              <div class="flex gap-1">
+                <button class="w-8 h-8 text-green-600 hover:bg-green-50 rounded"><span
+                    class="material-symbols-outlined text-sm" data-icon="check">check</span></button>
+                <button class="w-8 h-8 text-error hover:bg-error/5 rounded"><span
+                    class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Comment Section Preview -->
+        <div class="bg-surface-container-lowest p-8 rounded-2xl relative overflow-hidden">
+          <div class="absolute -top-10 -left-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl"></div>
+          <div class="flex justify-between items-center mb-6 flex-row-reverse relative z-10">
+            <h4 class="font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary" data-icon="forum">forum</span>
+              أحدث التعليقات
+            </h4>
+            <button class="text-secondary text-sm font-bold underline underline-offset-4 decoration-secondary/30">إدارة
+              التعليقات</button>
+          </div>
+          <div class="space-y-4 relative z-10">
+            <div class="p-4 rounded-xl bg-surface-container-high/50 text-right">
+              <div class="flex justify-between items-start mb-2 flex-row-reverse">
+                <span class="text-xs font-bold text-primary">عمر فاروق</span>
+                <span class="text-[10px] text-on-surface/40">منذ ساعتين</span>
+              </div>
+              <p class="text-xs leading-relaxed text-on-surface/80">"هذا المقال يصحح الكثير من المفاهيم الخاطئة عن
+                العمارة الإسلامية في تلك الحقبة. شكراً للكاتب."</p>
+              <div class="mt-3 flex justify-end gap-3 border-t border-outline-variant/10 pt-2">
+                <button class="text-[10px] text-secondary font-bold">موافقة</button>
+                <button class="text-[10px] text-error font-bold">حذف</button>
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-surface-container-high/50 text-right opacity-60">
+              <div class="flex justify-between items-start mb-2 flex-row-reverse">
+                <span class="text-xs font-bold text-primary">فاطمة علي</span>
+                <span class="text-[10px] text-on-surface/40">منذ 5 ساعات</span>
+              </div>
+              <p class="text-xs leading-relaxed text-on-surface/80">"أتمنى إضافة المزيد من المراجع العلمية حول
+                الموضوع..."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Floating Action Button -->
+  <div class="fixed bottom-8 left-8 z-50 md:hidden">
+    <button
+      class="w-14 h-14 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all">
+      <span class="material-symbols-outlined" data-icon="add">add</span>
+    </button>
+  </div>

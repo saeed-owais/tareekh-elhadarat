@@ -1,0 +1,373 @@
+
+<!-- Main Content Canvas -->
+<main class="min-w-0 lg:mr-64 min-h-screen">
+    <!-- Top App Bar -->
+    <header
+        class="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#061B0E] dark:text-[#FBFBE2] font-['Newsreader'] antialiased docked full-width top-0 z-40 shadow-[0_8px_32px_rgba(6,27,14,0.06)] flex flex-row-reverse justify-between items-center w-full px-8 py-4 sticky top-0">
+        <div class="flex items-center gap-6 flex-row-reverse">
+            <div class="flex flex-col items-end">
+                <span class="text-sm font-bold">المقالات</span>
+                <span class="text-[10px] text-on-surface-variant">إدارة الأرشيف الثقافي</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
+                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full border-2 border-surface"></span>
+            </button>
+            <div class="h-8 w-[1px] bg-outline-variant/20 mx-2"></div>
+            <div class="flex items-center gap-3 flex-row-reverse">
+                <img class="w-9 h-9 rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    data-alt="Close-up portrait of a scholar with a well-groomed beard, wearing a minimal charcoal linen shirt in soft library lighting"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpzYMrA8UlybG-oumLwS5u0T9y2GOCQxbsiwsWjGKju4nXsK1eeVk3S_zmaUpWcDpI6TY49wevb4EBhwkW3ooMdQIaP67hLcLXXJnQDPF_ncaFWZ9YJAduUPPK2VLGeyvv_1XKBq5DPXsm8S-e2-mQlchpxFa0aAEmcs8oII5HCZngw5siWCobbfjAW4zTT09DoNTzS1ZOoBn8z8UhO_tqL5LqoJd3CbmRUTk63D62r5wH93Y31GZMq4yYIqlmKhOgTQxfy9Uavq9m" />
+                <span class="text-xs font-bold tracking-tight">إدارة الأرشيف</span>
+            </div>
+        </div>
+    </header>
+    <div class="p-8 max-w-7xl mx-auto">
+        <!-- Page Header & Actions -->
+        <div class="flex flex-row-reverse justify-between items-end mb-10">
+            <div class="text-right">
+                <h2 class="text-3xl font-headline font-bold text-primary mb-2">إدارة المقالات</h2>
+                <p class="text-on-surface-variant text-sm max-w-md leading-relaxed">قم بمراجعة وتحرير المقالات
+                    التاريخية المضافة حديثاً أو تعيين المقالات المتميزة للواجهة الرئيسية.</p>
+            </div>
+            <button
+                class="bg-primary text-on-primary px-6 py-3 rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <span class="material-symbols-outlined" data-icon="post_add">post_add</span>
+                <span>إضافة مقال جديد</span>
+            </button>
+        </div>
+        <!-- Search & Filters -->
+        <div class="bg-surface-container-low p-6 rounded-xl mb-8 flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex gap-4 flex-1 min-w-[300px]">
+                <div class="relative flex-1 group">
+                    <span
+                        class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-secondary"
+                        data-icon="search">search</span>
+                    <input
+                        class="w-full pr-10 py-2.5 bg-surface-container-lowest border-none rounded-lg text-sm focus:ring-2 focus:ring-secondary/20 placeholder:text-outline-variant transition-all"
+                        placeholder="ابحث عن عنوان المقال أو الكاتب..." type="text" />
+                </div>
+                <select
+                    class="bg-surface-container-lowest border-none rounded-lg text-sm py-2.5 px-4 pr-10 focus:ring-2 focus:ring-secondary/20 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%20fill%3D%22none%22%20stroke%3D%22%23735c00%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:1.2em] bg-[right_0.5rem_center] bg-no-repeat">
+                    <option>كل الفئات</option>
+                    <option>حضارات قديمة</option>
+                    <option>العصور الوسطى</option>
+                    <option>تاريخ الفن</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-on-surface-variant">حسب الحالة:</span>
+                <div class="flex bg-surface-container rounded-lg p-1">
+                    <button
+                        class="px-4 py-1.5 text-xs font-bold rounded-md bg-surface-container-lowest text-secondary shadow-sm">الكل</button>
+                    <button
+                        class="px-4 py-1.5 text-xs font-bold text-on-surface-variant hover:text-primary transition-colors">منشور</button>
+                    <button
+                        class="px-4 py-1.5 text-xs font-bold text-on-surface-variant hover:text-primary transition-colors">مسودة</button>
+                </div>
+            </div>
+        </div>
+        <!-- Table Section -->
+        <div
+            class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0_8px_40px_-12px_rgba(6,27,14,0.08)]">
+            <table class="w-full text-right border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-high/30 border-b border-outline-variant/10">
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                            المقال</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                            الفئة</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                            الكاتب</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                            المشاهدات</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                            الحالة</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                            إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/10">
+                    <!-- Row 1 -->
+                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-4 flex-row-reverse">
+                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover"
+                                        data-alt="Macro detail of an ancient Egyptian hieroglyphic carving on sun-drenched sandstone with deep shadows"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Hm_QMOAAjUq68FfsmSksMDq5rA9YXGdu_zMftj1n9SWshR46Q8SuaEUFMoFhEMZolsCbzhADepGLSdZRH5XQ1Z9CxA6IbLtaZ_hZij09HcbjJ54i-J-V5-s0lljF_g54iUbrYunsEtEcNPosop5775-5DkH4tuEVsAlV1oLuf_ZvBe98cOy5DDe9kLt0eggJPrMZVSz18s6YrO9_t_-nxIAIIaWvyEj7tI-Bb2uxUln_gytgFKXENhqmuX1jCelY7xkYsSaV9ImF" />
+                                </div>
+                                <div>
+                                    <div class="font-headline font-bold text-primary mb-0.5">أسرار الهيروغليفية في
+                                        عصر الدولة الحديثة</div>
+                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 12 أكتوبر 2023
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="text-xs px-2.5 py-1 rounded-full bg-secondary-container/20 text-on-secondary-fixed-variant font-medium">حضارات
+                                قديمة</span>
+                        </td>
+                        <td class="px-6 py-5 text-sm font-medium text-on-surface">د. سمير الأنصاري</td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-1.5 text-on-surface-variant">
+                                <span class="material-symbols-outlined text-base"
+                                    data-icon="visibility">visibility</span>
+                                <span class="text-xs">12.4k</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-container bg-primary-fixed/50 px-3 py-1 rounded-full">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                                منشور
+                            </span>
+                        </td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <button class="text-secondary hover:scale-110 transition-transform" title="مقال متميز">
+                                    <span class="material-symbols-outlined fill-1" data-icon="star" data-weight="fill"
+                                        style="font-variation-settings: 'FILL' 1;">star</span>
+                                </button>
+                                <button class="text-outline hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
+                                </button>
+                                <button class="text-outline hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 2 -->
+                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-4 flex-row-reverse">
+                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover"
+                                        data-alt="Dramatic interior of a Gothic cathedral with light rays piercing through stained glass onto stone floors"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuChnTs4c3DS_Has8LAaer-HiCbC2pXhJPSbIrsFiEAZ6fNQx8P8gkLN7E9UAP2RIWysNGIUjJWpX7NaebdH2U7HIYLy-7-RifBOCNnERXYTavM01EgxM9MsQ2hAGjGFGv_et0aqOKmVixnpYGymN4B-4JZ_9yTHltDhVqxZn-P0Z6IjSgfPz8-gU96fZIXY8ociDFjjEuzpVcaWt_5_O3nmOM-_7p6uSddQN21fQON_l3R01znBiJDnqToZH0NtiVQPSE2so6Azw4at" />
+                                </div>
+                                <div>
+                                    <div class="font-headline font-bold text-primary mb-0.5">تجارة التوابل وتأثيرها
+                                        على العمارة الأندلسية</div>
+                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 05 أكتوبر 2023
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="text-xs px-2.5 py-1 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-medium">العصور
+                                الوسطى</span>
+                        </td>
+                        <td class="px-6 py-5 text-sm font-medium text-on-surface">أ. ليلى محمود</td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-1.5 text-on-surface-variant">
+                                <span class="material-symbols-outlined text-base"
+                                    data-icon="visibility">visibility</span>
+                                <span class="text-xs">8.2k</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-secondary-fixed-variant bg-secondary-fixed/50 px-3 py-1 rounded-full">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                مسودة
+                            </span>
+                        </td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <button class="text-outline-variant hover:text-secondary transition-colors"
+                                    title="تعيين كمقال متميز">
+                                    <span class="material-symbols-outlined" data-icon="star">star</span>
+                                </button>
+                                <button class="text-outline hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
+                                </button>
+                                <button class="text-outline hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 3 -->
+                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-4 flex-row-reverse">
+                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover"
+                                        data-alt="Oil painting showing a renaissance workshop with classical sculptures and heavy velvet drapery in warm candle light"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYgZjuRW1CPSNTYrt3c2x2slPhXpRZaJtUsfLvMpfrnP_79Z-7bUZOISaya0qoaFmChdvYdh3M6-oOaILWij-OZfs8eF5TBcRqUryjGhGrlj_w_dVKhgc_k_fuTxA8jJg_BLhiXOt_S-uNSjKqpO3B6_DMJthYKX2FJAFwOZYN2IejaLyy-3-2rYyPchKycW_e9ESf-lOohfxEMFJGn5pEZoyocMaaK9X5dQmXMI8aKTu88yx7Abz82gY__7Qo8YqpqGNHjhUhjWR9" />
+                                </div>
+                                <div>
+                                    <div class="font-headline font-bold text-primary mb-0.5">فلسفة التناظر في الفن
+                                        الإسلامي المبكر</div>
+                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 28 سبتمبر 2023
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="text-xs px-2.5 py-1 rounded-full bg-on-primary-container/20 text-on-primary-container font-medium">تاريخ
+                                الفن</span>
+                        </td>
+                        <td class="px-6 py-5 text-sm font-medium text-on-surface">د. يوسف خالد</td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-1.5 text-on-surface-variant">
+                                <span class="material-symbols-outlined text-base"
+                                    data-icon="visibility">visibility</span>
+                                <span class="text-xs">21.9k</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-container bg-primary-fixed/50 px-3 py-1 rounded-full">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                                منشور
+                            </span>
+                        </td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <button class="text-outline-variant hover:text-secondary transition-colors"
+                                    title="تعيين كمقال متميز">
+                                    <span class="material-symbols-outlined" data-icon="star">star</span>
+                                </button>
+                                <button class="text-outline hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
+                                </button>
+                                <button class="text-outline hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 4 -->
+                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-4 flex-row-reverse">
+                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover"
+                                        data-alt="Old parchment paper texture with faded ink writing and wax seal in corner on a dark wooden table"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuADyxhOfnBkCsCAAgB9ljwCxK4khZNFzTxp4_Tg62kbjQqcqWhZfPu8VgFjCkRkUnfTgQutSuDwLYnGZwF3BBbrSIu_R16vlFz-saZoBC0NLlq9at6P_ql4lJK500yUwqVmam6fOV6rcBiIUmsxN3tuLFMVfcBkq2zwZWsqxUpp4uaON39L0xP-F2dV6YGNFRoFc1iiJDpCUWQuvXo9YXUrEk7FYgFoDGsJ5xfEIu1L1ByWww94CRIhTXXkhVQLF2CLJVM_74qjpyrN" />
+                                </div>
+                                <div>
+                                    <div class="font-headline font-bold text-primary mb-0.5">طريق الحرير: رحلة الصمت
+                                        عبر القفار</div>
+                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 15 سبتمبر 2023
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="text-xs px-2.5 py-1 rounded-full bg-secondary-container/20 text-on-secondary-fixed-variant font-medium">حضارات
+                                قديمة</span>
+                        </td>
+                        <td class="px-6 py-5 text-sm font-medium text-on-surface">أ. مريم صالح</td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-1.5 text-on-surface-variant">
+                                <span class="material-symbols-outlined text-base"
+                                    data-icon="visibility">visibility</span>
+                                <span class="text-xs">15.5k</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-container bg-primary-fixed/50 px-3 py-1 rounded-full">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                                منشور
+                            </span>
+                        </td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <button class="text-secondary hover:scale-110 transition-transform" title="مقال متميز">
+                                    <span class="material-symbols-outlined fill-1" data-icon="star" data-weight="fill"
+                                        style="font-variation-settings: 'FILL' 1;">star</span>
+                                </button>
+                                <button class="text-outline hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
+                                </button>
+                                <button class="text-outline hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Pagination -->
+            <div class="px-6 py-6 bg-surface-container/20 flex items-center justify-between flex-row-reverse">
+                <span class="text-xs text-on-surface-variant font-medium">عرض 1-10 من أصل 124 مقال</span>
+                <div class="flex gap-2">
+                    <button
+                        class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors">
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+                    </button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center rounded bg-secondary text-white text-xs font-bold">1</button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors text-xs font-bold">2</button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors text-xs font-bold">3</button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors">
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Dashboard Quick Insights Asymmetric Layout -->
+        <div class="mt-12 grid grid-cols-12 gap-6 pb-20">
+            <div
+                class="col-span-12 md:col-span-8 bg-primary-container text-on-primary rounded-2xl p-8 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-headline font-bold mb-4">أكثر المواضيع رواجاً هذا الشهر</h3>
+                    <div class="flex gap-4 mb-6">
+                        <span class="text-xs px-3 py-1 bg-white/10 rounded-full backdrop-blur">#تاريخ_الأندلس</span>
+                        <span class="text-xs px-3 py-1 bg-white/10 rounded-full backdrop-blur">#الحضارة_الآشورية</span>
+                        <span
+                            class="text-xs px-3 py-1 bg-white/10 rounded-full backdrop-blur">#الاكتشافات_البحرية</span>
+                    </div>
+                    <p class="text-on-primary-container text-sm leading-relaxed max-w-lg">
+                        شهد قسم "العصور الوسطى" زيادة بنسبة 24% في القراءات نتيجة الاهتمام المتزايد بالوثائقيات
+                        التاريخية الأخيرة. ننصح بجدولة المزيد من المحتوى في هذا التصنيف.
+                    </p>
+                </div>
+                <div
+                    class="absolute -bottom-10 -left-10 w-64 h-64 bg-secondary/10 rounded-full blur-3xl group-hover:bg-secondary/20 transition-all duration-700">
+                </div>
+            </div>
+            <div
+                class="col-span-12 md:col-span-4 bg-surface-container rounded-2xl p-8 flex flex-col justify-between border border-outline-variant/20">
+                <div>
+                    <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-2 block">إحصائية
+                        سريعة</span>
+                    <h3 class="text-xl font-headline font-bold text-primary">المقالات المعلقة</h3>
+                    <p class="text-on-surface-variant text-xs mt-1">تنتظر مراجعة المحرر النهائي</p>
+                </div>
+                <div class="flex items-baseline gap-2 mt-4">
+                    <span class="text-5xl font-headline font-bold text-primary">07</span>
+                    <span class="text-sm text-on-surface-variant">مقالات</span>
+                </div>
+                <button class="mt-6 text-sm font-bold text-secondary flex items-center gap-2 group">
+                    عرض جميع المعلقات
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                        data-icon="arrow_back">arrow_back</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Floating Toast Message (Optional UX element) -->
+<div
+    class="fixed bottom-8 right-8 z-[60] bg-primary text-on-primary px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 editorial-shadow animate-in slide-in-from-bottom-5">
+    <span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
+    <div class="text-sm">تم تحديث حالة مقال "أسرار الهيروغليفية" بنجاح.</div>
+    <button class="material-symbols-outlined text-white/50 hover:text-white transition-colors text-lg"
+        data-icon="close">close</button>
+</div>

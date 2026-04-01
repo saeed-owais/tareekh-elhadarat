@@ -67,6 +67,33 @@ export const routes: Routes = [
     title: 'الملف الشخصي | تاريخ الشعوب',
     canActivate: [authGuard]
   },
+  {
+    path: 'admin',
+    loadComponent: () => import('./layout/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
+    canActivate: [authGuard], 
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/admin/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        title: 'نظرة عامة | لوحة التحكم'
+      },
+      {
+        path: 'approvals',
+        loadComponent: () => import('./pages/admin/approvals/approvals.component').then(m => m.ApprovalsComponent),
+        title: 'مركز الموافقات | لوحة التحكم'
+      },
+      {
+        path: 'articles',
+        loadComponent: () => import('./pages/admin/articles-manage/articles-manage.component').then(m => m.ArticlesManageComponent),
+        title: 'إدارة المقالات | لوحة التحكم'
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      }
+    ]
+  },
   // {
   //   path: '**',
   //   redirectTo: '',

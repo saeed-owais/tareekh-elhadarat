@@ -1,0 +1,61 @@
+   <aside class="h-screen fixed right-0 top-0 w-64 border-l-0 z-50 bg-[#F5F5DC] dark:bg-[#1B3022] hidden lg:block">
+      <div class="flex flex-col h-full rtl pt-6 font-['Newsreader'] text-right">
+        <div class="px-6 mb-10">
+          <div class="flex items-center gap-3 mb-2 flex-row-reverse">
+            <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+              <span class="material-symbols-outlined text-surface text-2xl" data-icon="menu_book">menu_book</span>
+            </div>
+            <div>
+              <div class="text-xl font-bold text-[#061B0E] dark:text-[#FBFBE2]">تاريخ الشعوب</div>
+              <div class="text-xs text-[#061B0E]/60 dark:text-[#FBFBE2]/60">لوحة التحكم</div>
+            </div>
+          </div>
+        </div>
+        <nav class="flex-1 px-4 space-y-1">
+          <a class="flex flex-row-reverse items-center gap-3 bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold px-4 py-3 rounded-l-none border-r-4 border-[#735C00] Active: translate-x-1 duration-200"
+            routerLink="/admin/dashboard">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span>نظرة عامة</span>
+          </a>
+          <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
+            routerLink="/admin/approvals">
+            <span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+            <span>الموافقات</span>
+          </a>
+          <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
+            routerLink="/admin/articles">
+            <span class="material-symbols-outlined" data-icon="article">article</span>
+            <span>المقالات</span>
+          </a>
+          <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
+            routerLink="/admin/books">
+            <span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+            <span>الكتب</span>
+          </a>
+          <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
+            routerLink="/admin/categories">
+            <span class="material-symbols-outlined" data-icon="category">category</span>
+            <span>الفئات</span>
+          </a>
+          <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
+            routerLink="/admin/users">
+            <span class="material-symbols-outlined" data-icon="group">group</span>
+            <span>المستخدمون</span>
+          </a>
+          <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
+            routerLink="/admin/settings">
+            <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            <span>الإعدادات</span>
+          </a>
+        </nav>
+        <div class="p-4 mt-auto">
+          <button
+            class="w-full bg-primary-container text-on-primary py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+            <span class="material-symbols-outlined" data-icon="add">add</span>
+            <span class="text-sm font-bold">إضافة محتوى جديد</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+<router-outlet/>
