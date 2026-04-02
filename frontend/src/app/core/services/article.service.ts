@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { TokenService } from './token.service';
 import { Article } from '../models/article.model';
+import { PaginatedResponse } from '../models/paginated-response.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -48,9 +49,14 @@ export class ArticleService {
     }
 
     // ================= GET ARTICLES BY CATEGORY =================
-    getArticlesByCategory(categoryId: number): Observable<Article[]> {
-        return this.http.get<Article[]>(`${this.apiUrl}/Get-Articles/${categoryId}`).pipe(
-            map(articles => this.cleanArticles(articles)),
+    getArticlesByCategory(categoryId: number, pageNumber: number = 1, pageSize: number = 10): Observable<PaginatedResponse<Article>> {
+        return this.http.get<PaginatedResponse<Article>>(`${this.apiUrl}/Get-Articles/${categoryId}`, {
+            params: { pageNumber: pageNumber.toString(), pageSize: pageSize.toString() }
+        }).pipe(
+            map(response => {
+                response.data = this.cleanArticles(response.data);
+                return response;
+            }),
             catchError(err => {
                 return throwError(() => 'فشل تحميل المقالات');
             })
@@ -58,11 +64,14 @@ export class ArticleService {
     }
 
     // ================= SEARCH ARTICLES BY TITLE =================
-    searchArticles(title: string): Observable<Article[]> {
-        return this.http.get<Article[]>(`${this.apiUrl}/Search-Articles`, {
-            params: { title }
+    searchArticles(title: string, pageNumber: number = 1, pageSize: number = 10): Observable<PaginatedResponse<Article>> {
+        return this.http.get<PaginatedResponse<Article>>(`${this.apiUrl}/Search-Articles`, {
+            params: { title, pageNumber: pageNumber.toString(), pageSize: pageSize.toString() }
         }).pipe(
-            map(articles => this.cleanArticles(articles)),
+            map(response => {
+                response.data = this.cleanArticles(response.data);
+                return response;
+            }),
             catchError(err => {
                 return throwError(() => 'فشل البحث عن المقالات');
             })

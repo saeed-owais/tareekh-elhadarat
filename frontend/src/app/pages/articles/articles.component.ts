@@ -65,10 +65,10 @@ export class ArticlesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const requests = this.categories().map(c => this.articleService.getArticlesByCategory(c.id));
+    const requests = this.categories().map(c => this.articleService.getArticlesByCategory(c.id, 1, 100));
     forkJoin(requests).subscribe({
       next: (results) => {
-        const all = results.flat();
+        const all = results.map(r => r.data).flat();
         const unique = new Map<number, Article>();
         all.forEach(a => unique.set(a.id, a));
         this.articles.set(Array.from(unique.values()));
@@ -87,9 +87,9 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     if (categoryId === null) {
       this.loadAllArticles();
     } else {
-      this.articleService.getArticlesByCategory(categoryId).subscribe({
-        next: (articles) => {
-          this.articles.set(articles);
+      this.articleService.getArticlesByCategory(categoryId, 1, 100).subscribe({
+        next: (response) => {
+          this.articles.set(response.data);
           this.isLoading.set(false);
         },
         error: () => {

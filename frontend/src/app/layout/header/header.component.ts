@@ -5,7 +5,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { ArticleService } from '../../core/services/article.service';
 import { Article } from '../../core/models/article.model';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -46,6 +46,7 @@ export class HeaderComponent implements OnDestroy {
         this.isSearching.set(true);
         this.showResults.set(true);
         return this.articleService.searchArticles(query).pipe(
+          map(response => response.data),
           catchError(() => of([]))
         );
       })
