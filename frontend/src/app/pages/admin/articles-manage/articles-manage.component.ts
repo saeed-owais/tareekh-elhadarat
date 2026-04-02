@@ -15,6 +15,7 @@ export class ArticlesManageComponent implements OnInit {
 
   confirmDeleteId = signal<number | null>(null);
   articles = signal<AdminArticle[]>([]);
+  successMessage = signal('');
   
   // Pagination Signals
   pageNumber = signal(1);
@@ -62,8 +63,24 @@ export class ArticlesManageComponent implements OnInit {
 
   confirmDelete(id: number, event: Event) {
     event.stopPropagation();
-    // For now we just remove from local list as the API was not provided
-    this.articles.update(articles => articles.filter(a => a.id !== id));
-    this.confirmDeleteId.set(null);
+    this.isLoading.set(true);
+    
+    this.articleService.toggleArticle(id).subscribe({
+      next: (success) => {
+        if (success) {
+          // Remove from local list upon success
+          this.articles.update(articles => articles.filter(a => a.id !== id));
+          this.successMessage.set('تم حذف المقال بنجاح');
+          setTimeout(() => this.successMessage.set(''), 3000);
+        }
+        this.confirmDeleteId.set(null);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+        this.confirmDeleteId.set(null);
+      }
+    });
   }
 }

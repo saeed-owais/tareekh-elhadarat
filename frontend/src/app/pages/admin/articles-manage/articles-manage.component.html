@@ -214,11 +214,13 @@
         </div>
     </div>
 </main>
-<!-- Floating Toast Message (Optional UX element) -->
-<div
-    class="fixed bottom-8 right-8 z-[60] bg-primary text-on-primary px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 editorial-shadow animate-in slide-in-from-bottom-5">
-    <span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
-    <div class="text-sm">تم تحديث حالة مقال "أسرار الهيروغليفية" بنجاح.</div>
-    <button class="material-symbols-outlined text-white/50 hover:text-white transition-colors text-lg"
-        data-icon="close">close</button>
-</div>
+<!-- Floating Toast Message -->
+@if (successMessage()) {
+  <div
+      class="fixed bottom-8 right-8 z-100 bg-primary text-on-primary px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 editorial-shadow animate-in slide-in-from-bottom-5">
+      <span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
+      <div class="text-sm">{{ successMessage() }}</div>
+      <button (click)="successMessage.set('')" class="material-symbols-outlined text-white/50 hover:text-white transition-colors text-lg"
+          data-icon="close">close</button>
+  </div>
+}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { TokenService } from './token.service';
 import { Article, AdminArticle } from '../models/article.model';
 import { PaginatedResponse } from '../models/paginated-response.model';
@@ -142,6 +142,22 @@ export class ArticleService {
             }),
             catchError(err => {
                 return throwError(() => 'فشل تحميل مقالات الإدارة');
+            })
+        );
+    }
+
+    // ================= TOGGLE ARTICLE (SOFT DELETE/RESTORE) =================
+    toggleArticle(id: number): Observable<boolean> {
+        return this.http.get<boolean>(`${this.apiUrl}/Toggle-Article/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            tap(res => {
+                console.log("res", res);
+            }),
+            catchError(err => {
+                return throwError(() => 'فشل عملية حذف/استعادة المقال');
             })
         );
     }
