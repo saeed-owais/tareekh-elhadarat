@@ -67,6 +67,11 @@ export class HeaderComponent implements OnDestroy {
     return this.authService.getUser();
   }
 
+  get isAdmin(): boolean {
+    const role = this.user?.role;
+    return role === 'Admin' || role === 'admin';
+  }
+
   onSearchInput(): void {
     this.searchSubject.next(this.searchQuery());
   }

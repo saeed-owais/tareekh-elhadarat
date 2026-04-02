@@ -76,6 +76,13 @@
         class="relative text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors duration-300">
         تواصل معنا
       </a>
+      @if (isAdmin) {
+        <a routerLink="/admin"
+          routerLinkActive="after:absolute after:bottom-[-6px] after:right-0 after:w-full after:h-[2px] after:bg-linear-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+          class="relative text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors duration-300">
+          لوحة التحكم
+        </a>
+      }
     </div>
 
     <!-- Logo -->
@@ -199,6 +206,12 @@
         class="text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors py-2">
         تواصل معنا
       </a>
+      @if (isAdmin) {
+        <a routerLink="/admin" (click)="closeMenu()"
+          class="text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors py-2">
+          لوحة التحكم
+        </a>
+      }
 
       <hr class="border-outline-variant/20">
 

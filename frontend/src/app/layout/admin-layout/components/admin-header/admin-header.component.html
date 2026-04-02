@@ -1,0 +1,58 @@
+<header
+  class="sticky top-0 z-40 bg-[#FBFBE2] dark:bg-[#061B0E] text-[#061B0E] shadow-[0_8px_32px_rgba(6,27,14,0.06)] px-4 md:px-8 py-3 md:py-4 flex flex-row-reverse justify-between items-center w-full font-['Newsreader'] antialiased">
+  
+  @if (isMobileSearchOpen()) {
+    <div class="absolute inset-0 z-50 bg-[#FBFBE2] dark:bg-[#061B0E] px-4 flex items-center justify-between gap-3 md:hidden">
+      <div class="relative w-full flex-1">
+        <input
+          class="w-full bg-surface-container-low border-none rounded-full px-12 py-2 text-sm focus:ring-2 focus:ring-secondary/30 transition-all text-right"
+          placeholder="البحث..." type="text" />
+        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50"
+          data-icon="search">search</span>
+      </div>
+      <button (click)="toggleMobileSearch()" class="p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors">
+        <span class="material-symbols-outlined text-xl" data-icon="close">close</span>
+      </button>
+    </div>
+  }
+
+  <div class="flex items-center gap-3 md:gap-6 flex-row-reverse">
+    <div class="relative group hidden md:block">
+      <input
+        class="bg-surface-container-low border-none rounded-full px-12 py-2 text-sm w-48 lg:w-64 focus:ring-2 focus:ring-secondary/30 transition-all"
+        placeholder="البحث في الطلبات..." type="text" />
+      <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50"
+        data-icon="search">search</span>
+    </div>
+    <div class="flex items-center gap-1 md:gap-4 flex-row-reverse">
+      <button (click)="toggleMobileSearch()" class="md:hidden relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors" title="بحث">
+        <span class="material-symbols-outlined text-xl" data-icon="search">search</span>
+      </button>
+      <a routerLink="/" class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors" title="العودة للموقع الرئيسي">
+        <span class="material-symbols-outlined text-xl md:text-2xl" data-icon="home">home</span>
+      </a>
+      <button class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors">
+        <span class="material-symbols-outlined text-xl md:text-2xl" data-icon="notifications">notifications</span>
+        <span class="absolute top-2 left-2 w-2 h-2 bg-error rounded-full"></span>
+      </button>
+      @if (userProfile$ | async; as user) {
+        <div class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20 flex-row-reverse">
+          <img [alt]="user.firstName + ' ' + user.lastName" class="w-8 h-8 rounded-full object-cover"
+            [src]="user.avatarUrl" />
+          <span class="text-sm font-bold hidden sm:block">{{user.firstName}} {{user.lastName}}</span>
+        </div>
+      } @else {
+        <div class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20 flex-row-reverse">
+          <div class="w-8 h-8 rounded-full bg-outline-variant/20 animate-pulse"></div>
+          <div class="h-4 w-20 bg-outline-variant/20 animate-pulse rounded hidden sm:block"></div>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="flex items-center gap-2 md:gap-4 flex-row-reverse">
+    <button (click)="layoutService.toggleSidebar()" class="lg:hidden p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors flex items-center justify-center" title="القائمة">
+      <span class="material-symbols-outlined text-xl md:text-2xl" data-icon="menu">menu</span>
+    </button>
+    <div class="text-xl md:text-2xl font-bold text-[#061B0E] dark:text-[#FBFBE2] whitespace-nowrap">لوحة التحكم</div>
+  </div>
+</header>
