@@ -7,3 +7,16 @@ export interface Article {
   category: string;
   tags: string[];
 }
+
+export interface AdminArticle {
+  id: number;
+  title: string;
+  authorName: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string | null;
+  imageUrl: string;
+  views: number;
+  isPublished: boolean;
+  isDeleted: boolean;
+}

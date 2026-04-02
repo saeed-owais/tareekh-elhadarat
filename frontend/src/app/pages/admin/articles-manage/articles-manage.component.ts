@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ArticleService } from '../../../core/services/article.service';
+import { AdminArticle } from '../../../core/models';
 
 @Component({
   selector: 'app-admin-articles-manage',
@@ -8,55 +10,46 @@ import { RouterLink } from '@angular/router';
   imports: [CommonModule, RouterLink],
   templateUrl: './articles-manage.component.html',
 })
-export class ArticlesManageComponent {
-  confirmDeleteId = signal<number | null>(null);
+export class ArticlesManageComponent implements OnInit {
+  private articleService = inject(ArticleService);
 
-  articles = signal([
-    {
-      id: 1,
-      title: 'أسرار الهيروغليفية في عصر الدولة الحديثة',
-      date: '12 أكتوبر 2023',
-      category: 'حضارات قديمة',
-      author: 'د. سمير الأنصاري',
-      views: '12.4k',
-      status: 'published',
-      isPremium: true,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5Hm_QMOAAjUq68FfsmSksMDq5rA9YXGdu_zMftj1n9SWshR46Q8SuaEUFMoFhEMZolsCbzhADepGLSdZRH5XQ1Z9CxA6IbLtaZ_hZij09HcbjJ54i-J-V5-s0lljF_g54iUbrYunsEtEcNPosop5775-5DkH4tuEVsAlV1oLuf_ZvBe98cOy5DDe9kLt0eggJPrMZVSz18s6YrO9_t_-nxIAIIaWvyEj7tI-Bb2uxUln_gytgFKXENhqmuX1jCelY7xkYsSaV9ImF'
-    },
-    {
-      id: 2,
-      title: 'تجارة التوابل وتأثيرها على العمارة الأندلسية',
-      date: '05 أكتوبر 2023',
-      category: 'العصور الوسطى',
-      author: 'أ. ليلى محمود',
-      views: '8.2k',
-      status: 'draft',
-      isPremium: false,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuChnTs4c3DS_Has8LAaer-HiCbC2pXhJPSbIrsFiEAZ6fNQx8P8gkLN7E9UAP2RIWysNGIUjJWpX7NaebdH2U7HIYLy-7-RifBOCNnERXYTavM01EgxM9MsQ2hAGjGFGv_et0aqOKmVixnpYGymN4B-4JZ_9yTHltDhVqxZn-P0Z6IjSgfPz8-gU96fZIXY8ociDFjjEuzpVcaWt_5_O3nmOM-_7p6uSddQN21fQON_l3R01znBiJDnqToZH0NtiVQPSE2so6Azw4at'
-    },
-    {
-      id: 3,
-      title: 'فلسفة التناظر في الفن الإسلامي المبكر',
-      date: '28 سبتمبر 2023',
-      category: 'تاريخ الفن',
-      author: 'د. يوسف خالد',
-      views: '21.9k',
-      status: 'published',
-      isPremium: false,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAYgZjuRW1CPSNTYrt3c2x2slPhXpRZaJtUsfLvMpfrnP_79Z-7bUZOISaya0qoaFmChdvYdh3M6-oOaILWij-OZfs8eF5TBcRqUryjGhGrlj_w_dVKhgc_k_fuTxA8jJg_BLhiXOt_S-uNSjKqpO3B6_DMJthYKX2FJAFwOZYN2IejaLyy-3-2rYyPchKycW_e9ESf-lOohfxEMFJGn5pEZoyocMaaK9X5dQmXMI8aKTu88yx7Abz82gY__7Qo8YqpqGNHjhUhjWR9'
-    },
-    {
-      id: 4,
-      title: 'طريق الحرير: رحلة الصمت عبر القفار',
-      date: '15 سبتمبر 2023',
-      category: 'حضارات قديمة',
-      author: 'أ. مريم صالح',
-      views: '15.5k',
-      status: 'published',
-      isPremium: true,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuADyxhOfnBkCsCAAgB9ljwCxK4khZNFzTxp4_Tg62kbjQqcqWhZfPu8VgFjCkRkUnfTgQutSuDwLYnGZwF3BBbrSIu_R16vlFz-saZoBC0NLlq9at6P_ql4lJK500yUwqVmam6fOV6rcBiIUmsxN3tuLFMVfcBkq2zwZWsqxUpp4uaON39L0xP-F2dV6YGNFRoFc1iiJDpCUWQuvXo9YXUrEk7FYgFoDGsJ5xfEIu1L1ByWww94CRIhTXXkhVQLF2CLJVM_74qjpyrN'
+  confirmDeleteId = signal<number | null>(null);
+  articles = signal<AdminArticle[]>([]);
+  
+  // Pagination Signals
+  pageNumber = signal(1);
+  pageSize = signal(10);
+  totalItems = signal(0);
+  totalPages = signal(0);
+  isLoading = signal(false);
+
+  ngOnInit(): void {
+    this.loadArticles();
+  }
+
+  loadArticles() {
+    this.isLoading.set(true);
+    this.articleService.getAllArticlesAdmin(this.pageNumber(), this.pageSize())
+      .subscribe({
+        next: (response) => {
+          this.articles.set(response.data);
+          this.totalItems.set(response.totalItems);
+          this.totalPages.set(response.totalPages);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading.set(false);
+        }
+      });
+  }
+
+  onPageChange(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages()) {
+      this.pageNumber.set(newPage);
+      this.loadArticles();
     }
-  ]);
+  }
 
   toggleDelete(id: number, event: Event) {
     event.stopPropagation();
@@ -69,6 +62,7 @@ export class ArticlesManageComponent {
 
   confirmDelete(id: number, event: Event) {
     event.stopPropagation();
+    // For now we just remove from local list as the API was not provided
     this.articles.update(articles => articles.filter(a => a.id !== id));
     this.confirmDeleteId.set(null);
   }

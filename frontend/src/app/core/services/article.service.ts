@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { TokenService } from './token.service';
-import { Article } from '../models/article.model';
+import { Article, AdminArticle } from '../models/article.model';
 import { PaginatedResponse } from '../models/paginated-response.model';
 import { environment } from '../../../environments/environment';
 
@@ -128,7 +128,38 @@ export class ArticleService {
             })
         );
     }
+    // ================= GET ALL ARTICLES (ADMIN) =================
+    getAllArticlesAdmin(pageNumber: number = 1, pageSize: number = 10): Observable<PaginatedResponse<AdminArticle>> {
+        return this.http.get<PaginatedResponse<AdminArticle>>(`${this.apiUrl}/Get-All-Articles-Admin`, {
+            params: { pageNumber: pageNumber.toString(), pageSize: pageSize.toString() },
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            map(response => {
+                response.data = response.data.map(a => this.cleanAdminArticle(a));
+                return response;
+            }),
+            catchError(err => {
+                return throwError(() => 'فشل تحميل مقالات الإدارة');
+            })
+        );
+    }
+
     // ================= HELPER METHODS (TEMPORARY FIX FOR IMAGE URLS) =================
+    private cleanAdminArticle(article: AdminArticle): AdminArticle {
+        if (article && typeof article.imageUrl === 'string') {
+            if (article.imageUrl.includes('/https://')) {
+                const parts = article.imageUrl.split('/https://');
+                article.imageUrl = 'https://' + parts[1];
+            } else if (article.imageUrl.includes('/http://')) {
+                const parts = article.imageUrl.split('/http://');
+                article.imageUrl = 'http://' + parts[1];
+            }
+        }
+        return article;
+    }
+
     private cleanArticle(article: Article): Article {
         if (article && typeof article.imageUrl === 'string') {
             if (article.imageUrl.includes('/https://')) {
