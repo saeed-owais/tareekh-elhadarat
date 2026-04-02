@@ -146,6 +146,39 @@ export class ArticleService {
         );
     }
 
+    // ================= GET SUBMITTED ARTICLES (FOR APPROVAL) =================
+    getSubmittedArticles(pageNumber: number = 1, pageSize: number = 10): Observable<PaginatedResponse<AdminArticle>> {
+        return this.http.get<PaginatedResponse<AdminArticle>>(`${this.apiUrl}/Get-Submitted-Articles`, {
+            params: { pageNumber: pageNumber.toString(), pageSize: pageSize.toString() },
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            map(response => {
+                response.data = response.data.map(a => this.cleanAdminArticle(a));
+                return response;
+            }),
+            catchError(err => {
+                return throwError(() => 'فشل تحميل طلبات المقالات');
+            })
+        );
+    }
+
+    // ================= ACCEPT ARTICLE =================
+    acceptArticle(articleId: number): Observable<boolean> {
+        return this.http.post<boolean>(`${this.apiUrl}/Accept-Article`, null, {
+            params: { articleId: articleId.toString() },
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            catchError(err => {
+                const message = err.error?.message || 'فشل قبول المقال';
+                return throwError(() => message);
+            })
+        );
+    }
+
     // ================= TOGGLE ARTICLE (SOFT DELETE/RESTORE) =================
     toggleArticle(id: number): Observable<boolean> {
         return this.http.get<boolean>(`${this.apiUrl}/Toggle-Article/${id}`, {
