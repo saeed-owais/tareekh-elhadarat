@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewEncapsulation, signal } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewEncapsulation, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -28,6 +28,7 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
   private tagService = inject(TagService);
+  private eRef = inject(ElementRef);
 
   // State
   isLoggedIn = signal(false);
@@ -40,6 +41,7 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   // Form data
   title = signal('');
   categoryId = signal<number | null>(null);
+  isCategoryDropdownOpen = signal(false);
   selectedTagIds = signal<number[]>([]);
   imageFile = signal<File | null>(null);
   imagePreviewUrl = signal<string | null>(null);
@@ -69,6 +71,31 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.categories.set([]);
       }
     });
+  }
+
+  getCategoryName(id: number | null): string {
+    if (!id) return '';
+    return this.categories().find(c => c.id === id)?.name || '';
+  }
+
+  selectCategory(id: number): void {
+    this.categoryId.set(id);
+    this.isCategoryDropdownOpen.set(false);
+  }
+
+  toggleCategoryDropdown(event: Event): void {
+    event.stopPropagation();
+    this.isCategoryDropdownOpen.update(v => !v);
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    if (this.isCategoryDropdownOpen()) {
+      const isInside = this.eRef.nativeElement.querySelector('.category-dropdown')?.contains(event.target);
+      if (!isInside) {
+        this.isCategoryDropdownOpen.set(false);
+      }
+    }
   }
 
   ngAfterViewInit(): void {
