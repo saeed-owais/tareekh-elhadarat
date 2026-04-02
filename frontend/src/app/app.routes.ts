@@ -100,6 +100,21 @@ export const routes: Routes = [
         title: 'إدارة المقالات | لوحة التحكم'
       },
       {
+        path: 'articles/add',
+        loadComponent: () => import('./pages/admin/article-add/article-add.component').then(m => m.AdminArticleAddComponent),
+        title: 'إضافة مقال جديد | لوحة التحكم'
+      },
+      {
+        path: 'articles/edit/:id',
+        loadComponent: () => import('./pages/admin/article-edit/article-edit.component').then(m => m.AdminArticleEditComponent),
+        title: 'تعديل المقال | لوحة التحكم'
+      },
+      {
+        path: 'articles/view/:id',
+        loadComponent: () => import('./pages/admin/article-view/article-view.component').then(m => m.AdminArticleViewComponent),
+        title: 'تفاصيل المقال | لوحة التحكم'
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

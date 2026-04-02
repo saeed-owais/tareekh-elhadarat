@@ -1,0 +1,157 @@
+<main class="min-w-0 lg:mr-64 min-h-screen">
+  <div class="p-8 max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-8 flex-row-reverse justify-end">
+      <div>
+        <h2 class="text-3xl font-headline font-bold text-primary mb-1 text-right">تعديل المقال</h2>
+        <p class="text-on-surface-variant text-sm text-right">قم بتعديل بيانات ومحتوى المقال أو تغيير حالته.</p>
+      </div>
+      <a routerLink="/admin/articles" class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors text-on-surface-variant mr-auto">
+        <span class="material-symbols-outlined" style="direction: ltr;">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Success Message -->
+    @if (successMessage()) {
+      <div class="mb-6 bg-green-100/50 text-green-800 p-4 rounded-xl flex items-center gap-3 animate-fade-in border border-green-200">
+        <span class="material-symbols-outlined">check_circle</span>
+        <p class="font-bold">{{ successMessage() }}</p>
+      </div>
+    }
+
+    <!-- Form -->
+    <form class="space-y-8" (submit)="onSubmit($event)">
+      <!-- Settings Panel (Admin specific) -->
+      <div class="bg-primary/5 p-6 rounded-2xl border border-primary/20 space-y-6">
+        <h3 class="font-headline font-bold text-primary flex items-center gap-2">
+          <span class="material-symbols-outlined text-xl">settings</span>إعدادات إدارية
+        </h3>
+        <div>
+          <label class="block font-label font-bold text-sm mb-2 text-primary">حالة المقال <span class="text-error">*</span></label>
+          <div class="flex flex-wrap gap-4">
+            <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
+              <input type="radio" name="status" [(ngModel)]="status" value="published" class="text-secondary w-4 h-4" />
+              <span class="font-medium text-sm">منشور</span>
+            </label>
+            <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
+              <input type="radio" name="status" [(ngModel)]="status" value="draft" class="text-secondary w-4 h-4" />
+              <span class="font-medium text-sm">مسودة</span>
+            </label>
+            <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
+              <input type="radio" name="status" [(ngModel)]="status" value="pending" class="text-secondary w-4 h-4" />
+              <span class="font-medium text-sm">معلق للمراجعة</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Title & Category Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label class="block font-label font-bold text-sm mb-2">عنوان المقال <span class="text-error">*</span></label>
+          <input type="text" [(ngModel)]="title" name="title" required class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right" placeholder="العنوان..." />
+        </div>
+        <div class="category-dropdown relative">
+          <label class="block font-label font-bold text-sm mb-2">التصنيف <span class="text-error">*</span></label>
+          <button type="button" (click)="toggleCategoryDropdown($event)" class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right flex justify-between items-center">
+            <span [class.opacity-70]="!categoryId()">{{ getCategoryName(categoryId()) || 'اختر التصنيف' }}</span>
+            <span class="material-symbols-outlined transition-transform duration-300" [class.rotate-180]="isCategoryDropdownOpen()">expand_more</span>
+          </button>
+          
+          @if (isCategoryDropdownOpen()) {
+            <div class="absolute w-full mt-2 bg-surface-container-lowest border border-outline-variant/20 rounded-xl shadow-lg z-50 overflow-hidden" (click)="$event.stopPropagation()">
+              <ul class="max-h-50 overflow-y-auto">
+                @for (category of categories(); track category.id) {
+                  <li>
+                    <button type="button" (click)="selectCategory(category.id)" class="w-full text-right px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex justify-between" [class.bg-secondary-container]="categoryId() === category.id" [class.text-on-secondary-container]="categoryId() === category.id">
+                      <span>{{ category.name }}</span>
+                      @if (categoryId() === category.id) { <span class="material-symbols-outlined text-sm">check</span> }
+                    </button>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div>
+        <label class="block font-label font-bold text-sm mb-2">الوسوم <span class="text-error">*</span></label>
+        <div class="flex flex-wrap gap-3">
+          @for (tag of tags(); track tag.id) {
+            <button type="button" (click)="toggleTag(tag.id)"
+              [class]="isTagSelected(tag.id) ? 'bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full text-sm font-medium transition-all hover:opacity-80 ring-2 ring-secondary' : 'bg-surface-container-highest text-on-surface-variant px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-surface-variant'">
+              @if (isTagSelected(tag.id)) { <span class="material-symbols-outlined text-xs align-middle mr-1">check</span> }
+              {{ tag.name }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Featured Image -->
+      <div>
+        <label class="block font-label font-bold text-sm mb-2">الصورة البارزة <span class="text-error">*</span></label>
+        @if (!imagePreviewUrl()) {
+          <label class="relative w-full aspect-21/9 bg-surface-container-highest rounded-xl border-2 border-dashed border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer hover:bg-surface-variant transition-colors group">
+            <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onImageSelected($event)" class="absolute inset-0 opacity-0 cursor-pointer" />
+            <span class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">cloud_upload</span>
+            <p class="mt-3 text-on-surface-variant font-medium">تغيير الصورة</p>
+          </label>
+        } @else {
+          <div class="relative w-full aspect-21/9 rounded-xl overflow-hidden group">
+            <img [src]="imagePreviewUrl()" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <button type="button" (click)="removeImage()" class="bg-error text-on-error px-6 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-error/80 transition-colors">
+                <span class="material-symbols-outlined">delete</span> تغيير الصورة
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Content (Quill) -->
+      <div>
+        <label class="block font-label font-bold text-sm mb-2">محتوى المقال <span class="text-error">*</span></label>
+        <div class="quill-wrapper bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden">
+          <div id="quill-toolbar">
+            <span class="ql-formats">
+              <button class="ql-bold"></button>
+              <button class="ql-italic"></button>
+              <button class="ql-underline"></button>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-header" value="2"></button>
+              <button class="ql-header" value="3"></button>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-direction" value="rtl"></button>
+              <select class="ql-align"><option selected></option><option value="center"></option><option value="left"></option></select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-link"></button>
+              <button class="ql-image"></button>
+            </span>
+          </div>
+          <div #editorContainer class="editor-area min-h-[300px]"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 pt-6 border-t border-outline-variant/20">
+        <button type="submit" [disabled]="isSubmitting()" class="flex-1 max-w-[200px] py-3.5 bg-primary text-on-primary rounded-lg font-bold shadow-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+          @if (isSubmitting()) {
+            <span class="w-5 h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin"></span> جاري الحفظ
+          } @else {
+            <span class="material-symbols-outlined">save</span> حفظ التعديلات
+          }
+        </button>
+        <a routerLink="/admin/articles" class="py-3.5 px-8 rounded-lg font-bold text-on-surface-variant hover:bg-surface-container-high transition-colors">إلغاء</a>
+      </div>
+    </form>
+  </div>
+</main>

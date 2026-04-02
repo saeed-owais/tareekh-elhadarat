@@ -9,11 +9,11 @@
                 <p class="text-on-surface-variant text-sm max-w-md leading-relaxed">قم بمراجعة وتحرير المقالات
                     التاريخية المضافة حديثاً أو تعيين المقالات المتميزة للواجهة الرئيسية.</p>
             </div>
-            <button
+            <a routerLink="/admin/articles/add"
                 class="bg-primary text-on-primary px-6 py-3 rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <span class="material-symbols-outlined" data-icon="post_add">post_add</span>
                 <span>إضافة مقال جديد</span>
-            </button>
+            </a>
         </div>
         <!-- Search & Filters -->
         <div class="bg-surface-container-low p-6 rounded-xl mb-8 flex flex-wrap gap-4 items-center justify-between">
@@ -66,215 +66,84 @@
                             إجراءات</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-outline-variant/10">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                <tbody class="divide-y divide-outline-variant/10 cursor-default">
+                    @for (article of articles(); track article.id) {
+                    <tr class="hover:bg-surface-container-low/30 transition-colors group relative">
                         <td class="px-6 py-5">
-                            <div class="flex items-center gap-4 flex-row-reverse">
+                            <a [routerLink]="['/admin/articles/view', article.id]" class="flex items-center gap-4 flex-row-reverse hover:opacity-80 transition-opacity">
                                 <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
                                     <img class="w-full h-full object-cover"
-                                        data-alt="Macro detail of an ancient Egyptian hieroglyphic carving on sun-drenched sandstone with deep shadows"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Hm_QMOAAjUq68FfsmSksMDq5rA9YXGdu_zMftj1n9SWshR46Q8SuaEUFMoFhEMZolsCbzhADepGLSdZRH5XQ1Z9CxA6IbLtaZ_hZij09HcbjJ54i-J-V5-s0lljF_g54iUbrYunsEtEcNPosop5775-5DkH4tuEVsAlV1oLuf_ZvBe98cOy5DDe9kLt0eggJPrMZVSz18s6YrO9_t_-nxIAIIaWvyEj7tI-Bb2uxUln_gytgFKXENhqmuX1jCelY7xkYsSaV9ImF" />
+                                        [src]="article.image" />
                                 </div>
-                                <div>
-                                    <div class="font-headline font-bold text-primary mb-0.5">أسرار الهيروغليفية في
-                                        عصر الدولة الحديثة</div>
-                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 12 أكتوبر 2023
+                                <div class="text-right">
+                                    <div class="font-headline font-bold text-primary mb-0.5">{{ article.title }}</div>
+                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: {{ article.date }}
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </td>
                         <td class="px-6 py-5">
                             <span
-                                class="text-xs px-2.5 py-1 rounded-full bg-secondary-container/20 text-on-secondary-fixed-variant font-medium">حضارات
-                                قديمة</span>
+                                class="text-xs px-2.5 py-1 rounded-full text-on-secondary-fixed-variant font-medium"
+                                [ngClass]="{'bg-secondary-container/20': article.category === 'حضارات قديمة', 'bg-tertiary-fixed/30': article.category === 'العصور الوسطى', 'bg-on-primary-container/20': article.category === 'تاريخ الفن'}">
+                                {{ article.category }}</span>
                         </td>
-                        <td class="px-6 py-5 text-sm font-medium text-on-surface">د. سمير الأنصاري</td>
+                        <td class="px-6 py-5 text-sm font-medium text-on-surface">{{ article.author }}</td>
                         <td class="px-6 py-5">
                             <div class="flex items-center gap-1.5 text-on-surface-variant">
                                 <span class="material-symbols-outlined text-base"
                                     data-icon="visibility">visibility</span>
-                                <span class="text-xs">12.4k</span>
+                                <span class="text-xs">{{ article.views }}</span>
                             </div>
                         </td>
                         <td class="px-6 py-5">
                             <span
-                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-container bg-primary-fixed/50 px-3 py-1 rounded-full">
-                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                                منشور
+                                class="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1 rounded-full"
+                                [ngClass]="{'text-primary-container bg-primary-fixed/50': article.status === 'published', 'text-secondary-fixed-variant bg-secondary-fixed/50': article.status === 'draft'}">
+                                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="{'bg-primary-container': article.status === 'published', 'bg-secondary': article.status === 'draft'}"></span>
+                                {{ article.status === 'published' ? 'منشور' : 'مسودة' }}
                             </span>
                         </td>
                         <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <button class="text-secondary hover:scale-110 transition-transform" title="مقال متميز">
-                                    <span class="material-symbols-outlined fill-1" data-icon="star" data-weight="fill"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
+                            <div class="flex items-center gap-3 relative">
+                                <button class="transition-transform" title="مقال متميز"
+                                    [ngClass]="article.isPremium ? 'text-secondary hover:scale-110' : 'text-outline-variant hover:text-secondary'">
+                                    <span class="material-symbols-outlined" [class.fill-1]="article.isPremium" data-icon="star"
+                                        [style.font-variation-settings]="article.isPremium ? '\'FILL\' 1' : ''">star</span>
                                 </button>
-                                <button class="text-outline hover:text-primary transition-colors">
+                                <a [routerLink]="['/admin/articles/edit', article.id]" class="text-outline hover:text-primary transition-colors">
                                     <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
-                                </button>
-                                <button class="text-outline hover:text-error transition-colors">
+                                </a>
+                                <button (click)="toggleDelete(article.id, $event)" class="text-outline hover:text-error transition-colors">
                                     <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
                                 </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-4 flex-row-reverse">
-                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Dramatic interior of a Gothic cathedral with light rays piercing through stained glass onto stone floors"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuChnTs4c3DS_Has8LAaer-HiCbC2pXhJPSbIrsFiEAZ6fNQx8P8gkLN7E9UAP2RIWysNGIUjJWpX7NaebdH2U7HIYLy-7-RifBOCNnERXYTavM01EgxM9MsQ2hAGjGFGv_et0aqOKmVixnpYGymN4B-4JZ_9yTHltDhVqxZn-P0Z6IjSgfPz8-gU96fZIXY8ociDFjjEuzpVcaWt_5_O3nmOM-_7p6uSddQN21fQON_l3R01znBiJDnqToZH0NtiVQPSE2so6Azw4at" />
-                                </div>
-                                <div>
-                                    <div class="font-headline font-bold text-primary mb-0.5">تجارة التوابل وتأثيرها
-                                        على العمارة الأندلسية</div>
-                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 05 أكتوبر 2023
+                                
+                                <!-- Center Screen Delete Confirmation Modal -->
+                                @if (confirmDeleteId() === article.id) {
+                                  <div class="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200" (click)="toggleDelete(article.id, $event)">
+                                    <div (click)="$event.stopPropagation()" class="bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-2xl shadow-2xl max-w-sm w-full animate-in zoom-in-95 duration-200">
+                                      <div class="flex flex-col items-center text-center gap-4">
+                                        <div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center text-error mb-2">
+                                          <span class="material-symbols-outlined text-4xl">warning</span>
+                                        </div>
+                                        <h3 class="text-xl font-headline font-bold text-primary">تأكيد حذف المقال</h3>
+                                        <p class="text-on-surface-variant leading-relaxed">
+                                          هل أنت متأكد من رغبتك في حذف هذا المقال؟ <br> 
+                                          <span class="font-bold text-error">"{{ article.title }}"</span> <br>
+                                          لا يمكن التراجع عن هذا الإجراء لاحقاً.
+                                        </p>
+                                        <div class="flex gap-3 w-full mt-4">
+                                          <button (click)="confirmDelete(article.id, $event)" class="flex-1 bg-error text-white font-bold py-3 rounded-xl shadow-lg hover:bg-error/90 transition-all active:scale-95">نعم، احذف</button>
+                                          <button (click)="toggleDelete(article.id, $event)" class="flex-1 bg-surface-container-high text-on-surface font-bold py-3 rounded-xl hover:bg-surface-variant transition-all">إلغاء</button>
+                                        </div>
+                                      </div>
                                     </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="text-xs px-2.5 py-1 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-medium">العصور
-                                الوسطى</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm font-medium text-on-surface">أ. ليلى محمود</td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-1.5 text-on-surface-variant">
-                                <span class="material-symbols-outlined text-base"
-                                    data-icon="visibility">visibility</span>
-                                <span class="text-xs">8.2k</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-secondary-fixed-variant bg-secondary-fixed/50 px-3 py-1 rounded-full">
-                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                مسودة
-                            </span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <button class="text-outline-variant hover:text-secondary transition-colors"
-                                    title="تعيين كمقال متميز">
-                                    <span class="material-symbols-outlined" data-icon="star">star</span>
-                                </button>
-                                <button class="text-outline hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
-                                </button>
-                                <button class="text-outline hover:text-error transition-colors">
-                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
-                                </button>
+                                  </div>
+                                }
                             </div>
                         </td>
                     </tr>
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-4 flex-row-reverse">
-                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Oil painting showing a renaissance workshop with classical sculptures and heavy velvet drapery in warm candle light"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYgZjuRW1CPSNTYrt3c2x2slPhXpRZaJtUsfLvMpfrnP_79Z-7bUZOISaya0qoaFmChdvYdh3M6-oOaILWij-OZfs8eF5TBcRqUryjGhGrlj_w_dVKhgc_k_fuTxA8jJg_BLhiXOt_S-uNSjKqpO3B6_DMJthYKX2FJAFwOZYN2IejaLyy-3-2rYyPchKycW_e9ESf-lOohfxEMFJGn5pEZoyocMaaK9X5dQmXMI8aKTu88yx7Abz82gY__7Qo8YqpqGNHjhUhjWR9" />
-                                </div>
-                                <div>
-                                    <div class="font-headline font-bold text-primary mb-0.5">فلسفة التناظر في الفن
-                                        الإسلامي المبكر</div>
-                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 28 سبتمبر 2023
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="text-xs px-2.5 py-1 rounded-full bg-on-primary-container/20 text-on-primary-container font-medium">تاريخ
-                                الفن</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm font-medium text-on-surface">د. يوسف خالد</td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-1.5 text-on-surface-variant">
-                                <span class="material-symbols-outlined text-base"
-                                    data-icon="visibility">visibility</span>
-                                <span class="text-xs">21.9k</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-container bg-primary-fixed/50 px-3 py-1 rounded-full">
-                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                                منشور
-                            </span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <button class="text-outline-variant hover:text-secondary transition-colors"
-                                    title="تعيين كمقال متميز">
-                                    <span class="material-symbols-outlined" data-icon="star">star</span>
-                                </button>
-                                <button class="text-outline hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
-                                </button>
-                                <button class="text-outline hover:text-error transition-colors">
-                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 4 -->
-                    <tr class="hover:bg-surface-container-low/30 transition-colors group">
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-4 flex-row-reverse">
-                                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Old parchment paper texture with faded ink writing and wax seal in corner on a dark wooden table"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuADyxhOfnBkCsCAAgB9ljwCxK4khZNFzTxp4_Tg62kbjQqcqWhZfPu8VgFjCkRkUnfTgQutSuDwLYnGZwF3BBbrSIu_R16vlFz-saZoBC0NLlq9at6P_ql4lJK500yUwqVmam6fOV6rcBiIUmsxN3tuLFMVfcBkq2zwZWsqxUpp4uaON39L0xP-F2dV6YGNFRoFc1iiJDpCUWQuvXo9YXUrEk7FYgFoDGsJ5xfEIu1L1ByWww94CRIhTXXkhVQLF2CLJVM_74qjpyrN" />
-                                </div>
-                                <div>
-                                    <div class="font-headline font-bold text-primary mb-0.5">طريق الحرير: رحلة الصمت
-                                        عبر القفار</div>
-                                    <div class="text-[10px] text-on-surface-variant italic">نشر في: 15 سبتمبر 2023
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="text-xs px-2.5 py-1 rounded-full bg-secondary-container/20 text-on-secondary-fixed-variant font-medium">حضارات
-                                قديمة</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm font-medium text-on-surface">أ. مريم صالح</td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-1.5 text-on-surface-variant">
-                                <span class="material-symbols-outlined text-base"
-                                    data-icon="visibility">visibility</span>
-                                <span class="text-xs">15.5k</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-container bg-primary-fixed/50 px-3 py-1 rounded-full">
-                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                                منشور
-                            </span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <button class="text-secondary hover:scale-110 transition-transform" title="مقال متميز">
-                                    <span class="material-symbols-outlined fill-1" data-icon="star" data-weight="fill"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
-                                </button>
-                                <button class="text-outline hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
-                                </button>
-                                <button class="text-outline hover:text-error transition-colors">
-                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    }
                 </tbody>
             </table>
             <!-- Pagination -->
