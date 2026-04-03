@@ -6,6 +6,7 @@ import { ArticleService } from '../../core/services/article.service';
 import { Article } from '../../core/models/article.model';
 import { CommentService } from '../../core/services/comment.service';
 import { Comment } from '../../core/models/comment.model';
+import { ProfileService } from '../../core/services/profile.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -18,11 +19,13 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private articleService = inject(ArticleService);
   private commentService = inject(CommentService);
+  private profileService = inject(ProfileService);
   private fb = inject(FormBuilder);
 
   article = signal<Article | null>(null);
   isLoading = signal(true);
   comments = signal<Comment[]>([]);
+  isSaved = signal(false);
   commentForm!: FormGroup;
 
   private viewTimer : any = null;
@@ -30,6 +33,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.loadArticle(id);
+    this.checkIfSaved(id);
     this.initForm();
   }
 
@@ -56,6 +60,29 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
         this.isLoading.set(false);
       }
     });
+  }
+
+  private checkIfSaved(id: number): void {
+    this.profileService.getSavedArticles().subscribe({
+      next: (articles) => {
+        this.isSaved.set(articles.some(a => a.articleId === id));
+      }
+    });
+  }
+
+  toggleSave(): void {
+    const article = this.article();
+    if (!article) return;
+
+    if (this.isSaved()) {
+      this.profileService.removeSavedArticle(article.id).subscribe({
+        next: () => this.isSaved.set(false)
+      });
+    } else {
+      this.profileService.saveArticle(article.id).subscribe({
+        next: () => this.isSaved.set(true)
+      });
+    }
   }
 
   initForm(): void {

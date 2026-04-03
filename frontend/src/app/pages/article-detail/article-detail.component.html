@@ -5,7 +5,7 @@
         <div class="bg-surface-container-low h-6 rounded w-24 mb-4"></div>
         <div class="bg-surface-container-low h-12 rounded w-full mb-6"></div>
         <div class="bg-surface-container-low h-4 rounded w-48 mb-8"></div>
-        <div class="bg-surface-container-low rounded-xl aspect-[16/9] mb-12"></div>
+        <div class="bg-surface-container-low rounded-xl aspect-video mb-12"></div>
         <div class="space-y-4">
           <div class="bg-surface-container-low h-4 rounded w-full"></div>
           <div class="bg-surface-container-low h-4 rounded w-5/6"></div>
@@ -34,7 +34,7 @@
       </div>
 
       <!-- Featured Image -->
-      <div class="rounded-xl overflow-hidden mb-12 aspect-[16/9] shadow-2xl">
+        <div class="rounded-xl overflow-hidden mb-12 aspect-video shadow-2xl">
         <img [src]="article()!.imageUrl" [alt]="article()!.title" class="w-full h-full object-cover">
       </div>
 
@@ -52,8 +52,8 @@
         </div>
       }
 
-      <!-- Share -->
-      <div class="flex items-center gap-4 mb-16 border-b border-outline-variant/20 pb-8">
+      <!-- Share & Save -->
+      <div class="flex items-center gap-4 mb-16 border-b border-outline-variant/20 pb-8 flex-wrap">
         <span class="font-label font-bold text-on-surface-variant">شارك المقال:</span>
         <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary transition-all">
           <span class="material-symbols-outlined text-xl">public</span>
@@ -64,6 +64,18 @@
         <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary transition-all">
           <span class="material-symbols-outlined text-xl">link</span>
         </a>
+
+        <div class="h-6 w-px bg-outline-variant/20 mx-2"></div>
+
+        <!-- Save Button -->
+        <button (click)="toggleSave()" 
+          [class]="isSaved() ? 'bg-secondary text-on-secondary' : 'bg-surface-container-low text-on-surface-variant hover:bg-secondary hover:text-on-secondary'"
+          class="flex items-center gap-2 px-6 py-2.5 rounded-full font-bold transition-all shadow-sm">
+          <span class="material-symbols-outlined text-xl" [style.font-variation-settings]="isSaved() ? '\'FILL\' 1' : ''">
+            {{ isSaved() ? 'bookmark' : 'bookmark_add' }}
+          </span>
+          {{ isSaved() ? 'محفوظ' : 'حفظ في المفضلة' }}
+        </button>
       </div>
     </article>
 

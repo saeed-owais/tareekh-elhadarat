@@ -1,28 +1,71 @@
-import { delay, Observable, of } from "rxjs";
-import { UserProfile } from "../models/user-profile.model";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable, catchError, throwError } from "rxjs";
+import { UserProfile, SavedArticle } from "../models/user-profile.model";
+import { environment } from "../../../environments/environment";
+import { TokenService } from "./token.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  // بيانات وهمية (Mock Data)
-  private mockUser: UserProfile = {
-    firstName: 'إبراهيم',
-    lastName: 'العامري',
-    username: '@ibrahim_al_amiri',
-    email: 'ibrahim.amiri@history.com',
-    bio: 'باحث في تاريخ الحضارات العربية القديمة ومهتم بتوثيق التراث الثقافي لمنطقة الخليج العربي. أسعى من خلال هذا الملف إلى مشاركة قراءاتي وأبحاثي في علم الآثار والأنثروبولوجيا التاريخية.',
-    coverUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDa7MjvT3KBNJ22HUMyRSUI6jHx4sbfQKLJM93D_GftY7Ny7mRTAu33EDtAN_lUxIrqgiFFBi0QWsinZuaZeCj7hT82FAMoVW1pcqskDkPvlqgYyCOJ5gGWyf0TvJHqQ5xvc1N2OCybLNWTHHyqYeXsXjo6dX1M4fH7RYEjFo1vd76sPwFmOy5YBhlTdl3U8MY401hf8AxoBM5UHIWh3S3o7OsO7yX22oEpqhXw_deqB1F86lvEsR-34fikLkt-hQfSKa2ZMa1-1Tlx',
-    avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxLnAdYiP86wd8V7IBsLKEnHreL0PmtxkGH6SEXlz56DwJw29Pm10ahCmiboqe7NLVopRch4jwdhclwdLSB5kxzY7Urx9SCnn83_hJahJ7QzE_PGW4fcgQ189hiavLXJvNuPL9v71ol0BU41S70BCKQM2XuZbFFZdc4CLz3xAxGLMP4QmrbvMI0GaOaOGBHsFW0hHHH7Qw99U-QFFU2NwZi0CTX2uBoWK3t8a-a5BJTLUl-VWfQzj2vIVIbGLM9ULApYqOnYNUpbnX',
-    joinDate: 'يونيو 2022'
-  };
+  private apiUrl = `${environment.apiBaseUrl}/api/User`;
 
-  // محاكاة جلب البيانات (كأنها تأتي من API)
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService
+  ) { }
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${this.tokenService.getToken()}`
+    });
+  }
+
+  // ================= PROFILE MANAGEMENT =================
+
   getUserProfile(): Observable<UserProfile> {
-    // of() تقوم بتحويل البيانات العادية إلى Observable
-    // delay(1500) تؤخر الرد لمدة ثانية ونصف لمحاكاة السيرفر
-    return of(this.mockUser).pipe(delay(1500));
+    return this.http.get<UserProfile>(`${this.apiUrl}/Get-Profile`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(err => throwError(() => 'فشل تحميل الملف الشخصي'))
+    );
+  }
+
+  editProfile(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Edit-Profile`, formData, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(err => throwError(() => 'فشل تحديث الملف الشخصي'))
+    );
+  }
+
+  // ================= SAVED ARTICLES (FAVORITES) =================
+
+  getSavedArticles(): Observable<SavedArticle[]> {
+    return this.http.get<SavedArticle[]>(`${this.apiUrl}/Get-Saved-Articles`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(err => throwError(() => 'فشل تحميل المقالات المحفوظة'))
+    );
+  }
+
+  saveArticle(articleId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Save-Article`, {}, {
+      params: { articleId: articleId.toString() },
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(err => throwError(() => 'فشل حفظ المقال'))
+    );
+  }
+
+  removeSavedArticle(articleId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Remove-Saved-Article`, {}, {
+      params: { articleId: articleId.toString() },
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(err => throwError(() => 'فشل إزالة المقال من المحفوظات'))
+    );
   }
 }

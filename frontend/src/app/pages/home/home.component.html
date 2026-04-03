@@ -120,9 +120,24 @@
                        [alt]="article.title"
                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                        [src]="article.imageUrl">
+                  
                   <span class="absolute top-4 right-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary">
                     {{ article.category }}
                   </span>
+
+                  <!-- Heart Icon for Favorites -->
+                  @if (isLoggedIn()) {
+                    <button (click)="toggleHeart(article.id, $event)" 
+                       class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-secondary hover:text-on-secondary transition-all shadow-lg active:scale-95 group/heart">
+                      <span class="material-symbols-outlined text-2xl transition-transform" 
+                            [style.font-variation-settings]="savedArticleIds().includes(article.id) ? '\'FILL\' 1' : ''"
+                            [class.text-secondary]="savedArticleIds().includes(article.id) && !groupHeartHover.matches"
+                            [class.group-hover\/heart:scale-110]="true"
+                            #groupHeartHover>
+                        favorite
+                      </span>
+                    </button>
+                  }
                 </div>
                 <h3 class="text-2xl font-headline font-bold mb-3 group-hover:text-secondary transition-colors leading-snug">
                   {{ article.title }}

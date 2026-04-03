@@ -6,36 +6,37 @@
       <p class="text-primary font-medium text-lg animate-pulse">جاري تحميل بيانات الملف الشخصي...</p>
     </div>
   } 
-  @else if (user()) {
+  @else if (user(); as userData) {
     <header class="relative mb-12">
+      <!-- Cover Mock - Not provided by API but keeping for UI -->
       <div class="h-48 md:h-64 w-full bg-surface-container-high rounded-xl overflow-hidden relative group">
         <div class="absolute inset-0 bg-primary/40 group-hover:bg-primary/30 transition-all z-10"></div>
-        <img class="w-full h-full object-cover relative z-0" alt="صورة الغلاف" [src]="user()?.coverUrl">
-        <div class="absolute bottom-4 left-4 z-20">
-          <button class="bg-surface/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-surface/30 transition-all">
-            <span class="material-symbols-outlined text-lg">photo_camera</span>
-            تغيير الغلاف
-          </button>
-        </div>
+        <img class="w-full h-full object-cover relative z-0" alt="صورة الغلاف" src="assets/images/cover-placeholder.png">
       </div>
       
       <div class="flex flex-col md:flex-row items-end gap-6 -mt-16 md:-mt-20 px-8 relative z-20">
         <div class="relative group">
           <div class="w-32 h-32 md:w-44 md:h-44 rounded-full border-4 border-surface overflow-hidden bg-surface-container shadow-xl">
-            <img class="w-full h-full object-cover" alt="الصورة الشخصية" [src]="user()?.avatarUrl">
+            <img class="w-full h-full object-cover" alt="الصورة الشخصية" 
+                 [src]="cleanUrl(userData.profilePhoto)">
           </div>
-          <button class="absolute bottom-2 right-2 p-2 bg-secondary text-white rounded-full shadow-lg hover:scale-105 transition-transform flex items-center justify-center">
+          <button (click)="setActiveTab('الإعدادات')" class="absolute bottom-2 right-2 p-2 bg-secondary text-white rounded-full shadow-lg hover:scale-105 transition-transform flex items-center justify-center">
             <span class="material-symbols-outlined text-lg">edit</span>
           </button>
         </div>
         
-        <div class="flex-grow pb-4 md:pb-6 text-right">
-          <h1 class="text-3xl md:text-5xl font-bold text-primary mb-1">{{ user()?.firstName }} {{ user()?.lastName }}</h1>
-          <p class="text-secondary font-medium tracking-wide" dir="ltr">{{ user()?.username }}</p>
+        <div class="grow pb-4 md:pb-6 text-right">
+          <h1 class="text-3xl md:text-5xl font-bold text-primary mb-1">{{ userData.firstName }} {{ userData.lastName }}</h1>
+          <div class="flex flex-row-reverse items-center gap-2">
+            <p class="text-secondary font-medium tracking-wide" dir="ltr">@{{ userData.userName }}</p>
+            @if (userData.authorName) {
+              <span class="px-2 py-0.5 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full">({{ userData.authorName }})</span>
+            }
+          </div>
         </div>
         
         <div class="pb-6">
-          <button class="bg-secondary text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-secondary/20 flex items-center gap-3 hover:opacity-90 transition-all active:scale-95">
+          <button (click)="setActiveTab('الإعدادات')" class="bg-secondary text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-secondary/20 flex items-center gap-3 hover:opacity-90 transition-all active:scale-95">
             <span class="material-symbols-outlined">edit_square</span>
             تعديل الملف الشخصي
           </button>
@@ -47,9 +48,11 @@
       @for (tab of tabs(); track tab.id) {
         <button 
           (click)="setActiveTab(tab.id)"
-          [ngClass]="activeTab() === tab.id 
-            ? 'text-secondary font-bold border-b-2 border-secondary pb-3 px-2 flex items-center gap-2 transition-all' 
-            : 'text-on-surface-variant hover:text-secondary pb-3 px-2 flex items-center gap-2 transition-all whitespace-nowrap'">
+          [class.text-secondary]="activeTab() === tab.id"
+          [class.font-bold]="activeTab() === tab.id"
+          [class.border-b-2]="activeTab() === tab.id"
+          [class.border-secondary]="activeTab() === tab.id"
+          class="text-on-surface-variant hover:text-secondary pb-3 px-2 flex items-center gap-2 transition-all whitespace-nowrap">
           <span class="material-symbols-outlined" [style.font-variation-settings]="tab.filled ? '\'FILL\' 1' : ''">
             {{ tab.icon }}
           </span>
@@ -60,126 +63,194 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       
+      <!-- Main Content Area -->
       <div class="lg:col-span-8 space-y-8">
         
+        <!-- Tab: Info -->
         @if (activeTab() === 'معلوماتي') {
           <section class="bg-surface-container-low p-8 rounded-2xl shadow-sm border border-primary/5 space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div class="space-y-2">
                 <label class="text-secondary text-sm font-bold block">الاسم الأول</label>
-                <div class="bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent focus-within:border-secondary transition-all">
-                  <span class="text-primary font-medium">{{ user()?.firstName }}</span>
+                <div class="bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent transition-all">
+                  <span class="text-primary font-medium">{{ userData.firstName }}</span>
                 </div>
               </div>
               <div class="space-y-2">
                 <label class="text-secondary text-sm font-bold block">اسم العائلة</label>
-                <div class="bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent focus-within:border-secondary transition-all">
-                  <span class="text-primary font-medium">{{ user()?.lastName }}</span>
+                <div class="bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent transition-all">
+                  <span class="text-primary font-medium">{{ userData.lastName }}</span>
                 </div>
+              </div>
+            </div>
+            <div class="space-y-2 flex flex-col items-end">
+              <label class="text-secondary text-sm font-bold block">اسم الكاتب المستعار</label>
+              <div class="w-full bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent transition-all">
+                <span class="text-primary font-medium">{{ userData.authorName || 'لم يتم التحديد بعد' }}</span>
               </div>
             </div>
             <div class="space-y-2">
               <label class="text-secondary text-sm font-bold block">البريد الإلكتروني</label>
-              <div class="bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent focus-within:border-secondary transition-all flex items-center justify-between">
-                <span class="text-primary font-medium">{{ user()?.email }}</span>
+              <div class="bg-surface-container-high p-4 rounded-xl border-b-2 border-transparent transition-all flex items-center justify-between">
                 <span class="material-symbols-outlined text-green-600 text-xl" style="font-variation-settings: 'FILL' 1;">verified</span>
+                <span class="text-primary font-medium">{{ userData.email }}</span>
               </div>
             </div>
             <div class="space-y-2">
               <label class="text-secondary text-sm font-bold block">نبذة تعريفية</label>
-              <div class="bg-surface-container-high p-6 rounded-xl border-b-2 border-transparent focus-within:border-secondary transition-all min-h-[160px]">
+              <div class="bg-surface-container-high p-6 rounded-xl border-b-2 border-transparent transition-all min-h-[160px]">
                 <p class="text-primary leading-relaxed">
-                  {{ user()?.bio }}
+                  {{ userData.bio || 'لا يوجد وصف تعريفي حالياً.' }}
                 </p>
               </div>
             </div>
           </section>
+        }
 
-          <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-primary text-white p-8 rounded-2xl flex flex-col justify-between h-56 group overflow-hidden relative shadow-md">
-              <div class="relative z-10">
-                <h3 class="text-xl font-bold mb-2">أحدث مقالاتك</h3>
-                <p class="text-white/80 text-sm">"طرق القوافل في شبه الجزيرة العربية"</p>
+        <!-- Tab: Saved Articles -->
+        @if (activeTab() === 'المحفوظات') {
+          <section class="space-y-4">
+            @if (isLoadingSaved()) {
+              <div class="py-20 text-center animate-pulse">
+                <span class="material-symbols-outlined text-4xl text-outline-variant animate-spin">progress_activity</span>
+                <p class="text-on-surface-variant mt-4">جاري جلب قائمة المفضلات...</p>
               </div>
-              <div class="relative z-10 flex justify-between items-center mt-4">
-                <span class="text-secondary text-xs font-medium">منذ يومين</span>
-                <button class="text-white/70 hover:text-white hover:underline text-sm flex items-center gap-1 transition-colors">عرض المقال <span class="material-symbols-outlined text-sm">arrow_back</span></button>
+            } @else {
+              @for (article of savedArticles(); track article.id) {
+                <div [routerLink]="['/articles', article.articleId]" class="group bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 flex flex-row-reverse items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer">
+                  <div class="flex items-center gap-4 flex-row-reverse">
+                    <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                      <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <div class="text-right">
+                      <h4 class="font-bold text-primary mb-1 group-hover:text-secondary transition-colors">{{ article.title }}</h4>
+                      <span class="px-2 py-0.5 bg-secondary-fixed-dim text-secondary text-[10px] font-bold rounded">{{ article.category }}</span>
+                    </div>
+                  </div>
+                  <button (click)="removeSaved(article.articleId, $event)" class="text-outline-variant hover:text-error transition-colors p-2 rounded-full hover:bg-error/5" title="حذف من المحفوظات">
+                    <span class="material-symbols-outlined text-2xl">bookmark_remove</span>
+                  </button>
+                </div>
+              }
+
+              @if (savedArticles().length === 0) {
+                <div class="bg-surface-container-low p-8 rounded-2xl shadow-sm border border-primary/5 text-center text-on-surface-variant py-20">
+                  <span class="material-symbols-outlined text-6xl text-primary/20 mb-4 block">bookmark</span>
+                  <p>قائمة المحفوظات فارغة حالياً.</p>
+                </div>
+              }
+            }
+          </section>
+        }
+
+        <!-- Tab: Settings (Edit Profile) -->
+        @if (activeTab() === 'الإعدادات') {
+          <form (submit)="updateProfile(); $event.preventDefault()" class="bg-surface-container-low p-8 rounded-2xl shadow-sm border border-primary/5 space-y-8">
+            <h3 class="text-xl font-headline font-bold text-primary mb-6">تعديل الملف الشخصي</h3>
+            
+            <div class="flex flex-col items-center mb-8 gap-4">
+              <div class="relative group">
+                <div class="w-32 h-32 rounded-full border-4 border-surface shadow-lg overflow-hidden bg-surface-container">
+                  <img class="w-full h-full object-cover" [src]="photoPreview || cleanUrl(userData.profilePhoto)">
+                </div>
+                <div (click)="photoInput.click()" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full cursor-pointer">
+                   <span class="material-symbols-outlined text-white text-3xl">add_a_photo</span>
+                </div>
               </div>
-              <div class="absolute -bottom-10 -right-10 opacity-10 group-hover:scale-110 transition-transform duration-700 text-white pointer-events-none">
-                <span class="material-symbols-outlined text-[12rem]">history_edu</span>
+              <input type="file" #photoInput (change)="onPhotoSelected($event)" accept="image/*" class="hidden">
+              <p class="text-[10px] text-on-surface-variant italic font-bold">انقر لتغيير الصورة الشخصية</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-2">
+                <label class="text-secondary text-sm font-bold block">الاسم الأول</label>
+                <input [(ngModel)]="editData.firstName" name="firstName" class="w-full bg-surface-container-high p-4 rounded-xl border-none focus:ring-2 focus:ring-secondary/20 outline-none text-primary font-medium" required>
+              </div>
+              <div class="space-y-2">
+                <label class="text-secondary text-sm font-bold block">اسم العائلة</label>
+                <input [(ngModel)]="editData.lastName" name="lastName" class="w-full bg-surface-container-high p-4 rounded-xl border-none focus:ring-2 focus:ring-secondary/20 outline-none text-primary font-medium" required>
               </div>
             </div>
             
-            <div class="bg-[#1a3324] text-white p-8 rounded-2xl flex flex-col justify-between h-56 relative overflow-hidden group shadow-md">
-              <div class="relative z-10">
-                <h3 class="text-xl font-bold mb-2">الكتاب الحالي</h3>
-                <p class="text-white/80 text-sm">مقدمة ابن خلدون - دراسة تحليلية</p>
-              </div>
-              <div class="relative z-10 space-y-2 mt-4">
-                <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                  <div class="bg-secondary w-3/4 h-full rounded-full"></div>
-                </div>
-                <span class="text-xs text-white/70">تمت قراءة 75%</span>
-              </div>
-              <div class="absolute -top-10 -left-10 opacity-10 group-hover:rotate-12 transition-transform duration-700 text-white pointer-events-none">
-                <span class="material-symbols-outlined text-[12rem]">menu_book</span>
-              </div>
+            <div class="space-y-2">
+              <label class="text-secondary text-sm font-bold block">اسم الكاتب المستعار</label>
+              <input [(ngModel)]="editData.authorName" name="authorName" class="w-full bg-surface-container-high p-4 rounded-xl border-none focus:ring-2 focus:ring-secondary/20 outline-none text-primary font-medium" placeholder="الاسم الذي سيظهر بجانب مقالاتك">
             </div>
-          </section>
+
+            <div class="space-y-2">
+              <label class="text-secondary text-sm font-bold block">نبذة تعريفية</label>
+              <textarea [(ngModel)]="editData.bio" name="bio" rows="4" class="w-full bg-surface-container-high p-6 rounded-xl border-none focus:ring-2 focus:ring-secondary/20 outline-none text-primary leading-relaxed resize-none" placeholder="أخبرنا قليلاً عن اهتماماتك..."></textarea>
+            </div>
+
+            <button type="submit" [disabled]="isSaving()" class="w-full bg-secondary text-white font-bold py-4 rounded-xl shadow-lg shadow-secondary/20 flex items-center justify-center gap-3 hover:opacity-90 disabled:opacity-50 transition-all">
+              @if (isSaving()) { <span class="material-symbols-outlined animate-spin">progress_activity</span> }
+              حفظ التعديلات
+            </button>
+
+            @if (successMessage()) {
+              <div class="p-4 bg-primary/10 text-primary rounded-xl text-center text-sm font-bold animate-in fade-in slide-in-from-top-2">
+                {{ successMessage() }}
+              </div>
+            }
+            @if (errorMessage()) {
+              <div class="p-4 bg-error/10 text-error rounded-xl text-center text-sm font-bold animate-in fade-in slide-in-from-top-2">
+                {{ errorMessage() }}
+              </div>
+            }
+          </form>
         }
-        
-        @if (activeTab() === 'مقالاتي') {
-          <div class="bg-surface-container-low p-8 rounded-2xl shadow-sm border border-primary/5 text-center text-on-surface-variant py-20">
-            <span class="material-symbols-outlined text-6xl text-primary/20 mb-4 block">article</span>
-            <p>لا توجد مقالات لعرضها حالياً.</p>
-          </div>
-        }
+
       </div>
 
+      <!-- Sidebar -->
       <aside class="lg:col-span-4 space-y-6">
         
         <div class="bg-surface-container-high p-8 rounded-2xl shadow-sm border border-primary/5">
           <h3 class="text-xl font-bold text-primary mb-6 flex items-center gap-2">
             <span class="material-symbols-outlined text-secondary">analytics</span>
-            إحصائيات القراءة
+            المساهمات والنشاط
           </h3>
           <div class="space-y-8">
-            @for (stat of stats(); track stat.label) {
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
-                  <span class="material-symbols-outlined">{{ stat.icon }}</span>
-                </div>
-                <div>
-                  <span class="block text-2xl font-extrabold text-primary">{{ stat.value }}</span>
-                  <span class="text-on-surface-variant text-sm">{{ stat.label }}</span>
-                </div>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">bookmark</span>
               </div>
-            }
+              <div class="text-right">
+                <span class="block text-2xl font-extrabold text-primary">{{ savedArticles().length }}</span>
+                <span class="text-on-surface-variant text-sm tracking-tight font-bold">مقالات محفوظة</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">history_edu</span>
+              </div>
+              <div class="text-right">
+                <span class="block text-2xl font-extrabold text-primary">0</span>
+                <span class="text-on-surface-variant text-sm tracking-tight font-bold">مقالات منشورة</span>
+              </div>
+            </div>
           </div>
           
           <div class="mt-10 pt-8 border-t border-outline-variant/30 text-center">
-            <p class="text-on-surface-variant text-xs mb-4">عضو في "تاريخ الشعوب" منذ {{ user()?.joinDate }}</p>
+            <p class="text-on-surface-variant text-xs mb-4">عضو في "تاريخ الشعوب" منذ عام 2024</p>
             <div class="flex justify-center gap-4">
-              <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary" title="عضو موثق">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
-              </div>
               <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary" title="حساب مفعل">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary" title="مساهم">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-surface p-6 rounded-2xl shadow-sm border border-primary/5">
-          <h4 class="text-sm font-bold text-secondary uppercase tracking-widest mb-4">الأوسمة الأكاديمية</h4>
-          <div class="flex flex-wrap gap-3">
-            @for (badge of badges(); track badge.label) {
-              <span class="px-3 py-1.5 bg-surface-container-high rounded-full text-xs font-medium text-on-surface-variant flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-primary">{{ badge.icon }}</span>
-                {{ badge.label }}
-              </span>
-            }
+        <div class="p-8 bg-linear-to-br from-primary to-primary-container rounded-3xl text-white relative overflow-hidden group shadow-2xl">
+          <div class="relative z-10">
+            <h4 class="text-xl font-bold mb-2">أخبار تهمك</h4>
+            <p class="text-white/70 text-xs leading-relaxed">كن جزءاً من حكاية "تاريخ الشعوب" وشاركنا أبحاثك التاريخية لتُخلَّد في مكتبتنا الرقمية.</p>
+            <button routerLink="/write-with-us" class="mt-6 px-4 py-2 bg-secondary text-on-secondary rounded-lg text-xs font-bold hover:scale-105 transition-transform">اكتب معنا الآن</button>
           </div>
+          <span class="material-symbols-outlined absolute -bottom-8 -left-8 text-[10rem] opacity-10 group-hover:rotate-12 transition-transform duration-700">history_edu</span>
         </div>
 
       </aside>

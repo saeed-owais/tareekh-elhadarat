@@ -1,10 +1,17 @@
 export interface UserProfile {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  bio: string;
-  coverUrl: string;
-  avatarUrl: string;
-  joinDate: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    userName: string;
+    authorName: string | null;
+    profilePhoto: string | null;
+    bio: string | null;
+}
+
+export interface SavedArticle {
+    id: number;
+    articleId: number;
+    title: string;
+    category: string;
 }

@@ -6,6 +6,9 @@ import { Article } from '../../core/models/article.model';
 import { Category } from '../../core/models/category.model';
 import { forkJoin, Subscription } from 'rxjs';
 
+import { AuthService } from '../../core/services/auth.service';
+import { ProfileService } from '../../core/services/profile.service';
+
 @Component({
   selector: 'app-articles',
   standalone: true,
@@ -16,6 +19,8 @@ import { forkJoin, Subscription } from 'rxjs';
 export class ArticlesComponent implements OnInit, OnDestroy {
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
+  private authService = inject(AuthService);
+  private profileService = inject(ProfileService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -23,12 +28,21 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   categories = signal<Category[]>([]);
   selectedCategoryId = signal<number | null>(null);
   isLoading = signal(true);
+  
+  // Favorites
+  savedArticleIds = signal<number[]>([]);
+  isLoggedIn = signal(false);
 
   @ViewChild('categorySlider') categorySlider!: ElementRef<HTMLDivElement>;
 
   private queryParamsSub!: Subscription;
 
   ngOnInit(): void {
+    this.isLoggedIn.set(this.authService.isLoggedIn());
+    if (this.isLoggedIn()) {
+      this.loadSavedArticles();
+    }
+
     this.categoryService.getCategories().subscribe({
       next: (cats) => {
         this.categories.set(cats.filter(c => c.isAvailable));
@@ -53,6 +67,35 @@ export class ArticlesComponent implements OnInit, OnDestroy {
         this.isLoading.set(false);
       }
     });
+  }
+
+  private loadSavedArticles(): void {
+    this.profileService.getSavedArticles().subscribe({
+      next: (articles) => {
+        this.savedArticleIds.set(articles.map(a => a.articleId));
+      }
+    });
+  }
+
+  toggleHeart(articleId: number, event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!this.isLoggedIn()) return;
+
+    if (this.savedArticleIds().includes(articleId)) {
+      this.profileService.removeSavedArticle(articleId).subscribe({
+        next: () => {
+          this.savedArticleIds.update(ids => ids.filter(id => id !== articleId));
+        }
+      });
+    } else {
+      this.profileService.saveArticle(articleId).subscribe({
+        next: () => {
+          this.savedArticleIds.update(ids => [...ids, articleId]);
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {

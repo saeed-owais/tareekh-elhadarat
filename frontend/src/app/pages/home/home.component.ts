@@ -5,6 +5,8 @@ import { CategoryService } from '../../core/services/category.service';
 import { BookService } from '../../core/services/book.service';
 import { AuthorService } from '../../core/services/author.service';
 import { SubscriberService } from '../../core/services/subscriber.service';
+import { AuthService } from '../../core/services/auth.service';
+import { ProfileService } from '../../core/services/profile.service';
 import { Article } from '../../core/models/article.model';
 import { Category } from '../../core/models/category.model';
 import { Book } from '../../core/models/book.model';
@@ -22,6 +24,8 @@ export class HomeComponent implements OnInit {
   private bookService = inject(BookService);
   private authorService = inject(AuthorService);
   private subscriberService = inject(SubscriberService);
+  private authService = inject(AuthService);
+  private profileService = inject(ProfileService);
 
   @ViewChild('categoriesSlider') categoriesSlider!: ElementRef<HTMLDivElement>;
 
@@ -31,6 +35,10 @@ export class HomeComponent implements OnInit {
   categories = signal<Category[]>([]);
   books = signal<Book[]>([]);
   authors = this.authorService.getAuthors();
+  
+  // Favorites
+  savedArticleIds = signal<number[]>([]);
+  isLoggedIn = signal(false);
 
   isLoadingArticles = signal(true);
 
@@ -42,11 +50,45 @@ export class HomeComponent implements OnInit {
   subscriptionSuccess = signal(false);
 
   ngOnInit(): void {
+    this.isLoggedIn.set(this.authService.isLoggedIn());
     this.loadCategories();
     this.loadSpecialArticle();
     this.loadNewestArticles();
     this.loadMostViewedArticles();
     this.loadBooks();
+    
+    if (this.isLoggedIn()) {
+      this.loadSavedArticles();
+    }
+  }
+
+  private loadSavedArticles(): void {
+    this.profileService.getSavedArticles().subscribe({
+      next: (articles) => {
+        this.savedArticleIds.set(articles.map(a => a.articleId));
+      }
+    });
+  }
+
+  toggleHeart(articleId: number, event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!this.isLoggedIn()) return;
+
+    if (this.savedArticleIds().includes(articleId)) {
+      this.profileService.removeSavedArticle(articleId).subscribe({
+        next: () => {
+          this.savedArticleIds.update(ids => ids.filter(id => id !== articleId));
+        }
+      });
+    } else {
+      this.profileService.saveArticle(articleId).subscribe({
+        next: () => {
+          this.savedArticleIds.update(ids => [...ids, articleId]);
+        }
+      });
+    }
   }
 
   private loadCategories(): void {

@@ -32,7 +32,7 @@
             <!-- Book Cover Container -->
             <a [routerLink]="['/books', book.id]" class="relative mb-6 block overflow-hidden rounded-2xl group cursor-pointer aspect-3/4 shadow-lg shadow-black/5 hover:shadow-2xl hover:shadow-secondary/10 transition-all duration-500 hover:-translate-y-2">
               <!-- Book Spine Decoration -->
-              <div class="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/20 to-transparent z-10 pointer-events-none"></div>
+              <div class="absolute top-0 right-0 bottom-0 w-4 bg-linear-to-l from-black/20 to-transparent z-10 pointer-events-none"></div>
               
               <img 
                 [src]="cleanUrl(book.poster) || 'assets/images/book-placeholder.jpg'" 
