@@ -115,6 +115,11 @@ export const routes: Routes = [
         title: 'تفاصيل المقال | لوحة التحكم'
       },
       {
+        path: 'categories-tags',
+        loadComponent: () => import('./pages/admin/categories-tags/categories-tags.component').then(m => m.CategoriesTagsComponent),
+        title: 'الفئات والوسوم | لوحة التحكم'
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
