@@ -1,0 +1,160 @@
+<!-- Main Books Management Area -->
+<main class="min-w-0 lg:mr-64 min-h-screen">
+
+    <div class="p-8 max-w-7xl mx-auto">
+        <!-- Page Header & Actions -->
+        <div class="flex flex-row-reverse justify-between items-end mb-10">
+            <div class="text-right">
+                <h2 class="text-3xl font-headline font-bold text-primary mb-2">إدارة الكتب والمؤلفات</h2>
+                <p class="text-on-surface-variant text-sm max-w-md leading-relaxed">تولَّ التحكم في مكتبتك الرقمية؛ أضف إصدارات جديدة، أو حدّث بيانات الإصدارات الحالية أو احذفها.</p>
+            </div>
+            <a routerLink="/admin/books/add"
+                class="bg-primary text-on-primary px-6 py-3 rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <span class="material-symbols-outlined" data-icon="library_add">library_add</span>
+                <span>إضافة كتاب جديد</span>
+            </a>
+        </div>
+
+        <!-- Search & Control Section -->
+        <div class="bg-surface-container-low p-6 rounded-xl mb-8 flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex gap-4 flex-1 min-w-[300px]">
+                <div class="relative flex-1 group">
+                    <span
+                        class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-secondary"
+                        data-icon="search">search</span>
+                    <input
+                        class="w-full pr-10 py-2.5 bg-surface-container-lowest border-none rounded-lg text-sm focus:ring-2 focus:ring-secondary/20 placeholder:text-outline-variant transition-all"
+                        placeholder="ابحث عن عنوان الكتاب أو المؤلف..." type="text" 
+                        (input)="onSearch($event)"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">الإجمالي: {{ totalItems() }} كتاب</span>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div
+            class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0_8px_40px_-12px_rgba(6,27,14,0.08)] border border-outline-variant/10">
+            <table class="w-full text-right border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-high/30 border-b border-outline-variant/10">
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider pr-10">الكتاب</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider text-right">المؤلف</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">عدد الصفحات</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">تاريخ الإصدار</th>
+                        <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/10 relative">
+                    @if (isLoading() && books().length === 0) {
+                      <div class="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-50 flex items-center justify-center p-12">
+                        <div class="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+                      </div>
+                    }
+
+                    @for (book of books(); track book.id) {
+                    <tr class="hover:bg-surface-container-low/30 transition-colors group relative">
+                        <td class="px-6 py-5">
+                            <a [routerLink]="['/books', book.id]" class="flex items-center gap-4 flex-row-reverse hover:opacity-80 transition-opacity">
+                                <div class="w-14 h-14 rounded-lg bg-surface-container overflow-hidden shrink-0 shadow-sm border border-outline-variant/10">
+                                    <img class="w-full h-full object-cover"
+                                        [src]="cleanUrl(book.poster) || 'assets/images/book-placeholder.jpg'" />
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-headline font-bold text-primary mb-0.5 max-w-[200px] line-clamp-1 italic">{{ book.title }}</div>
+                                    <div class="text-[10px] text-on-surface-variant line-clamp-2 max-w-[200px] leading-relaxed">{{ book.about }}</div>
+                                </div>
+                            </a>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span class="text-sm font-medium text-on-surface">{{ book.author }}</span>
+                        </td>
+                        <td class="px-6 py-5 text-sm text-on-surface-variant font-mono">{{ book.pageCount }}</td>
+                        <td class="px-6 py-5 text-xs text-on-surface-variant">{{ book.releaseDate | date: 'yyyy/MM/dd' }}</td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <a [href]="book.downloadLink" target="_blank" class="text-outline-variant hover:text-secondary transition-colors" title="تحميل الملف">
+                                    <span class="material-symbols-outlined text-xl" data-icon="download">download</span>
+                                </a>
+                                <button (click)="toggleDelete(book.id, $event)" class="text-outline-variant hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+                                </button>
+
+                                <!-- Confirm Delete Logic -->
+                                @if (confirmDeleteId() === book.id) {
+                                  <div class="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in" (click)="toggleDelete(book.id, $event)">
+                                    <div (click)="$event.stopPropagation()" class="bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-2xl shadow-2xl max-w-sm w-full animate-in zoom-in-95">
+                                      <div class="flex flex-col items-center text-center gap-4">
+                                        <div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center text-error mb-2">
+                                          <span class="material-symbols-outlined text-4xl">warning</span>
+                                        </div>
+                                        <h3 class="text-xl font-headline font-bold text-primary">تأكيد حذف الكتاب</h3>
+                                        <p class="text-on-surface-variant leading-relaxed">
+                                          هل أنت متأكد من حذف هذا الكتاب؟ <br> 
+                                          <span class="font-bold text-error">"{{ book.title }}"</span>
+                                        </p>
+                                        <div class="flex gap-3 w-full mt-4">
+                                          <button (click)="confirmDelete(book.id)" class="flex-1 bg-error text-white font-bold py-3 rounded-xl shadow-lg hover:bg-error/90 transition-all">نعم، احذف</button>
+                                          <button (click)="toggleDelete(book.id, $event)" class="flex-1 bg-surface-container-high text-on-surface font-bold py-3 rounded-xl">إلغاء</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    }
+
+                    @if (books().length === 0 && !isLoading()) {
+                      <tr>
+                        <td colspan="5" class="px-6 py-20 text-center text-on-surface-variant/50 italic">لا توجد كتب لعرضها حالياً. ابدأ بإضافة كتابك الأول!</td>
+                      </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Pagination Area -->
+            <div class="px-6 py-6 bg-surface-container/20 flex flex-row-reverse items-center justify-between">
+                <span class="text-xs text-on-surface-variant font-medium">عرض {{(pageNumber()-1)*pageSize()+1}} - {{pageNumber()*pageSize() > totalItems() ? totalItems() : pageNumber()*pageSize()}} من أصل {{totalItems()}} كتاب</span>
+                <div class="flex gap-2">
+                    <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
+                        class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors disabled:opacity-30">
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+                    </button>
+                    
+                    @for (page of [].constructor(totalPages()); track $index) {
+                      <button (click)="onPageChange($index + 1)"
+                          class="w-8 h-8 flex items-center justify-center rounded text-xs font-bold transition-all"
+                          [class]="$index + 1 === pageNumber() ? 'bg-secondary text-white shadow-md' : 'border border-outline-variant/30 text-on-surface hover:bg-surface-container'">
+                          {{ $index + 1 }}
+                      </button>
+                    }
+
+                    <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
+                        class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors disabled:opacity-30">
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        @if (errorMessage()) {
+          <div class="mt-6 p-4 bg-error/10 text-error rounded-xl text-center text-sm font-bold border border-error/10 flex items-center justify-center gap-2 flex-row-reverse">
+            <span class="material-symbols-outlined">error</span>
+            {{ errorMessage() }}
+          </div>
+        }
+    </div>
+</main>
+
+<!-- Floating Success Toast -->
+@if (successMessage()) {
+  <div class="fixed bottom-8 right-8 z-100 bg-primary text-on-primary px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-5">
+      <span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
+      <div class="text-sm font-bold">{{ successMessage() }}</div>
+      <button (click)="successMessage.set('')" class="material-symbols-outlined text-white/50 hover:text-white transition-colors text-lg"
+          data-icon="close">close</button>
+  </div>
+}

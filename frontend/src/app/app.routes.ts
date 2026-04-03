@@ -29,6 +29,11 @@ export const routes: Routes = [
         title: 'الكتب | تاريخ الشعوب'
       },
       {
+        path: 'books/:id',
+        loadComponent: () => import('./pages/book-detail/book-detail.component').then(m => m.BookDetailComponent),
+        title: 'تفاصيل الكتاب | تاريخ الشعوب'
+      },
+      {
         path: 'about',
         loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
         title: 'من نحن | تاريخ الشعوب'
@@ -118,6 +123,16 @@ export const routes: Routes = [
         path: 'categories-tags',
         loadComponent: () => import('./pages/admin/categories-tags/categories-tags.component').then(m => m.CategoriesTagsComponent),
         title: 'الفئات والوسوم | لوحة التحكم'
+      },
+      {
+        path: 'books',
+        loadComponent: () => import('./pages/admin/books-manage/books-manage.component').then(m => m.BooksManageComponent),
+        title: 'إدارة الكتب | لوحة التحكم'
+      },
+      {
+        path: 'books/add',
+        loadComponent: () => import('./pages/admin/book-add/book-add.component').then(m => m.BookAddComponent),
+        title: 'إضافة كتاب جديد | لوحة التحكم'
       },
       {
         path: '',

@@ -201,25 +201,27 @@
       </a>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-      @for (book of books; track book.id) {
+      @for (book of books(); track book.id) {
         <div class="text-center group">
-          <div class="bg-surface-container-high aspect-[2/3] mb-6 rounded shadow-lg overflow-hidden relative transform group-hover:-translate-y-2 transition-transform duration-500">
-            <img loading="lazy"
-                 [alt]="book.title"
-                 class="w-full h-full object-cover"
-                 [src]="book.coverImage">
-            <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-              <button class="bg-secondary text-on-secondary px-6 py-3 rounded-full font-label text-sm flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">download</span>
-                PDF
-              </button>
+          <a [routerLink]="['/books', book.id]" class="block relative group transition-transform duration-500 hover:-translate-y-2">
+            <div class="bg-surface-container-high aspect-[2/3] mb-6 rounded shadow-lg overflow-hidden relative">
+              <img loading="lazy"
+                  [alt]="book.title"
+                  class="w-full h-full object-cover"
+                  [src]="book.poster">
+              <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                <div class="bg-secondary text-on-secondary px-6 py-3 rounded-full font-label text-sm flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm">visibility</span>
+                  عرض التفاصيل
+                </div>
+              </div>
             </div>
-          </div>
-          <h3 class="text-xl font-headline font-bold mb-2">{{ book.title }}</h3>
-          <p class="text-sm text-on-surface-variant font-label mb-4">{{ book.authorName }}</p>
-          <button class="w-full py-3 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all rounded font-label text-sm">
+            <h3 class="text-xl font-headline font-bold mb-2 group-hover:text-secondary transition-colors">{{ book.title }}</h3>
+          </a>
+          <p class="text-sm text-on-surface-variant font-label mb-4">{{ book.author }}</p>
+          <a [href]="book.downloadLink" target="_blank" class="block w-full py-3 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all rounded font-label text-sm text-center">
             تحميل النسخة الرقمية (PDF)
-          </button>
+          </a>
         </div>
       }
     </div>

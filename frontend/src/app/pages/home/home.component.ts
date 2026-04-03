@@ -7,6 +7,7 @@ import { AuthorService } from '../../core/services/author.service';
 import { SubscriberService } from '../../core/services/subscriber.service';
 import { Article } from '../../core/models/article.model';
 import { Category } from '../../core/models/category.model';
+import { Book } from '../../core/models/book.model';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit {
   latestArticles = signal<Article[]>([]);
   popularArticles = signal<Article[]>([]);
   categories = signal<Category[]>([]);
-  books = this.bookService.getBooks();
+  books = signal<Book[]>([]);
   authors = this.authorService.getAuthors();
 
   isLoadingArticles = signal(true);
@@ -45,6 +46,7 @@ export class HomeComponent implements OnInit {
     this.loadSpecialArticle();
     this.loadNewestArticles();
     this.loadMostViewedArticles();
+    this.loadBooks();
   }
 
   private loadCategories(): void {
@@ -82,6 +84,14 @@ export class HomeComponent implements OnInit {
     this.articleService.getMostViewedArticles().subscribe({
       next: (articles) => {
         this.popularArticles.set(articles);
+      }
+    });
+  }
+
+  private loadBooks(): void {
+    this.bookService.getBooksUser(1, 4).subscribe({
+      next: (response) => {
+        this.books.set(response.data);
       }
     });
   }

@@ -1,37 +1,120 @@
-<main class="pt-28 pb-20">
-  <div class="container mx-auto px-8">
-    <!-- Page Header -->
-    <div class="text-center mb-16">
-      <h1 class="text-5xl font-headline font-bold text-primary mb-4">إصداراتنا</h1>
-      <p class="text-xl text-on-surface-variant font-body max-w-2xl mx-auto">
-        مكتبة رقمية تضم مجموعة مختارة من الكتب والدراسات في الفكر والتاريخ والفلسفة.
-      </p>
+<!-- Public Books Library -->
+<div class="min-h-screen bg-surface-container-lowest pb-32 overflow-hidden relative">
+
+  <!-- Background Art -->
+  <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-secondary/5 rounded-full blur-[150px] -mr-60 -mt-60 pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -ml-40 -mb-40 pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-40 relative z-10">
+    
+    <!-- Hero Header -->
+    <div class="text-center mb-20 max-w-3xl mx-auto">
+      <span class="text-xs font-bold text-secondary uppercase tracking-[0.3em] mb-4 block animate-in slide-in-from-bottom-2">المكتبة الرقمية</span>
+      <h1 class="text-5xl md:text-6xl font-headline font-bold text-primary mb-6 animate-in slide-in-from-bottom-3">كنوز المعرفة والمراجع</h1>
+      <p class="text-on-surface-variant text-lg leading-relaxed animate-in slide-in-from-bottom-4">مجموعة مختارة من أقيم الكتب والمخطوطات التاريخية التي توثق مسيرات الشعوب وحضارات العالم.</p>
     </div>
 
-    <!-- Books Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 max-w-6xl mx-auto">
-      @for (book of books; track book.id) {
-        <div class="text-center group">
-          <div class="bg-surface-container-high aspect-[2/3] mb-6 rounded shadow-lg overflow-hidden relative transform group-hover:-translate-y-2 transition-transform duration-500">
-            <img loading="lazy"
-                 [alt]="book.title"
-                 class="w-full h-full object-cover"
-                 [src]="book.coverImage">
-            <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-              <button class="bg-secondary text-on-secondary px-6 py-3 rounded-full font-label text-sm flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">download</span>
-                PDF
-              </button>
+    <!-- Grid Container -->
+    <div class="relative min-h-[400px]">
+      
+      <!-- Loader Overlay -->
+      @if (isLoading()) {
+        <div class="absolute inset-x-0 top-0 pt-20 flex flex-col items-center justify-center gap-6 z-20">
+          <div class="w-16 h-16 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+          <p class="text-on-surface-variant text-sm font-medium italic">جاري جلب الكتب من الأرشيف...</p>
+        </div>
+      }
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16 transition-all" [class.opacity-40]="isLoading()">
+        
+        @for (book of books(); track book.id) {
+          <div class="flex flex-col group h-full">
+            <!-- Book Cover Container -->
+            <a [routerLink]="['/books', book.id]" class="relative mb-6 block overflow-hidden rounded-2xl group cursor-pointer aspect-3/4 shadow-lg shadow-black/5 hover:shadow-2xl hover:shadow-secondary/10 transition-all duration-500 hover:-translate-y-2">
+              <!-- Book Spine Decoration -->
+              <div class="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/20 to-transparent z-10 pointer-events-none"></div>
+              
+              <img 
+                [src]="cleanUrl(book.poster) || 'assets/images/book-placeholder.jpg'" 
+                [alt]="book.title"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-[#061B0E]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center p-6 text-center">
+                <span class="material-symbols-outlined text-white text-5xl mb-4 group-hover:scale-110 transition-transform">menu_book</span>
+                <p class="text-white font-bold text-sm leading-relaxed">قراءة المزيد وتحميل النسخة الإلكترونية</p>
+              </div>
+            </a>
+
+            <!-- Book Meta -->
+            <div class="text-right flex flex-col flex-1">
+              <a [routerLink]="['/books', book.id]" class="text-xl font-headline font-bold text-primary mb-2 line-clamp-1 hover:text-secondary transition-colors cursor-pointer">
+                {{ book.title }}
+              </a>
+              <div class="flex flex-row-reverse items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-[14px] text-secondary">person</span>
+                <span class="text-xs font-bold text-on-surface-variant italic">{{ book.author }}</span>
+              </div>
+              
+              <p class="text-xs text-outline leading-relaxed line-clamp-2 mb-6 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                {{ book.about }}
+              </p>
+
+              <!-- Footer CTA -->
+              <div class="mt-auto flex flex-row-reverse items-center justify-between pt-4 border-t border-outline-variant/10">
+                <span class="text-[10px] font-bold text-outline-variant tracking-wider uppercase">{{ book.pageCount }} صفحة</span>
+                <a [routerLink]="['/books', book.id]" class="text-xs font-bold text-secondary flex items-center gap-1 group/btn hover:opacity-80 transition-opacity">
+                  <span class="material-symbols-outlined text-base group-hover/btn:-translate-x-1 transition-transform">arrow_back</span>
+                  التفاصيل
+                </a>
+              </div>
             </div>
           </div>
-          <h3 class="text-xl font-headline font-bold mb-2">{{ book.title }}</h3>
-          <p class="text-sm text-on-surface-variant font-label mb-2">{{ book.authorName }}</p>
-          <p class="text-sm text-on-surface-variant/70 font-body mb-4 line-clamp-2">{{ book.description }}</p>
-          <button class="w-full py-3 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all rounded font-label text-sm">
-            تحميل النسخة الرقمية (PDF)
-          </button>
+        }
+
+      </div>
+      
+      <!-- Empty State -->
+      @if (books().length === 0 && !isLoading()) {
+        <div class="py-40 text-center flex flex-col items-center gap-6 max-w-sm mx-auto">
+          <div class="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center text-outline-variant">
+            <span class="material-symbols-outlined text-5xl">auto_stories</span>
+          </div>
+          <div class="text-center">
+            <h3 class="text-2xl font-headline font-bold text-primary mb-2">لا توجد كتب حالياً</h3>
+            <p class="text-on-surface-variant text-sm">لم يتم العثور على أي كتب في القسم المحدد. حاول لاحقاً!</p>
+          </div>
         </div>
       }
     </div>
+
+    <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="mt-24 flex flex-row-reverse items-center justify-center gap-2">
+        <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
+          class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant/30 text-primary hover:bg-secondary hover:text-white transition-all disabled:opacity-20 disabled:pointer-events-none">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+
+        @for (page of [].constructor(totalPages()); track $index) {
+          <button (click)="onPageChange($index + 1)"
+            class="w-12 h-12 flex items-center justify-center rounded-full text-sm font-bold transition-all"
+            [class]="$index + 1 === pageNumber() ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-110' : 'text-on-surface-variant hover:bg-surface-container'">
+            {{ $index + 1 }}
+          </button>
+        }
+
+        <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
+          class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant/30 text-primary hover:bg-secondary hover:text-white transition-all disabled:opacity-20 disabled:pointer-events-none">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div class="mt-12 p-6 bg-error/5 border border-error/10 text-error rounded-3xl text-center font-bold">
+        {{ errorMessage() }}
+      </div>
+    }
   </div>
-</main>
+</div>

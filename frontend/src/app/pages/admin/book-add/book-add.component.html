@@ -1,0 +1,132 @@
+<!-- Add Book Form Area -->
+<main class="min-w-0 lg:mr-64 min-h-screen">
+  <div class="p-8 max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="flex flex-row-reverse justify-between items-end mb-10">
+      <div class="text-right">
+        <h2 class="text-3xl font-headline font-bold text-primary mb-2">إضافة إصدار جديد</h2>
+        <p class="text-on-surface-variant text-sm max-w-md leading-relaxed">املأ بيانات الكتاب وارفع الملفات المطلوبة لإثراء مكتبة "تاريخ الشعوب".</p>
+      </div>
+      <button (click)="router.navigate(['/admin/books'])" 
+        class="bg-surface-container-high text-on-surface px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-surface-variant transition-colors font-bold">
+        <span class="material-symbols-outlined">arrow_forward</span>
+        العودة للقائمة
+      </button>
+    </div>
+
+    <!-- Form Section -->
+    <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-8 pb-20">
+      
+      <!-- Grid Layout for Inputs -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-surface-container-low p-8 rounded-2xl border border-outline-variant/20 shadow-sm shadow-black/5">
+        
+        <!-- Field: Title -->
+        <div class="flex flex-col items-end gap-2">
+          <label class="text-sm font-bold text-primary flex items-center gap-1.5 flex-row-reverse">
+            <span class="material-symbols-outlined text-base">title</span>
+            عنوان الكتاب
+          </label>
+          <input [(ngModel)]="title" name="title" dir="rtl" class="w-full px-5 py-3.5 bg-white border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all placeholder:text-outline-variant/40 outline-none" required placeholder="مثال: تاريخ الحضارة الآشورية">
+        </div>
+
+        <!-- Field: Author -->
+        <div class="flex flex-col items-end gap-2">
+          <label class="text-sm font-bold text-primary flex items-center gap-1.5 flex-row-reverse">
+            <span class="material-symbols-outlined text-base">person</span>
+            اسم المؤلف
+          </label>
+          <input [(ngModel)]="author" name="author" dir="rtl" class="w-full px-5 py-3.5 bg-white border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all placeholder:text-outline-variant/40 outline-none" required placeholder="اسم المؤلف الكامل">
+        </div>
+
+        <!-- Field: PageCount -->
+        <div class="flex flex-col items-end gap-2">
+          <label class="text-sm font-bold text-primary flex items-center gap-1.5 flex-row-reverse">
+            <span class="material-symbols-outlined text-base">format_list_numbered</span>
+            عدد الصفحات
+          </label>
+          <input type="number" [(ngModel)]="pageCount" name="pageCount" dir="rtl" class="w-full px-5 py-3.5 bg-white border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all placeholder:text-outline-variant/40 outline-none" required placeholder="مثال: 320">
+        </div>
+
+        <!-- Field: ReleaseDate -->
+        <div class="flex flex-col items-end gap-2">
+          <label class="text-sm font-bold text-primary flex items-center gap-1.5 flex-row-reverse">
+            <span class="material-symbols-outlined text-base">calendar_today</span>
+            تاريخ الإصدار
+          </label>
+          <input type="date" [(ngModel)]="releaseDate" name="releaseDate" dir="rtl" class="w-full px-5 py-3.5 bg-white border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none" required>
+        </div>
+
+        <!-- Field: About -->
+        <div class="flex flex-col items-end gap-2 md:col-span-2">
+          <label class="text-sm font-bold text-primary flex items-center gap-1.5 flex-row-reverse">
+            <span class="material-symbols-outlined text-base">description</span>
+            عن الكتاب (نبذة)
+          </label>
+          <textarea [(ngModel)]="about" name="about" dir="rtl" rows="5" class="w-full px-5 py-4 bg-white border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all placeholder:text-outline-variant/40 outline-none resize-none" required placeholder="اكتب ملخصاً جذاباً لمحتوى الكتاب..."></textarea>
+        </div>
+      </div>
+
+      <!-- File Uploads Area -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-row-reverse">
+        
+        <!-- Poster Upload -->
+        <div class="flex flex-col items-end gap-3 p-8 border-2 border-dashed border-outline-variant/30 rounded-3xl bg-surface-container-high/20 hover:bg-surface-container-high/40 transition-colors group relative cursor-pointer overflow-hidden">
+          <label class="text-sm font-bold text-primary mb-2">غلاف الكتاب (Poster)</label>
+          <div (click)="posterInput.click()" class="flex flex-col items-center justify-center w-full min-h-[220px] gap-4">
+            @if (posterPreview()) {
+              <img [src]="posterPreview()" class="absolute inset-0 w-full h-full object-contain p-2 bg-white/50 backdrop-blur" />
+            } @else {
+              <span class="material-symbols-outlined text-6xl text-outline-variant group-hover:text-secondary group-hover:scale-110 transition-all duration-300">image</span>
+              <div class="text-center">
+                <p class="text-xs font-bold text-on-surface-variant italic mb-1">انقر لاختيار الغلاف</p>
+                <p class="text-[10px] text-outline-variant">يُفضل أبعاد طولية للغلاف</p>
+              </div>
+            }
+          </div>
+          <input type="file" #posterInput (change)="onPosterSelected($event)" accept="image/*" class="hidden">
+        </div>
+
+        <!-- Book File Upload -->
+        <div class="flex flex-col justify-center items-end gap-3 p-8 border-2 border-dashed border-outline-variant/30 rounded-3xl bg-surface-container-high/20 hover:bg-surface-container-high/40 transition-colors group cursor-pointer relative">
+          <label class="text-sm font-bold text-primary mb-2">ملف الكتاب (PDF)</label>
+          <div (click)="bookInput.click()" class="flex flex-col items-center justify-center w-full min-h-[220px] gap-4">
+            @if (bookFile()) {
+              <span class="material-symbols-outlined text-6xl text-secondary animate-bounce">picture_as_pdf</span>
+              <p class="text-sm font-bold text-primary">{{ bookFile()?.name }}</p>
+            } @else {
+              <span class="material-symbols-outlined text-6xl text-outline-variant group-hover:text-secondary group-hover:scale-110 transition-all duration-300">file_upload</span>
+              <div class="text-center text-on-surface-variant">
+                <p class="text-xs font-bold italic mb-1">ارفع ملف الكتاب بصيغة PDF</p>
+                <p class="text-[10px] text-outline-variant">المساحة القصوى المسموحة 50 ميجابايت</p>
+              </div>
+            }
+          </div>
+          <input type="file" #bookInput (change)="onBookFileSelected($event)" accept=".pdf,.epub" class="hidden">
+        </div>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 pt-10">
+        <button type="submit" [disabled]="isLoading()"
+          class="flex-1 bg-secondary text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-secondary/20 hover:shadow-secondary/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3 text-lg">
+          @if (isLoading()) { <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> }
+          إضافة الكتاب ونقله للمكتبة
+        </button>
+      </div>
+
+      <!-- Messages -->
+      @if (errorMessage()) {
+        <div class="p-4 bg-error/10 text-error rounded-xl text-center text-sm font-bold border border-error/10 animate-in slide-in-from-top-4">
+          {{ errorMessage() }}
+        </div>
+      }
+      @if (successMessage()) {
+        <div class="p-4 bg-primary/10 text-primary rounded-xl text-center text-sm font-bold border border-primary/10 animate-in slide-in-from-top-4">
+          {{ successMessage() }}
+        </div>
+      }
+
+    </form>
+  </div>
+</main>
