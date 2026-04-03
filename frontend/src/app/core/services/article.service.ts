@@ -128,6 +128,93 @@ export class ArticleService {
             })
         );
     }
+    // ================= ADD ARTICLE (ADMIN) =================
+    addArticleAdmin(
+        title: string,
+        authorName: string,
+        content: string,
+        image: File | null,
+        categoryId: number | null,
+        articleTagsIds: number[],
+        isPublished: boolean
+    ): Observable<any> {
+        const formData = new FormData();
+        formData.append('Title', title);
+        formData.append('AuthorName', authorName);
+        formData.append('Content', content);
+        if (image) formData.append('Image', image, image.name);
+        if (categoryId) formData.append('CategoryId', categoryId.toString());
+        formData.append('IsPublished', isPublished.toString());
+
+        articleTagsIds.forEach(tagId => {
+            formData.append('ArticleTagsIds', tagId.toString());
+        });
+
+        return this.http.post(`${this.apiUrl}/Add-Article-Admin`, formData, {
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            catchError(err => {
+                const message = err.error?.message || 'فشل إضافة المقال';
+                return throwError(() => message);
+            })
+        );
+    }
+
+    // ================= EDIT ARTICLE (ADMIN) =================
+    editArticleAdmin(
+        id: number,
+        title: string,
+        authorName: string,
+        content: string,
+        image: File | null,
+        categoryId: number | null,
+        articleTagsIds: number[],
+        isPublished: boolean
+    ): Observable<any> {
+        const formData = new FormData();
+        formData.append('Id', id.toString());
+        formData.append('Title', title);
+        formData.append('AuthorName', authorName);
+        formData.append('Content', content);
+        if (image) formData.append('Image', image, image.name);
+        if (categoryId) formData.append('CategoryId', categoryId.toString());
+        formData.append('IsPublished', isPublished.toString());
+
+        articleTagsIds.forEach(tagId => {
+            formData.append('ArticleTagsIds', tagId.toString());
+        });
+
+        return this.http.post(`${this.apiUrl}/Edit-Article-Admin`, formData, {
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            catchError(err => {
+                const message = err.error?.message || 'فشل تعديل المقال';
+                return throwError(() => message);
+            })
+        );
+    }
+
+    // ================= LOAD ARTICLE (ADMIN) =================
+    loadArticleAdmin(id: number): Observable<AdminArticle> {
+        return this.http.get<PaginatedResponse<AdminArticle>>(`${this.apiUrl}/Get-All-Articles-Admin`, {
+            headers: {
+                'Authorization': `Bearer ${this.tokenService.getToken()}`
+            }
+        }).pipe(
+            map(response => {
+                return response.data.find(a => a.id === id) || ({} as AdminArticle);
+            }),
+            map(article => this.cleanAdminArticle(article)),
+            catchError(err => {
+                return throwError(() => 'فشل تحميل المقال');
+            })
+        );
+    }
+
     // ================= GET ALL ARTICLES (ADMIN) =================
     getAllArticlesAdmin(pageNumber: number = 1, pageSize: number = 10): Observable<PaginatedResponse<AdminArticle>> {
         return this.http.get<PaginatedResponse<AdminArticle>>(`${this.apiUrl}/Get-All-Articles-Admin`, {

@@ -1,4 +1,9 @@
-<main class="min-w-0 lg:mr-64 min-h-screen">
+<main class="min-w-0 lg:mr-64 min-h-screen relative">
+  @if (isLoading()) {
+    <div class="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center p-12">
+      <div class="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+    </div>
+  }
   <div class="p-8 max-w-5xl mx-auto">
     <!-- Header -->
     <div class="flex items-center gap-4 mb-8 flex-row-reverse justify-end">
@@ -19,6 +24,14 @@
       </div>
     }
 
+    <!-- Error Message -->
+    @if (errorMessage()) {
+      <div class="mb-6 bg-error/10 text-error p-4 rounded-xl flex items-center gap-3 animate-fade-in border border-error/20">
+        <span class="material-symbols-outlined">error</span>
+        <p class="font-bold">{{ errorMessage() }}</p>
+      </div>
+    }
+
     <!-- Form -->
     <form class="space-y-8" (submit)="onSubmit($event)">
       <!-- Settings Panel (Admin specific) -->
@@ -34,10 +47,6 @@
               <span class="font-medium text-sm">منشور</span>
             </label>
             <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
-              <input type="radio" name="status" [(ngModel)]="status" value="draft" class="text-secondary w-4 h-4" />
-              <span class="font-medium text-sm">مسودة</span>
-            </label>
-            <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
               <input type="radio" name="status" [(ngModel)]="status" value="pending" class="text-secondary w-4 h-4" />
               <span class="font-medium text-sm">معلق للمراجعة</span>
             </label>
@@ -45,12 +54,20 @@
         </div>
       </div>
 
-      <!-- Title & Category Row -->
+      <!-- Article Info Row -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <label class="block font-label font-bold text-sm mb-2">عنوان المقال <span class="text-error">*</span></label>
           <input type="text" [(ngModel)]="title" name="title" required class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right" placeholder="العنوان..." />
         </div>
+        <div>
+          <label class="block font-label font-bold text-sm mb-2">اسم المؤلف <span class="text-error">*</span></label>
+          <input type="text" [(ngModel)]="authorName" name="authorName" required class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right" placeholder="اسم الكاتب..." />
+        </div>
+      </div>
+
+      <!-- Category & Image Row (Adjusted) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="category-dropdown relative">
           <label class="block font-label font-bold text-sm mb-2">التصنيف <span class="text-error">*</span></label>
           <button type="button" (click)="toggleCategoryDropdown($event)" class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right flex justify-between items-center">

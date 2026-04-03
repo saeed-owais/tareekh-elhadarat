@@ -1,7 +1,12 @@
-import { Component, OnInit, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { CategoryService } from '../../../core/services/category.service';
+import { TagService } from '../../../core/services/tag.service';
+import { ArticleService } from '../../../core/services/article.service';
+import { Category } from '../../../core/models/category.model';
+import { Tag } from '../../../core/models/tag.model';
 
 declare const Quill: any;
 
@@ -12,11 +17,17 @@ declare const Quill: any;
   templateUrl: './article-add.component.html'
 })
 export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestroy {
+  private router = inject(Router);
+  private articleService = inject(ArticleService);
+  private categoryService = inject(CategoryService);
+  private tagService = inject(TagService);
+
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
   title = signal('');
+  authorName = signal('');
   categoryId = signal<number | null>(null);
-  status = signal('draft');
+  status = signal('published');
   isSubmitting = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
@@ -25,23 +36,28 @@ export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestro
 
   isCategoryDropdownOpen = signal(false);
 
-  categories = signal([
-    { id: 1, name: 'حضارات قديمة' },
-    { id: 2, name: 'العصور الوسطى' },
-    { id: 3, name: 'تاريخ الفن' }
-  ]);
-
-  tags = signal([
-    { id: 1, name: 'مصر القديمة' },
-    { id: 2, name: 'لغات قديمة' },
-    { id: 3, name: 'نقوش' }
-  ]);
+  categories = signal<Category[]>([]);
+  tags = signal<Tag[]>([]);
   selectedTagIds = signal<number[]>([]);
 
   private quillEditor: any = null;
   private quillLoaded = false;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadMetadata();
+  }
+
+  loadMetadata() {
+    this.categoryService.getCategories().subscribe({
+      next: (data) => this.categories.set(data),
+      error: (err) => console.error(err)
+    });
+    
+    this.tagService.getTags().subscribe({
+      next: (data) => this.tags.set(data),
+      error: (err) => console.error(err)
+    });
+  }
 
   ngAfterViewInit(): void {
     this.loadQuill();
@@ -137,12 +153,38 @@ export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestro
 
   onSubmit(event: Event): void {
     event.preventDefault();
+    if (this.isSubmitting()) return;
+    
+    if (!this.title() || !this.authorName() || !this.getContent() || !this.imageFile()) {
+        this.errorMessage.set('يرجى إكمال جميع الحقول المطلوبة والصورة');
+        return;
+    }
+
     this.isSubmitting.set(true);
-    // Mock save
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.successMessage.set('تمت إضافة المقال بنجاح!');
-      setTimeout(() => this.successMessage.set(''), 3000);
-    }, 1500);
+    this.errorMessage.set('');
+
+    this.articleService.addArticleAdmin(
+        this.title(),
+        this.authorName(),
+        this.getContent(),
+        this.imageFile(),
+        this.categoryId(),
+        this.selectedTagIds(),
+        this.status() === 'published'
+    ).subscribe({
+      next: (res) => {
+        console.log("res",res);
+        
+        this.isSubmitting.set(false);
+        this.successMessage.set('تمت إضافة المقال بنجاح!');
+        setTimeout(() => {
+            this.router.navigate(['/admin/articles']);
+        }, 2000);
+      },
+      error: (err) => {
+        this.isSubmitting.set(false);
+        this.errorMessage.set(err);
+      }
+    });
   }
 }

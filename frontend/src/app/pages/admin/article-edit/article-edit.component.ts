@@ -1,7 +1,13 @@
-import { Component, OnInit, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { CategoryService } from '../../../core/services/category.service';
+import { TagService } from '../../../core/services/tag.service';
+import { ArticleService } from '../../../core/services/article.service';
+import { Category } from '../../../core/models/category.model';
+import { Tag } from '../../../core/models/tag.model';
+import { AdminArticle } from '../../../core/models/article.model';
 
 declare const Quill: any;
 
@@ -12,37 +18,75 @@ declare const Quill: any;
   templateUrl: './article-edit.component.html'
 })
 export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private articleService = inject(ArticleService);
+  private categoryService = inject(CategoryService);
+  private tagService = inject(TagService);
+
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
-  // Mock Data for UI
-  title = signal('أسرار الهيروغليفية في عصر الدولة الحديثة');
-  categoryId = signal<number | null>(1);
+  articleId = signal<number | null>(null);
+  title = signal('');
+  authorName = signal('');
+  categoryId = signal<number | null>(null);
   status = signal('published');
   isSubmitting = signal(false);
+  isLoading = signal(true);
   errorMessage = signal('');
   successMessage = signal('');
-  imagePreviewUrl = signal<string | null>('https://lh3.googleusercontent.com/aida-public/AB6AXuA5Hm_QMOAAjUq68FfsmSksMDq5rA9YXGdu_zMftj1n9SWshR46Q8SuaEUFMoFhEMZolsCbzhADepGLSdZRH5XQ1Z9CxA6IbLtaZ_hZij09HcbjJ54i-J-V5-s0lljF_g54iUbrYunsEtEcNPosop5775-5DkH4tuEVsAlV1oLuf_ZvBe98cOy5DDe9kLt0eggJPrMZVSz18s6YrO9_t_-nxIAIIaWvyEj7tI-Bb2uxUln_gytgFKXENhqmuX1jCelY7xkYsSaV9ImF');
+  imagePreviewUrl = signal<string | null>(null);
   imageFile = signal<File | null>(null);
 
   isCategoryDropdownOpen = signal(false);
 
-  categories = signal([
-    { id: 1, name: 'حضارات قديمة' },
-    { id: 2, name: 'العصور الوسطى' },
-    { id: 3, name: 'تاريخ الفن' }
-  ]);
-
-  tags = signal([
-    { id: 1, name: 'مصر القديمة' },
-    { id: 2, name: 'لغات قديمة' },
-    { id: 3, name: 'نقوش' }
-  ]);
+  categories = signal<Category[]>([]);
+  tags = signal<Tag[]>([]);
   selectedTagIds = signal<number[]>([1, 2]);
 
   private quillEditor: any = null;
   private quillLoaded = false;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.articleId.set(Number(this.route.snapshot.paramMap.get('id')));
+    this.loadMetadata();
+    if (this.articleId()) {
+      this.loadArticle(this.articleId()!);
+    }
+  }
+
+  loadArticle(id: number) {
+    this.isLoading.set(true);
+    this.articleService.loadArticleAdmin(id).subscribe({
+      next: (article) => {
+        this.title.set(article.title);
+        this.authorName.set(article.authorName);
+        this.categoryId.set(null); // API might not have categoryId, we'll need to figure that out
+        this.status.set(article.isPublished ? 'published' : 'pending');
+        this.imagePreviewUrl.set(article.imageUrl);
+        
+        if (this.quillEditor) {
+          this.quillEditor.clipboard.dangerouslyPasteHTML(article.content);
+        }
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  loadMetadata() {
+    this.categoryService.getCategories().subscribe({
+      next: (data) => this.categories.set(data),
+      error: (err) => console.error(err)
+    });
+    
+    this.tagService.getTags().subscribe({
+      next: (data) => this.tags.set(data),
+      error: (err) => console.error(err)
+    });
+  }
 
   ngAfterViewInit(): void {
     this.loadQuill();
@@ -100,6 +144,10 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
     return this.selectedTagIds().includes(tagId);
   }
 
+  getContent(): string {
+    return this.quillEditor ? this.quillEditor.root.innerHTML : '';
+  }
+
   private loadQuill(): void {
     if (this.quillLoaded) {
       this.initQuill();
@@ -130,19 +178,50 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
       this.quillEditor.format('direction', 'rtl');
       this.quillEditor.format('align', 'right');
       
-      // Mock content
-      this.quillEditor.clipboard.dangerouslyPasteHTML('<p>هذا النص يمثل محتوى المقال مسبق التعبئة لأغراض العرض.</p>');
+      // If article already loaded, paste its content
+      if (this.title()) {
+          // This is a bit tricky, but since loadArticle might finish before quill init
+          // Or quill init might finish before loadArticle
+          // But usually we just want to ensure if article data is there, it's pasted
+          // In loadArticle we call it if editor is ready.
+          // Here we call it if data is ready.
+          this.loadArticle(this.articleId()!);
+      }
     }, 100);
   }
 
   onSubmit(event: Event): void {
     event.preventDefault();
+    const id = this.articleId();
+    if (!id || this.isSubmitting()) return;
+    
+    if (!this.title() || !this.authorName() || !this.getContent()) {
+        this.errorMessage.set('يرجى إكمال جميع الحقول المطلوبة');
+        return;
+    }
+
     this.isSubmitting.set(true);
-    // Mock save
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.successMessage.set('تم حفظ المقال بنجاح!');
-      setTimeout(() => this.successMessage.set(''), 3000);
-    }, 1500);
+    this.errorMessage.set('');
+
+    this.articleService.editArticleAdmin(
+        id,
+        this.title(),
+        this.authorName(),
+        this.getContent(),
+        this.imageFile(),
+        this.categoryId(),
+        this.selectedTagIds(),
+        this.status() === 'published'
+    ).subscribe({
+      next: (res) => {
+        this.isSubmitting.set(false);
+        this.successMessage.set('تم حفظ المقال بنجاح!');
+        setTimeout(() => this.successMessage.set(''), 3000);
+      },
+      error: (err) => {
+        this.isSubmitting.set(false);
+        this.errorMessage.set(err);
+      }
+    });
   }
 }

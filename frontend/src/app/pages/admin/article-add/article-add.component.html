@@ -19,6 +19,14 @@
       </div>
     }
 
+    <!-- Error Message -->
+    @if (errorMessage()) {
+      <div class="mb-6 bg-error/10 text-error p-4 rounded-xl flex items-center gap-3 animate-fade-in border border-error/20">
+        <span class="material-symbols-outlined">error</span>
+        <p class="font-bold">{{ errorMessage() }}</p>
+      </div>
+    }
+
     <!-- Form -->
     <form class="space-y-8" (submit)="onSubmit($event)">
       <!-- Settings Panel (Admin specific) -->
@@ -27,15 +35,11 @@
           <span class="material-symbols-outlined text-xl">settings</span>إعدادات إدارية
         </h3>
         <div>
-          <label class="block font-label font-bold text-sm mb-2 text-primary">إضافة كـ <span class="text-error">*</span></label>
+          <label class="block font-label font-bold text-sm mb-2 text-primary">حالة المقال <span class="text-error">*</span></label>
           <div class="flex flex-wrap gap-4">
             <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
               <input type="radio" name="status" [(ngModel)]="status" value="published" class="text-secondary w-4 h-4" />
-              <span class="font-medium text-sm">منشور مباشرة</span>
-            </label>
-            <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
-              <input type="radio" name="status" [(ngModel)]="status" value="draft" class="text-secondary w-4 h-4" />
-              <span class="font-medium text-sm">مسودة</span>
+              <span class="font-medium text-sm">منشور</span>
             </label>
             <label class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
               <input type="radio" name="status" [(ngModel)]="status" value="pending" class="text-secondary w-4 h-4" />
@@ -45,12 +49,20 @@
         </div>
       </div>
 
-      <!-- Title & Category Row -->
+      <!-- Article Info Row -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <label class="block font-label font-bold text-sm mb-2">عنوان المقال <span class="text-error">*</span></label>
           <input type="text" [(ngModel)]="title" name="title" required class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right" placeholder="العنوان..." />
         </div>
+        <div>
+          <label class="block font-label font-bold text-sm mb-2">اسم المؤلف <span class="text-error">*</span></label>
+          <input type="text" [(ngModel)]="authorName" name="authorName" required class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right" placeholder="اسم الكاتب..." />
+        </div>
+      </div>
+
+      <!-- Category & Image Row (Adjusted) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="category-dropdown relative">
           <label class="block font-label font-bold text-sm mb-2">التصنيف <span class="text-error">*</span></label>
           <button type="button" (click)="toggleCategoryDropdown($event)" class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right flex justify-between items-center">
