@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   categories = signal<Category[]>([]);
   books = signal<Book[]>([]);
   authors = this.authorService.getAuthors();
-  
+
   // Favorites
   savedArticleIds = signal<number[]>([]);
   isLoggedIn = signal(false);
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
     this.loadNewestArticles();
     this.loadMostViewedArticles();
     this.loadBooks();
-    
+
     if (this.isLoggedIn()) {
       this.loadSavedArticles();
     }
@@ -163,5 +163,13 @@ export class HomeComponent implements OnInit {
         this.subscriptionEmail.set(emailInput.value);
       }
     }
+  }
+
+  cleanUrl(url: string | undefined): string {
+    if (!url) return '';
+    if (url.includes('https://') && url.indexOf('https://') > 0) {
+      return url.substring(url.indexOf('https://'));
+    }
+    return url;
   }
 }

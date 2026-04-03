@@ -51,9 +51,9 @@
               <a [routerLink]="['/books', book.id]" class="text-xl font-headline font-bold text-primary mb-2 line-clamp-1 hover:text-secondary transition-colors cursor-pointer">
                 {{ book.title }}
               </a>
-              <div class="flex flex-row-reverse items-center gap-2 mb-4">
-                <span class="material-symbols-outlined text-[14px] text-secondary">person</span>
-                <span class="text-xs font-bold text-on-surface-variant italic">{{ book.author }}</span>
+              <div class="flex flex-row-reverse items-center justify-start gap-2 mb-4 overflow-hidden w-full">
+                <span class="material-symbols-outlined text-[14px] text-secondary shrink-0">person</span>
+                <span class="text-xs font-bold text-on-surface-variant italic truncate flex-1 text-right" [title]="book.author">{{ book.author }}</span>
               </div>
               
               <p class="text-xs text-outline leading-relaxed line-clamp-2 mb-6 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
