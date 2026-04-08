@@ -164,6 +164,10 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
       // ✅ default RTL + right align
       this.quillEditor.format('direction', 'rtl');
       this.quillEditor.format('align', 'right');
+      
+      // Prevent automatic focus/scroll on load
+      this.quillEditor.blur();
+      window.scrollTo(0, 0);
     }, 100);
   }
 
