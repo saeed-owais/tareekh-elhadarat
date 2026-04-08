@@ -7,9 +7,9 @@
     <div class="flex items-center gap-3">
       <!-- Search Toggle Button -->
       <button aria-label="البحث" (click)="toggleSearch()"
-        class="search-toggle-btn p-2.5 rounded-xl hover:bg-primary/5 transition-all duration-300"
+        class="search-toggle-btn  rounded-xl hover:bg-primary/5 transition-all duration-300"
         [class]="searchOpen() ? 'bg-primary/10 text-primary' : 'text-on-surface-variant'">
-        <span class="material-symbols-outlined text-xl">{{ searchOpen() ? 'close' : 'search' }}</span>
+        <span class="material-symbols-outlined p-2 text-xl">{{ searchOpen() ? 'close' : 'search' }}</span>
       </button>
 
       <!-- Hamburger Menu (Mobile Only) -->
