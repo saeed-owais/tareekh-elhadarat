@@ -23,6 +23,9 @@
           {{ featuredArticle()!.authorName }}
           ·
           {{ featuredArticle()!.category }}
+          ·
+          <span class="material-symbols-outlined text-sm align-middle">schedule</span>
+          {{ featuredArticle()!.readTimeInMiniutes }} دقائق قراءة
         </p>
         <div class="pt-4">
           <a [routerLink]="['/articles', featuredArticle()!.id]"
@@ -157,6 +160,10 @@
               <span class="material-symbols-outlined text-sm">person</span>
               {{ article.authorName }}
             </span>
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              {{ article.readTimeInMiniutes }} دقائق
+            </span>
           </div>
         </article>
         }
@@ -187,7 +194,9 @@
             <h4 class="text-lg font-headline font-bold leading-snug group-hover:text-secondary transition-colors line-clamp-none md:line-clamp-1">
               {{ item.title }}
             </h4>
-            <span class="text-xs font-label text-on-surface-variant whitespace-normal md:truncate" [title]="item.authorName">{{ item.authorName }}</span>
+            <span class="text-xs font-label text-on-surface-variant whitespace-normal md:truncate" [title]="item.authorName">
+              {{ item.authorName }} · {{ item.readTimeInMiniutes }} دقائق
+            </span>
           </div>
         </a>
         }

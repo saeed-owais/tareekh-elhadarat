@@ -66,6 +66,10 @@
                 <span class="material-symbols-outlined text-sm">person</span>
                 {{ article.authorName }}
               </span>
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                {{ article.readTimeInMiniutes }} دقائق
+              </span>
             </div>
             @if (article.tags && article.tags.length > 0) {
               <div class="flex flex-wrap gap-2 mt-3">
