@@ -107,32 +107,70 @@
         }
       </div>
 
-      <!-- Add Comment Form -->
-      <div class="bg-surface-container p-8 rounded-2xl shadow-sm">
-        <h3 class="text-2xl font-headline font-bold mb-6 text-primary">أضف تعليقاً</h3>
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Name -->
-            <div class="flex flex-col gap-2">
-              <label class="font-label font-bold text-on-surface">الاسم</label>
-              <input type="text" formControlName="authorName" class="px-4 py-3 rounded-xl border border-outline-variant bg-surface focus:outline-none focus:border-primary transition-colors text-on-surface" placeholder="الاسم الكامل">
+      <!-- Comment Section: Authenticated & Logic -->
+      <div class="bg-surface-container-low p-8 lg:p-12 rounded-[2rem] border border-outline-variant/10 shadow-sm overflow-hidden relative">
+        <div class="relative z-10">
+          <h3 class="text-2xl lg:text-3xl font-headline font-bold mb-8 text-primary flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary">chat_bubble</span>
+            انضم إلى الحوار
+          </h3>
+
+          @if (isLoggedIn()) {
+            @if (commentSubmitted()) {
+              <!-- Success State -->
+              <div class="py-12 text-center animate-fade-in">
+                <div class="w-20 h-20 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                </div>
+                <h4 class="text-2xl font-headline font-bold text-primary mb-3">تم إرسال تعليقك بنجاح!</h4>
+                <p class="text-on-surface-variant max-w-md mx-auto leading-relaxed">
+                  شكراً لمشاركتك. سيظهر تعليقك للجميع فور مراجعته واعتماده من قبل الإدارة لضمان جودة الحوار.
+                </p>
+                <button (click)="commentSubmitted.set(false)" class="mt-8 text-secondary font-bold hover:underline">إضافة تعليق آخر</button>
+              </div>
+            } @else {
+              <!-- Form for Logged in Users -->
+              <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="space-y-6">
+                <div class="flex flex-col gap-3">
+                  <label class="font-label font-bold text-on-surface opacity-70">تعليقك</label>
+                  <textarea formControlName="content" rows="4" 
+                    class="px-5 py-4 rounded-2xl border border-outline-variant bg-surface focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all text-on-surface resize-none leading-relaxed" 
+                    placeholder="شاركنا رأيك أو استفسارك حول هذا الموضوع..."></textarea>
+                  <div class="flex justify-between items-center text-[10px] font-label text-outline uppercase tracking-widest px-2">
+                    <span>الحد الأقصى: 500 حرف</span>
+                    <span [class.text-error]="commentForm.get('content')?.invalid && commentForm.get('content')?.touched">
+                      {{ commentForm.get('content')?.value?.length || 0 }} / 500
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="flex justify-start">
+                  <button type="submit" [disabled]="!commentForm.valid" 
+                    class="group relative px-10 py-4 bg-primary text-on-primary rounded-xl font-headline text-lg font-bold hover:bg-primary-container transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed overflow-hidden shadow-lg shadow-primary/10">
+                    <span class="relative z-10 flex items-center gap-2">
+                      إرسال التعليق
+                      <span class="material-symbols-outlined text-sm -scale-x-100 group-hover:translate-x-[-4px] transition-transform">send</span>
+                    </span>
+                  </button>
+                </div>
+              </form>
+            }
+          } @else {
+            <!-- Guest CTA -->
+            <div class="py-12 text-center bg-surface/50 rounded-2xl border-2 border-dashed border-outline-variant/30">
+              <span class="material-symbols-outlined text-5xl text-outline-variant mb-4">account_circle</span>
+              <h4 class="text-xl font-headline font-bold text-primary mb-3">يجب تسجيل الدخول للتعليق</h4>
+              <p class="text-on-surface-variant mb-8 max-w-sm mx-auto">كن جزءاً من مجتمعنا الثقافي وشارك أفكارك مع القراء والباحثين.</p>
+              <a routerLink="/auth/login" [queryParams]="{ returnUrl: '/articles/' + article()?.id }"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-secondary text-on-secondary rounded-xl font-bold transition-all hover:scale-105 active:scale-95 shadow-md">
+                <span class="material-symbols-outlined text-sm">login</span>
+                تسجيل الدخول الآن
+              </a>
             </div>
-            <!-- Email -->
-            <div class="flex flex-col gap-2">
-              <label class="font-label font-bold text-on-surface">البريد الإلكتروني</label>
-              <input type="email" formControlName="email" class="px-4 py-3 rounded-xl border border-outline-variant bg-surface focus:outline-none focus:border-primary transition-colors text-on-surface" placeholder="example@domain.com">
-            </div>
-          </div>
-          <!-- Content -->
-          <div class="flex flex-col gap-2">
-            <label class="font-label font-bold text-on-surface">التعليق</label>
-            <textarea formControlName="content" rows="4" class="px-4 py-3 rounded-xl border border-outline-variant bg-surface focus:outline-none focus:border-primary transition-colors text-on-surface resize-none" placeholder="اكتب تعليقك هنا..."></textarea>
-          </div>
-          
-          <button type="submit" [disabled]="!commentForm.valid" class="px-8 py-3 bg-primary text-on-primary rounded-xl font-headline font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            إرسال التعليق
-          </button>
-        </form>
+          }
+        </div>
+        <!-- Decoration -->
+        <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-secondary/5 rounded-full blur-3xl"></div>
       </div>
     </section>
   </main>

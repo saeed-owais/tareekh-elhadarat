@@ -44,6 +44,7 @@ export class TokenService {
         if (!decoded) return null;
 
         return {
+            id: decoded[CLAIMS.userId],
             email: decoded.email,
             name: decoded[CLAIMS.name],
             firstName: decoded.firstName,

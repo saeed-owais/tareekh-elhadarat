@@ -7,6 +7,8 @@ import { Article } from '../../core/models/article.model';
 import { CommentService } from '../../core/services/comment.service';
 import { Comment } from '../../core/models/comment.model';
 import { ProfileService } from '../../core/services/profile.service';
+import { AuthService } from '../../core/services/auth.service';
+import { AddCommentRequest } from '../../core/models/add-comment.model';
 
 @Component({
   selector: 'app-article-detail',
@@ -20,21 +22,27 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   private articleService = inject(ArticleService);
   private commentService = inject(CommentService);
   private profileService = inject(ProfileService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
   article = signal<Article | null>(null);
   isLoading = signal(true);
   comments = signal<Comment[]>([]);
   isSaved = signal(false);
+  isLoggedIn = signal(false);
+  commentSubmitted = signal(false);
   commentForm!: FormGroup;
 
   private viewTimer : any = null;
 
   ngOnInit(): void {
+    this.isLoggedIn.set(this.authService.isLoggedIn());
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.loadArticle(id);
     this.checkIfSaved(id);
-    this.initForm();
+    if (this.isLoggedIn()) {
+      this.initForm();
+    }
   }
 
   ngOnDestroy(): void {
@@ -91,27 +99,29 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
 
   initForm(): void {
     this.commentForm = this.fb.group({
-      authorName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
       content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
     });
   }
 
   onSubmit(): void {
-    if (this.commentForm.valid && this.article) {
-      const formValue = this.commentForm.value;
-      this.commentService.addComment({
-        postId: this.article()!.id,
-        authorName: formValue.authorName,
-        email: formValue.email,
-        content: formValue.content
-      });
-      // Refresh comments
-      this.comments.set(this.commentService.getCommentsByPostId(this.article()!.id));
-      this.commentForm.reset();
-    } else {
-      Object.keys(this.commentForm.controls).forEach(key => {
-        this.commentForm.get(key)?.markAsTouched();
+    if (this.commentForm.valid && this.article()) {
+      const user = this.authService.getUser();
+      if (!user || !user.id) return;
+
+      const request: AddCommentRequest = {
+        articleId: this.article()!.id,
+        userId: user.id,
+        content: this.commentForm.value.content
+      };
+
+      this.commentService.addComment(request).subscribe({
+        next: () => {
+          this.commentSubmitted.set(true);
+          this.commentForm.reset();
+        },
+        error: (err) => {
+          console.error('Comment error:', err);
+        }
       });
     }
   }
