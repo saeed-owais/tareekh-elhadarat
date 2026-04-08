@@ -1,7 +1,8 @@
 import { Component, OnInit, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { forkJoin, of, switchMap, map } from 'rxjs';
 import { CategoryService } from '../../../core/services/category.service';
 import { TagService } from '../../../core/services/tag.service';
 import { ArticleService } from '../../../core/services/article.service';
@@ -19,6 +20,7 @@ declare const Quill: any;
 })
 export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestroy {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
   private tagService = inject(TagService);
@@ -41,50 +43,83 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
 
   categories = signal<Category[]>([]);
   tags = signal<Tag[]>([]);
-  selectedTagIds = signal<number[]>([1, 2]);
+  selectedTagIds = signal<number[]>([]);
 
   private quillEditor: any = null;
   private quillLoaded = false;
+  private lastFetchedArticle: any = null;
 
   ngOnInit() {
     this.articleId.set(Number(this.route.snapshot.paramMap.get('id')));
-    this.loadMetadata();
-    if (this.articleId()) {
-      this.loadArticle(this.articleId()!);
-    }
-  }
+    const id = this.articleId();
 
-  loadArticle(id: number) {
+    if (!id) {
+      this.isLoading.set(false);
+      return;
+    }
+
     this.isLoading.set(true);
-    this.articleService.loadArticleAdmin(id).subscribe({
-      next: (article) => {
-        this.title.set(article.title);
-        this.authorName.set(article.authorName);
-        this.categoryId.set(null); // API might not have categoryId, we'll need to figure that out
-        this.status.set(article.isPublished ? 'published' : 'pending');
-        this.imagePreviewUrl.set(article.imageUrl);
+
+    // Step 1: Get Article Data First
+    this.articleService.loadArticleAdmin(id).pipe(
+      // Step 2: Use Article Data to initiate Metadata fetch
+      switchMap(article => forkJoin({
+        article: of(article),
+        categories: this.categoryService.getCategories(),
+        tags: this.tagService.getTags()
+      }))
+    ).subscribe({
+      next: (res: any) => {
+        const article = res.article;
+        this.lastFetchedArticle = article;
+        const allCategories = res.categories;
+        const allTags = res.tags;
+
+        // Populate metadata signals
+        this.categories.set(allCategories);
+        this.tags.set(allTags);
+
+        // Populate article basic signals
+        this.title.set(article.title || article.Title || '');
+        this.authorName.set(article.authorName || article.AuthorName || '');
+        this.status.set(article.isPublished || article.IsPublished ? 'published' : 'pending');
+        this.imagePreviewUrl.set(article.imageUrl || article.ImageUrl);
+
+        // Step 3: Resolve Category and Tags from Article Data
         
-        if (this.quillEditor) {
-          this.quillEditor.clipboard.dangerouslyPasteHTML(article.content);
+        // Resolve Category (check ID then Name)
+        const targetCatId = article.categoryId || article.CategoryId;
+        const targetCatName = article.category || article.Category;
+        let selectedCat = null;
+        if (targetCatId) selectedCat = allCategories.find((c: any) => c.id === targetCatId);
+        if (!selectedCat && targetCatName) selectedCat = allCategories.find((c: any) => c.name === targetCatName);
+        if (selectedCat) this.categoryId.set(selectedCat.id);
+
+        // Resolve Tags (check IDs then Names)
+        const targetTagIds = article.articleTagsIds || article.ArticleTagsIds || article.tagsIds || [];
+        const targetTagNames = article.tags || article.Tags || [];
+        let selectedIds: number[] = [...targetTagIds];
+        if (selectedIds.length === 0 && targetTagNames.length > 0) {
+          selectedIds = allTags
+            .filter((t: any) => targetTagNames.includes(t.name))
+            .map((t: any) => t.id);
         }
+        this.selectedTagIds.set(selectedIds);
+
+        // Handle content (Quill)
+        if (this.quillEditor) {
+          const content = article.content || article.Content || '';
+          this.quillEditor.clipboard.dangerouslyPasteHTML(content);
+          setTimeout(() => this.quillEditor.setSelection(0), 10);
+        }
+
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error(err);
+        this.errorMessage.set('فشل تحميل بيانات المقال');
         this.isLoading.set(false);
+        console.error(err);
       }
-    });
-  }
-
-  loadMetadata() {
-    this.categoryService.getCategories().subscribe({
-      next: (data) => this.categories.set(data),
-      error: (err) => console.error(err)
-    });
-    
-    this.tagService.getTags().subscribe({
-      next: (data) => this.tags.set(data),
-      error: (err) => console.error(err)
     });
   }
 
@@ -177,15 +212,12 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
       });
       this.quillEditor.format('direction', 'rtl');
       this.quillEditor.format('align', 'right');
-      
+
       // If article already loaded, paste its content
-      if (this.title()) {
-          // This is a bit tricky, but since loadArticle might finish before quill init
-          // Or quill init might finish before loadArticle
-          // But usually we just want to ensure if article data is there, it's pasted
-          // In loadArticle we call it if editor is ready.
-          // Here we call it if data is ready.
-          this.loadArticle(this.articleId()!);
+      if (this.lastFetchedArticle) {
+        const content = this.lastFetchedArticle.content || this.lastFetchedArticle.Content || '';
+        this.quillEditor.clipboard.dangerouslyPasteHTML(content);
+        setTimeout(() => this.quillEditor.setSelection(0), 10);
       }
     }, 100);
   }
@@ -194,29 +226,31 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
     event.preventDefault();
     const id = this.articleId();
     if (!id || this.isSubmitting()) return;
-    
+
     if (!this.title() || !this.authorName() || !this.getContent()) {
-        this.errorMessage.set('يرجى إكمال جميع الحقول المطلوبة');
-        return;
+      this.errorMessage.set('يرجى إكمال جميع الحقول المطلوبة');
+      return;
     }
 
     this.isSubmitting.set(true);
     this.errorMessage.set('');
 
     this.articleService.editArticleAdmin(
-        id,
-        this.title(),
-        this.authorName(),
-        this.getContent(),
-        this.imageFile(),
-        this.categoryId(),
-        this.selectedTagIds(),
-        this.status() === 'published'
+      id,
+      this.title(),
+      this.authorName(),
+      this.getContent(),
+      this.imageFile(),
+      this.categoryId(),
+      this.selectedTagIds(),
+      this.status() === 'published'
     ).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
         this.successMessage.set('تم حفظ المقال بنجاح!');
-        setTimeout(() => this.successMessage.set(''), 3000);
+        setTimeout(() => {
+          this.router.navigate(['/admin/articles']);
+        }, 2000);
       },
       error: (err) => {
         this.isSubmitting.set(false);

@@ -200,15 +200,12 @@ export class ArticleService {
 
     // ================= LOAD ARTICLE (ADMIN) =================
     loadArticleAdmin(id: number): Observable<AdminArticle> {
-        return this.http.get<PaginatedResponse<AdminArticle>>(`${this.apiUrl}/Get-All-Articles-Admin`, {
+        return this.http.get<any>(`${this.apiUrl}/Get-Article/${id}`, {
             headers: {
                 'Authorization': `Bearer ${this.tokenService.getToken()}`
             }
         }).pipe(
-            map(response => {
-                return response.data.find(a => a.id === id) || ({} as AdminArticle);
-            }),
-            map(article => this.cleanAdminArticle(article)),
+            map(article => this.cleanAdminArticle(article as AdminArticle)),
             catchError(err => {
                 return throwError(() => 'فشل تحميل المقال');
             })
@@ -293,6 +290,13 @@ export class ArticleService {
                 article.imageUrl = 'http://' + parts[1];
             }
         }
+        
+        // Ensure category fields are mapped correctly
+        if (article) {
+            article.category = article.category || (article as any).Category || (article as any).categoryName;
+            article.categoryId = article.categoryId !== undefined ? article.categoryId : (article as any).CategoryId;
+        }
+        
         return article;
     }
 

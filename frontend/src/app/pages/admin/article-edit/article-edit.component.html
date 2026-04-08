@@ -71,7 +71,7 @@
         <div class="category-dropdown relative">
           <label class="block font-label font-bold text-sm mb-2">التصنيف <span class="text-error">*</span></label>
           <button type="button" (click)="toggleCategoryDropdown($event)" class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right flex justify-between items-center">
-            <span [class.opacity-70]="!categoryId()">{{ getCategoryName(categoryId()) || 'اختر التصنيف' }}</span>
+            <span [class.opacity-70]="categoryId() === null">{{ getCategoryName(categoryId()) || 'اختر التصنيف' }}</span>
             <span class="material-symbols-outlined transition-transform duration-300" [class.rotate-180]="isCategoryDropdownOpen()">expand_more</span>
           </button>
           

@@ -24,4 +24,7 @@ export interface AdminArticle {
   readTimeInMiniutes: number;
   isPublished: boolean;
   isDeleted: boolean;
+  categoryId: number | null;
+  category: string;
+  articleTagsIds: number[];
 }
