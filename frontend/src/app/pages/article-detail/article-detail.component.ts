@@ -50,10 +50,14 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
         this.isLoading.set(false);
         this.comments.set(this.commentService.getCommentsByPostId(article.id));
 
-        // Mark as viewed after 30 seconds
+        // Mark as viewed after half of reading time (minutes * 60 * 1000 / 2)
+        const delayMs = article.readTimeInMiniutes > 0 
+          ? (article.readTimeInMiniutes * 60 * 1000) / 2 
+          : 30000;
+
         this.viewTimer = setTimeout(() => {
           this.articleService.markArticleViewed(article.id).subscribe();
-        }, 30000);
+        }, delayMs);
       },
       error: () => {
         this.article.set(null);

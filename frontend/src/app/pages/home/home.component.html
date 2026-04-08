@@ -52,53 +52,52 @@
   }
 
   <!-- Categories Slider -->
-  <section class="container mx-auto px-8 mb-32">
-    <div class="flex items-center justify-between mb-8">
-      <h2 class="text-3xl font-headline font-bold text-primary">تصفح حسب التصنيف</h2>
-      <div class="flex gap-2">
-        <button (click)="scrollCategories('right')"
-          class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300 shadow-sm">
-          <span class="material-symbols-outlined text-xl">chevron_right</span>
-        </button>
-        <button (click)="scrollCategories('left')"
-          class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300 shadow-sm">
-          <span class="material-symbols-outlined text-xl">chevron_left</span>
-        </button>
-      </div>
+  <section class="mb-32">
+    <div class="container mx-auto px-8">
+      <h2 class="text-3xl font-headline font-bold text-primary mb-8">تصفح حسب التصنيف</h2>
     </div>
-    <div class="relative">
-      <div
-        class="absolute right-0 top-0 bottom-0 w-16 bg-linear-to-l from-surface to-transparent z-10 pointer-events-none">
-      </div>
-      <div
-        class="absolute left-0 top-0 bottom-0 w-16 bg-linear-to-r from-surface to-transparent z-10 pointer-events-none">
-      </div>
-      <div #categoriesSlider class="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth py-2 px-1"
-        style="scrollbar-width: none; -ms-overflow-style: none;">
-        <!-- All Articles Card -->
-        <a routerLink="/articles"
-          class="shrink-0 group relative w-44 h-28 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-[0_8px_32px_rgba(115,92,0,0.15)]">
-          <div class="absolute inset-0 bg-linear-to-br from-secondary to-secondary-fixed-dim"></div>
-          <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-on-secondary">
-            <span class="material-symbols-outlined text-2xl">apps</span>
-            <span class="text-base font-headline font-bold">كل المقالات</span>
+    
+    <div class="z-10 bg-surface/80 backdrop-blur-xl border-y border-outline-variant/10 transition-all">
+      <div class="container mx-auto px-8">
+        <div class="flex items-center gap-3">
+          <!-- Scroll Arrows -->
+          <button (click)="scrollCategories('right')"
+                  class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+            <span class="material-symbols-outlined text-lg">chevron_right</span>
+          </button>
+          
+          <!-- Slider -->
+          <div class="relative flex-1 min-w-0">
+            <div class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none"></div>
+            <div #categoriesSlider
+                 class="flex gap-2 overflow-x-auto py-3 scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+              
+              <!-- All Articles Tab -->
+              <a routerLink="/articles"
+                 class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-lg">grid_view</span>
+                  كل المقالات
+                </span>
+              </a>
+
+              <!-- Category Tabs -->
+              @for (category of categories(); track category.id) {
+                <a [routerLink]="['/articles']" [queryParams]="{ category: category.id }"
+                   class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
+                  {{ category.name }}
+                </a>
+              }
+            </div>
           </div>
-        </a>
-        <!-- Category Cards -->
-        @for (category of categories(); track category.id) {
-        <a [routerLink]="['/articles']" [queryParams]="{ category: category.id }"
-          class="shrink-0 group relative w-44 h-28 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-[0_8px_32px_rgba(115,92,0,0.15)]">
-          <div class="absolute inset-0 bg-surface-container-low group-hover:bg-primary transition-colors duration-500">
-          </div>
-          <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
-            <span class="text-lg font-headline font-bold group-hover:text-on-primary transition-colors duration-500">{{
-              category.name }}</span>
-          </div>
-          <div
-            class="absolute bottom-0 left-0 right-0 h-1 bg-secondary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center">
-          </div>
-        </a>
-        }
+
+          <!-- Scroll Arrows -->
+          <button (click)="scrollCategories('left')"
+                  class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+            <span class="material-symbols-outlined text-lg">chevron_left</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
