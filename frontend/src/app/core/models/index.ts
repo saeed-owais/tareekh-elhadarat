@@ -1,11 +1,8 @@
 export type { Category } from './category.model';
-export type { Post } from './post.model';
 export type { Article, AdminArticle } from './article.model';
 export type { Book } from './book.model';
 export type { User } from './user.model';
 export type { Comment } from './comment.model';
-export type { Subscriber } from './subscriber.model';
-export type { SubmissionFeedback } from './submission-feedback.model';
 export type { ApiResponse } from './api-response.model';
 export type { PaginatedResponse } from './paginated-response.model';
 export type { RegisterRequest } from './register.model';
@@ -14,5 +11,4 @@ export type { ResetPasswordRequest } from './reset-password.model';
 export type { LoginRequest } from './login.model';
 export type { AuthResponse } from './auth-response.model';
 export type { DecodedToken } from './decoded-token.model';
-export type { ArticleRequest } from './article-request.model';
 export type { Tag } from './tag.model';
