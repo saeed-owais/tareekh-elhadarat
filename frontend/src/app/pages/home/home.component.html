@@ -1,4 +1,4 @@
-<main class="lg:pt-0">
+  <main class="lg:pt-0">
   <!-- Hero Section -->
   @if (featuredArticle()) {
   <section class="relative min-h-[819px] flex items-center overflow-hidden mb-20 pt-28 lg:pt-0">
@@ -286,33 +286,54 @@
     </div>
   </section>
 
-  <!-- Newsletter -->
+  <!-- Call to Action / Community -->
+  @if (!isLoggedIn()) {
   <section class="container mx-auto px-8 mb-32">
-    <div class="bg-primary-container p-12 lg:p-20 rounded-[2rem] text-center relative overflow-hidden">
-      <div class="absolute inset-0 islamic-pattern opacity-5 scale-150"></div>
-      <div class="relative z-10 max-w-2xl mx-auto">
-        <h2 class="text-4xl lg:text-5xl font-headline font-bold text-surface mb-6">
-          انضم إلى مجتمع القراء والمثقفين
-        </h2>
-        <p class="text-on-primary-container text-xl font-body mb-12 opacity-80">
-          اشترك في نشرتنا البريدية لتصلك أحدث المقالات والإصدارات والفعاليات الثقافية مباشرة.
-        </p>
-        <form class="flex flex-col sm:flex-row gap-4" (submit)="onSubscribe($event)">
-          <input
-            class="flex-grow bg-surface/10 border border-surface/20 text-surface placeholder:text-surface/40 px-6 py-4 rounded-xl focus:ring-2 focus:ring-secondary outline-none transition-all"
-            placeholder="بريدك الإلكتروني" type="email" required>
-          <button
-            class="bg-secondary text-on-secondary px-10 py-4 rounded-xl font-headline text-xl font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all"
-            type="submit">
-            اشترك الآن
-          </button>
-        </form>
-        @if (subscriptionMessage()) {
-        <p class="mt-4 text-sm" [class]="subscriptionSuccess() ? 'text-surface' : 'text-error-container'">
-          {{ subscriptionMessage() }}
-        </p>
-        }
+    <div class="relative group">
+      <!-- Decoration: Animated Gradient Borders -->
+      <div class="absolute -inset-0.5 bg-linear-to-r from-secondary to-primary rounded-[2.1rem] blur opacity-25 group-hover:opacity-40 transition-all duration-1000"></div>
+      
+      <div class="relative bg-linear-to-br from-[#0F2A1D] to-[#0A1A12] p-12 lg:p-24 rounded-[2rem] text-center overflow-hidden border border-[#E6C97A]/20">
+        <!-- Decoration: Enhanced Pattern -->
+        <div class="absolute inset-0 islamic-pattern opacity-10 scale-125 pointer-events-none"></div>
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+        
+        <div class="relative z-10 max-w-3xl mx-auto space-y-10">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-label text-sm uppercase tracking-widest">
+            <span class="material-symbols-outlined text-sm">stars</span>
+            كن جزءاً من الحكاية
+          </div>
+          
+          <h2 class="text-4xl lg:text-6xl font-headline font-bold text-[#E6C97A] leading-tight">
+            انضم إلى مجتمع <br class="hidden md:block"> القراء والمثقفين
+          </h2>
+          
+          <p class="text-[#FBFBE2]/70 text-lg lg:text-2xl font-body leading-relaxed max-w-xl mx-auto">
+            احصل على وصول كامل للمقالات المتعمقة، والكتب الحصرية، وانخرط في حوارات فكرية تثري الوعي الحضاري.
+          </p>
+          
+          <div class="pt-6">
+            <a routerLink="/auth/login"
+               class="inline-flex items-center gap-4 px-12 py-5 bg-secondary text-on-secondary rounded-2xl font-headline text-2xl font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all shadow-[0_8px_32px_rgba(115,92,0,0.3)] hover:shadow-[0_12px_48px_rgba(115,92,0,0.5)] active:scale-95 group/btn">
+              ابدأ رحلتك المعرفية
+              <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            </a>
+          </div>
+          
+          <div class="flex items-center justify-center gap-8 pt-8 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
+             <div class="flex flex-col items-center gap-1">
+               <span class="material-symbols-outlined">library_books</span>
+               <span class="text-[10px] font-label">محتوى حصري</span>
+             </div>
+             <div class="flex flex-col items-center gap-1">
+               <span class="material-symbols-outlined">forum</span>
+               <span class="text-[10px] font-label">مجتمع فكري</span>
+             </div>
+           </div>
+        </div>
       </div>
     </div>
   </section>
+  }
 </main>

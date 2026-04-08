@@ -4,7 +4,6 @@ import { ArticleService } from '../../core/services/article.service';
 import { CategoryService } from '../../core/services/category.service';
 import { BookService } from '../../core/services/book.service';
 import { AuthorService } from '../../core/services/author.service';
-import { SubscriberService } from '../../core/services/subscriber.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { Article } from '../../core/models/article.model';
@@ -23,7 +22,6 @@ export class HomeComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private bookService = inject(BookService);
   private authorService = inject(AuthorService);
-  private subscriberService = inject(SubscriberService);
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
 
@@ -44,10 +42,6 @@ export class HomeComponent implements OnInit {
 
   // Arabic number labels for popular posts
   arabicNumbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
-
-  subscriptionEmail = signal('');
-  subscriptionMessage = signal('');
-  subscriptionSuccess = signal(false);
 
   ngOnInit(): void {
     this.isLoggedIn.set(this.authService.isLoggedIn());
@@ -148,22 +142,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onSubscribe(event: Event): void {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    const emailInput = form.querySelector('input[type="email"]') as HTMLInputElement;
-    if (emailInput) {
-      const result = this.subscriberService.subscribe(emailInput.value);
-      this.subscriptionMessage.set(result.message);
-      this.subscriptionSuccess.set(result.success);
-      if (result.success) {
-        emailInput.value = '';
-        this.subscriptionEmail.set('');
-      } else {
-        this.subscriptionEmail.set(emailInput.value);
-      }
-    }
-  }
 
   cleanUrl(url: string | undefined): string {
     if (!url) return '';
