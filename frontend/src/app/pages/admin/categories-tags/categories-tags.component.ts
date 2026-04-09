@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../../core/services/category.service';
@@ -21,6 +21,44 @@ export class CategoriesTagsComponent implements OnInit {
   categories = signal<Category[]>([]);
   tags = signal<Tag[]>([]);
   isLoading = signal(false);
+
+  // Search & Sort State
+  searchQuery = signal('');
+  sortKey = signal<string>('name');
+  sortDirection = signal<'asc' | 'desc'>('asc');
+  
+  // Computed signal for client-side search & sort
+  filteredItems = computed(() => {
+    let data = this.activeTab() === 'categories' 
+      ? [...this.categories()] 
+      : [...this.tags()] as (Category | Tag)[];
+    
+    const query = this.searchQuery().toLowerCase().trim();
+
+    // 1. Filter by Search Query
+    if (query) {
+      data = data.filter(item => 
+        item.name.toLowerCase().includes(query)
+      );
+    }
+
+    // 2. Sort
+    const key = this.sortKey();
+    if (key) {
+      const dir = this.sortDirection() === 'asc' ? 1 : -1;
+      data.sort((a: any, b: any) => {
+        const valA = a[key];
+        const valB = b[key];
+
+        if (typeof valA === 'string') {
+          return valA.localeCompare(valB, 'ar') * dir;
+        }
+        return (valA > valB ? 1 : -1) * dir;
+      });
+    }
+
+    return data;
+  });
   
   // Form State
   isEditing = signal(false);
@@ -62,8 +100,18 @@ export class CategoriesTagsComponent implements OnInit {
 
   switchTab(tab: 'categories' | 'tags') {
     this.activeTab.set(tab);
+    this.searchQuery.set(''); // Reset search when switching
     this.resetForm();
     this.loadData();
+  }
+
+  toggleSort(key: string) {
+    if (this.sortKey() === key) {
+      this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.sortKey.set(key);
+      this.sortDirection.set('asc');
+    }
   }
 
   resetForm() {
@@ -77,7 +125,6 @@ export class CategoriesTagsComponent implements OnInit {
     this.isEditing.set(true);
     this.editId.set(item.id);
     this.formData.set({ name: item.name, isAvailable: item.isAvailable });
-    // Scroll to form or show modal? In this case, we'll probably have a form at the top or a modal.
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

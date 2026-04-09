@@ -1,241 +1,169 @@
 <!-- Main Content Canvas -->
-<main class="min-w-0 lg:mr-64 min-h-screen">
+<main class="min-w-0 lg:mr-64 min-h-screen" dir="rtl">
 
   <div class="p-8 max-w-7xl mx-auto">
     <!-- Page Header & Actions -->
-    <div class="flex flex-row-reverse justify-between items-end mb-10">
+    <div class="flex justify-between items-center mb-10">
       <div class="text-right">
         <h2 class="text-3xl font-headline font-bold text-primary mb-2">إدارة المقالات</h2>
-        <p class="text-on-surface-variant text-sm max-w-md leading-relaxed">قم بمراجعة وتحرير المقالات
+        <p class="text-on-surface/60 text-sm max-w-md leading-relaxed">قم بمراجعة وتحرير المقالات
           التاريخية المضافة حديثاً أو تعيين المقالات المتميزة للواجهة الرئيسية.</p>
       </div>
       <a routerLink="/admin/articles/add"
-        class="bg-primary text-on-primary px-6 py-3 rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity">
+        class="bg-primary text-on-primary px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg active:scale-95">
         <span class="material-symbols-outlined" data-icon="post_add">post_add</span>
-        <span>إضافة مقال جديد</span>
+        <span class="font-bold">إضافة مقال جديد</span>
       </a>
     </div>
+
     <!-- Search & Filters -->
-    <div class="bg-surface-container-low p-6 rounded-xl mb-8 flex flex-wrap gap-4 items-center justify-between">
+    <div class="bg-surface-container-low p-6 rounded-2xl mb-8 flex flex-wrap gap-4 items-center justify-between border border-outline-variant/10">
       <div class="flex gap-4 flex-1 min-w-[300px]">
         <div class="relative flex-1 group">
           <span
-            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-secondary"
+            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/30 group-focus-within:text-primary transition-colors"
             data-icon="search">search</span>
           <input
-            class="w-full pr-10 py-2.5 bg-surface-container-lowest border-none rounded-lg text-sm focus:ring-2 focus:ring-secondary/20 placeholder:text-outline-variant transition-all"
+            class="w-full pr-12 py-3 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none placeholder:text-on-surface/30 transition-all font-arabic"
             placeholder="ابحث عن عنوان المقال أو الكاتب..." type="text" [ngModel]="searchQuery()"
             (ngModelChange)="searchQuery.set($event)" />
         </div>
-        <select
-          class="bg-surface-container-lowest border-none rounded-lg text-sm py-2.5 px-4 pr-10 focus:ring-2 focus:ring-secondary/20 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%20fill%3D%22none%22%20stroke%3D%22%23735c00%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:1.2em] bg-[right_0.5rem_center] bg-no-repeat"
-          [ngModel]="selectedCategoryId()" (ngModelChange)="selectedCategoryId.set($event)">
-          <option [ngValue]="null">كل الفئات</option>
-          @for (cat of categoryList(); track cat.id) {
-          <option [ngValue]="cat.id">{{ cat.name }}</option>
-          }
-        </select>
+        <div class="relative min-w-[180px]">
+          <select
+            class="w-full bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm py-3 px-4 pr-10 focus:ring-4 focus:ring-primary/5 focus:border-primary/30 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%20fill%3D%22none%22%20stroke%3D%22%232c3c1e%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:1.2em] bg-[right_0.75rem_center] bg-no-repeat outline-none font-bold text-on-surface/80"
+            [ngModel]="selectedCategoryId()" (ngModelChange)="selectedCategoryId.set($event)">
+            <option [ngValue]="null">كل الفئات</option>
+            @for (cat of categoryList(); track cat.id) {
+            <option [ngValue]="cat.id">{{ cat.name }}</option>
+            }
+          </select>
+        </div>
       </div>
-      <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-on-surface-variant">حسب الحالة:</span>
-        <div class="flex bg-surface-container rounded-lg p-1">
-          <button (click)="selectedStatus.set('all')" class="px-4 py-1.5 text-xs font-bold rounded-md transition-all"
-            [ngClass]="selectedStatus() === 'all' ? 'bg-surface-container-lowest text-secondary shadow-sm' : 'text-on-surface-variant hover:text-primary'">الكل</button>
+      <div class="flex items-center gap-4">
+        <span class="text-xs font-bold text-on-surface/40 uppercase tracking-widest">التصفية حسب:</span>
+        <div class="flex bg-surface-container-lowest rounded-xl p-1 border border-outline-variant/10">
+          <button (click)="selectedStatus.set('all')" class="px-6 py-2 text-xs font-bold rounded-lg transition-all"
+            [ngClass]="selectedStatus() === 'all' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">الكل</button>
           <button (click)="selectedStatus.set('published')"
-            class="px-4 py-1.5 text-xs font-bold rounded-md transition-all"
-            [ngClass]="selectedStatus() === 'published' ? 'bg-surface-container-lowest text-secondary shadow-sm' : 'text-on-surface-variant hover:text-primary'">منشور</button>
-          <button (click)="selectedStatus.set('draft')" class="px-4 py-1.5 text-xs font-bold rounded-md transition-all"
-            [ngClass]="selectedStatus() === 'draft' ? 'bg-surface-container-lowest text-secondary shadow-sm' : 'text-on-surface-variant hover:text-primary'">مسودة</button>
+            class="px-6 py-2 text-xs font-bold rounded-lg transition-all"
+            [ngClass]="selectedStatus() === 'published' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">منشور</button>
+          <button (click)="selectedStatus.set('draft')" class="px-6 py-2 text-xs font-bold rounded-lg transition-all"
+            [ngClass]="selectedStatus() === 'draft' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">مسودة</button>
           <button (click)="selectedStatus.set('deleted')"
-            class="px-4 py-1.5 text-xs font-bold rounded-md transition-all"
-            [ngClass]="selectedStatus() === 'deleted' ? 'bg-surface-container-lowest text-secondary shadow-sm' : 'text-on-surface-variant hover:text-primary'">محذوف</button>
+            class="px-6 py-2 text-xs font-bold rounded-lg transition-all"
+            [ngClass]="selectedStatus() === 'deleted' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">محذوف</button>
         </div>
       </div>
     </div>
+
     <!-- Table Section -->
-    <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0_8px_40px_-12px_rgba(6,27,14,0.08)]">
+    <div class="bg-surface-container-low rounded-2xl overflow-hidden border border-outline-variant/10 shadow-sm relative">
+      @if (isLoading()) {
+        <div class="absolute inset-0 bg-surface-container-low/40 backdrop-blur-[2px] z-50 flex items-center justify-center">
+          <div class="w-12 h-12 border-4 border-primary/10 border-t-primary rounded-full animate-spin"></div>
+        </div>
+      }
+
       <table class="w-full text-right border-collapse">
         <thead>
-          <tr class="bg-surface-container-high/30 border-b border-outline-variant/10">
+          <tr class="bg-surface-container/50 border-b border-outline-variant/10">
             <th (click)="toggleSort('title')"
-              class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
-              <div class="flex items-center gap-1.5 justify-end">
+              class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+              <div class="flex items-center gap-2">
                 المقال
-                @if (sortKey() === 'title') {
-                <span
-                  class="material-symbols-outlined text-sm text-secondary animate-in fade-in zoom-in-75 duration-200">
-                  {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+                <span class="material-symbols-outlined text-sm transition-all" 
+                      [class.opacity-0]="sortKey() !== 'title'"
+                      [class.rotate-180]="sortKey() === 'title' && sortDirection() === 'desc'">
+                  arrow_upward
                 </span>
-                } @else {
-                <span
-                  class="material-symbols-outlined text-sm text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_upward</span>
-                }
               </div>
             </th>
-            <th (click)="toggleSort('category')"
-              class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group text-center">
-              <div class="flex items-center gap-1.5 justify-center">
-                الفئة
-                @if (sortKey() === 'category') {
-                <span
-                  class="material-symbols-outlined text-sm text-secondary animate-in fade-in zoom-in-75 duration-200">
-                  {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
-                </span>
-                } @else {
-                <span
-                  class="material-symbols-outlined text-sm text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_upward</span>
-                }
-              </div>
-            </th>
-            <th (click)="toggleSort('authorName')"
-              class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group text-center">
-              <div class="flex items-center gap-1.5 justify-center">
-                الكاتب
-                @if (sortKey() === 'authorName') {
-                <span
-                  class="material-symbols-outlined text-sm text-secondary animate-in fade-in zoom-in-75 duration-200">
-                  {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
-                </span>
-                } @else {
-                <span
-                  class="material-symbols-outlined text-sm text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_upward</span>
-                }
-              </div>
-            </th>
-            <th (click)="toggleSort('views')"
-              class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group text-center">
-              <div class="flex items-center gap-1.5 justify-center">
-                المشاهدات
-                @if (sortKey() === 'views') {
-                <span
-                  class="material-symbols-outlined text-sm text-secondary animate-in fade-in zoom-in-75 duration-200">
-                  {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
-                </span>
-                } @else {
-                <span
-                  class="material-symbols-outlined text-sm text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_upward</span>
-                }
-              </div>
-            </th>
-            <th (click)="toggleSort('isPublished')"
-              class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group text-center">
-              <div class="flex items-center gap-1.5 justify-center">
-                الحالة
-                @if (sortKey() === 'isPublished') {
-                <span
-                  class="material-symbols-outlined text-sm text-secondary animate-in fade-in zoom-in-75 duration-200">
-                  {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
-                </span>
-                } @else {
-                <span
-                  class="material-symbols-outlined text-sm text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_upward</span>
-                }
-              </div>
-            </th>
-            <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider text-center">
-              إجراءات</th>
+            <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">الفئة</th>
+            <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">الكاتب</th>
+            <th class="px-6 py-4 font-medium text-center">المشاهدات</th>
+            <th class="px-6 py-4 font-medium text-center">الحالة</th>
+            <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">إجراءات</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-outline-variant/10 cursor-default relative">
-          @if (isLoading()) {
-          <div class="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-50 flex items-center justify-center p-12">
-            <div class="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
-          </div>
-          }
-
+        <tbody class="divide-y divide-outline-variant/5">
           @for (article of filteredArticles(); track article.id) {
-          <tr
-            class="hover:bg-surface-container-low/30 transition-colors group relative border-b border-outline-variant/10 last:border-0">
+          <tr class="hover:bg-surface-container-highest/30 transition-colors group relative">
             <td class="px-6 py-5">
               <a [routerLink]="['/admin/articles/view', article.id]"
-                class="flex items-center gap-4 flex-row-reverse hover:opacity-80 transition-opacity">
-                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+                class="flex items-center gap-4 hover:opacity-80 transition-opacity">
+                <div class="w-14 h-14 rounded-xl bg-surface-container overflow-hidden shrink-0 shadow-sm border border-outline-variant/5">
                   <img class="w-full h-full object-cover" [src]="article.imageUrl" />
                 </div>
-                <div class="text-right">
-                  <div class="font-headline font-bold text-primary mb-0.5 line-clamp-1 max-w-[250px]">{{ article.title
-                    }}</div>
-                  <div class="text-[10px] text-on-surface-variant italic">نشر في: {{ article.createdAt | date:'HH:mm -
-                    dd/MM/yyyy' }}</div>
+                <div>
+                  <div class="font-headline font-bold text-primary mb-1 line-clamp-1 max-w-[300px]">{{ article.title }}</div>
+                  <div class="text-[10px] text-on-surface/40 font-medium tracking-tight">تاريخ النشر: {{ article.createdAt | date:'HH:mm - dd/MM/yyyy' }}</div>
                 </div>
               </a>
             </td>
             <td class="px-6 py-5 text-center">
-              <span
-                class="text-xs px-3 py-1 rounded-full bg-secondary-container/20 text-on-secondary-fixed-variant font-medium">
-                {{ article.category || 'حضارة عامة' }}</span>
+              <span class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-surface-container-highest/50 text-secondary border border-outline-variant/5">
+                {{ article.category || 'عام' }}
+              </span>
             </td>
-            <td class="px-6 py-5 text-sm font-medium text-on-surface text-center">{{ article.authorName }}</td>
+            <td class="px-6 py-5 text-sm font-bold text-on-surface/80 text-center">{{ article.authorName }}</td>
             <td class="px-6 py-5 text-center">
-              <div class="flex items-center gap-1.5 justify-center text-on-surface-variant">
-                <span class="material-symbols-outlined text-base" data-icon="visibility">visibility</span>
-                <span class="text-xs">{{ article.views }}</span>
+              <div class="flex items-center gap-1.5 justify-center text-on-surface/40">
+                <span class="material-symbols-outlined text-base">visibility</span>
+                <span class="text-xs font-mono">{{ article.views }}</span>
               </div>
             </td>
             <td class="px-6 py-5 text-center">
               @if (article.isDeleted) {
-              <span
-                class="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1 rounded-full text-error bg-error/10">
-                <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+              <span class="inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full text-error bg-error/10 border border-error/5">
+                <span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
                 محذوف
               </span>
               } @else {
-              <span class="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1 rounded-full"
-                [ngClass]="article.isPublished ? 'text-green-700 bg-green-100' : 'text-secondary-fixed-variant bg-secondary-fixed/50'">
+              <span class="inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full"
+                [ngClass]="article.isPublished ? 'text-green-700 bg-green-100 border border-green-200' : 'text-on-surface/40 bg-surface-container-high border border-outline-variant/10'">
                 <span class="w-1.5 h-1.5 rounded-full"
-                  [ngClass]="article.isPublished ? 'bg-green-600' : 'bg-secondary'"></span>
+                  [ngClass]="article.isPublished ? 'bg-green-600' : 'bg-on-surface/20'"></span>
                 {{ article.isPublished ? 'منشور' : 'مسودة' }}
               </span>
               }
             </td>
             <td class="px-6 py-5 text-center">
-              <div class="flex items-center gap-3 relative justify-center">
-                <!-- <button class="transition-transform text-outline-variant hover:text-secondary" title="مقال متميز">
-                                    <span class="material-symbols-outlined" data-icon="star">star</span>
-                                </button> -->
+              <div class="flex items-center gap-3 justify-center relative">
                 <a [routerLink]="['/admin/articles/edit', article.id]"
-                  class="text-outline hover:text-primary transition-colors">
+                  class="p-2 hover:bg-primary/10 rounded-full text-primary/60 hover:text-primary transition-all" title="تعديل">
                   <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
                 </a>
                 <button (click)="toggleDelete(article.id, $event)"
-                  [class]="article.isDeleted ? 'text-green-600 hover:text-green-700' : 'text-outline hover:text-error'"
+                  class="p-2 rounded-full transition-all"
+                  [class]="article.isDeleted ? 'hover:bg-green-100 text-green-600' : 'hover:bg-error/10 text-error/60 hover:text-error'"
                   [title]="article.isDeleted ? 'استعادة المقال' : 'حذف المقال'">
-                  <span class="material-symbols-outlined text-xl">{{ article.isDeleted ? 'restore_from_trash' : 'delete'
-                    }}</span>
+                  <span class="material-symbols-outlined text-xl">{{ article.isDeleted ? 'history' : 'delete' }}</span>
                 </button>
 
-                <!-- Center Screen Delete Confirmation Modal -->
+                <!-- Deletion Modal (Standardized Center Design) -->
                 @if (confirmDeleteId() === article.id) {
-                <div
-                  class="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
-                  (click)="toggleDelete(article.id, $event)">
-                  <div (click)="$event.stopPropagation()"
-                    class="bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-2xl shadow-2xl max-w-sm w-full animate-in zoom-in-95 duration-200">
+                <div class="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200" (click)="toggleDelete(article.id, $event)">
+                  <div (click)="$event.stopPropagation()" class="bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-3xl shadow-2xl max-w-sm w-full animate-in zoom-in-95 duration-200">
                     <div class="flex flex-col items-center text-center gap-4">
                       <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2"
                         [ngClass]="article.isDeleted ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'">
-                        <span class="material-symbols-outlined text-4xl">{{ article.isDeleted ? 'history' : 'warning'
-                          }}</span>
+                        <span class="material-symbols-outlined text-4xl">{{ article.isDeleted ? 'history' : 'warning' }}</span>
                       </div>
                       <h3 class="text-xl font-headline font-bold text-primary">
-                        {{ article.isDeleted ? 'تأكيد استعادة المقال' : 'تأكيد حذف المقال' }}
+                        {{ article.isDeleted ? 'استعادة المقال' : 'تأكيد عملية الحذف' }}
                       </h3>
-                      <p class="text-on-surface-variant leading-relaxed">
-                        {{ article.isDeleted ? 'هل أنت متأكد من رغبتك في استعادة هذا المقال؟' : 'هل أنت متأكد من رغبتك
-                        في نقل هذا المقال إلى المحذوفات؟' }} <br>
-                        <span class="font-bold" [ngClass]="article.isDeleted ? 'text-secondary' : 'text-error'">"{{
-                          article.title }}"</span>
-                        @if (!article.isDeleted) { <br> <span class="text-[10px] opacity-70">يمكنك استعادته لاحقاً من
-                          نفس القائمة.</span> }
+                      <p class="text-on-surface/60 leading-relaxed text-sm">
+                        {{ article.isDeleted ? 'هل تود حقاً استعادة هذا المحتوى إلى القائمة النشطة؟' : 'سيتم نقل هذا المقال إلى قائمة المحذوفات. هل تود الاستمرار؟' }} <br>
+                        <span class="font-black mt-2 block" [ngClass]="article.isDeleted ? 'text-secondary' : 'text-error'">"{{ article.title }}"</span>
                       </p>
                       <div class="flex gap-3 w-full mt-4">
                         <button (click)="confirmDelete(article.id, $event)"
-                          class="flex-1 text-white font-bold py-3 rounded-xl shadow-lg transition-all active:scale-95"
+                          class="flex-1 text-white font-bold py-3.5 rounded-2xl shadow-lg transition-all active:scale-95"
                           [ngClass]="article.isDeleted ? 'bg-secondary hover:bg-secondary/90' : 'bg-error hover:bg-error/90'">
-                          {{ article.isDeleted ? 'نعم، استعد' : 'نعم، احذف' }}
+                          {{ article.isDeleted ? 'استعادة الآن' : 'نعم، احذف' }}
                         </button>
                         <button (click)="toggleDelete(article.id, $event)"
-                          class="flex-1 bg-surface-container-high text-on-surface font-bold py-3 rounded-xl hover:bg-surface-variant transition-all">إلغاء</button>
+                          class="flex-1 bg-surface-container-high text-on-surface/60 font-bold py-3.5 rounded-2xl hover:bg-surface-variant hover:text-on-surface transition-all">إلغاء</button>
                       </div>
                     </div>
                   </div>
@@ -247,82 +175,48 @@
           }
         </tbody>
       </table>
-      <!-- Pagination -->
-      <div class="px-6 py-6 bg-surface-container/20 flex items-center justify-between flex-row-reverse">
-        <span class="text-xs text-on-surface-variant font-medium">عرض {{(pageNumber()-1)*pageSize()+1}} -
-          {{pageNumber()*pageSize() > totalItems() ? totalItems() : pageNumber()*pageSize()}} من أصل {{totalItems()}}
-          مقال</span>
-        <div class="flex gap-2">
 
-
-          <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
-            class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors disabled:opacity-30">
-            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
-          </button>
-          @for (page of [].constructor(totalPages()); track $index) {
-          <button (click)="onPageChange($index + 1)"
-            class="w-8 h-8 flex items-center justify-center rounded text-xs font-bold transition-all"
-            [ngClass]="$index + 1 === pageNumber() ? 'bg-secondary text-white shadow-md' : 'border border-outline-variant/30 text-on-surface hover:bg-surface-container'">
-            {{ $index + 1 }}
-          </button>
-          }
-
+      <!-- Pagination Section -->
+      <div class="px-8 py-6 bg-surface-container/30 flex items-center justify-between border-t border-outline-variant/10">
+        <div class="flex items-center gap-3">
           <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
-            class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-colors disabled:opacity-30">
-            <span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+            class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 bg-surface-container-lowest text-on-surface/60 hover:bg-primary hover:text-on-primary hover:border-primary disabled:opacity-20 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-lg">chevron_right</span>
+          </button>
+          <div class="flex gap-2 mx-2">
+            @for (page of [].constructor(totalPages()); track $index) {
+              <button (click)="onPageChange($index + 1)"
+                class="w-10 h-10 flex items-center justify-center rounded-xl text-xs font-black transition-all"
+                [ngClass]="$index + 1 === pageNumber() ? 'bg-primary text-on-primary shadow-lg scale-110' : 'bg-surface-container-lowest text-on-surface/40 hover:bg-surface-container hover:text-primary border border-outline-variant/10'">
+                {{ $index + 1 }}
+              </button>
+            }
+          </div>
+          <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
+            class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 bg-surface-container-lowest text-on-surface/60 hover:bg-primary hover:text-on-primary hover:border-primary disabled:opacity-20 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-lg">chevron_left</span>
           </button>
         </div>
-      </div>
-    </div>
-    <!-- Dashboard Quick Insights Asymmetric Layout -->
-    <div class="mt-12 grid grid-cols-12 gap-6 pb-20">
-      <div
-        class="col-span-12 md:col-span-8 bg-primary-container text-on-primary rounded-2xl p-8 relative overflow-hidden group">
-        <div class="relative z-10">
-          <h3 class="text-2xl font-headline font-bold mb-4">أكثر المواضيع رواجاً هذا الشهر</h3>
-          <div class="flex gap-4 mb-6">
-            <span class="text-xs px-3 py-1 bg-white/10 rounded-full backdrop-blur">#تاريخ_الأندلس</span>
-            <span class="text-xs px-3 py-1 bg-white/10 rounded-full backdrop-blur">#الحضارة_الآشورية</span>
-            <span class="text-xs px-3 py-1 bg-white/10 rounded-full backdrop-blur">#الاكتشافات_البحرية</span>
-          </div>
-          <p class="text-on-primary-container text-sm leading-relaxed max-w-lg">
-            شهد قسم "العصور الوسطى" زيادة بنسبة 24% في القراءات نتيجة الاهتمام المتزايد بالوثائقيات
-            التاريخية الأخيرة. ننصح بجدولة المزيد من المحتوى في هذا التصنيف.
-          </p>
-        </div>
-        <div
-          class="absolute -bottom-10 -left-10 w-64 h-64 bg-secondary/10 rounded-full blur-3xl group-hover:bg-secondary/20 transition-all duration-700">
-        </div>
-      </div>
-      <div
-        class="col-span-12 md:col-span-4 bg-surface-container rounded-2xl p-8 flex flex-col justify-between border border-outline-variant/20">
-        <div>
-          <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-2 block">إحصائية
-            سريعة</span>
-          <h3 class="text-xl font-headline font-bold text-primary">المقالات المعلقة</h3>
-          <p class="text-on-surface-variant text-xs mt-1">تنتظر مراجعة المحرر النهائي</p>
-        </div>
-        <div class="flex items-baseline gap-2 mt-4">
-          <span class="text-5xl font-headline font-bold text-primary">07</span>
-          <span class="text-sm text-on-surface-variant">مقالات</span>
-        </div>
-        <button class="mt-6 text-sm font-bold text-secondary flex items-center gap-2 group">
-          عرض جميع المعلقات
-          <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
-            data-icon="arrow_back">arrow_back</span>
-        </button>
+        <span class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">
+          عرض {{(pageNumber()-1)*pageSize()+1}} - {{pageNumber()*pageSize() > totalItems() ? totalItems() : pageNumber()*pageSize()}} من أصل {{totalItems()}} مقال
+        </span>
       </div>
     </div>
   </div>
 </main>
-<!-- Floating Toast Message -->
+
+<!-- Unified Floating Toast -->
 @if (successMessage()) {
-<div
-  class="fixed bottom-8 right-8 z-100 bg-primary text-on-primary px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 editorial-shadow animate-in slide-in-from-bottom-5">
-  <span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
-  <div class="text-sm">{{ successMessage() }}</div>
-  <button (click)="successMessage.set('')"
-    class="material-symbols-outlined text-white/50 hover:text-white transition-colors text-lg"
-    data-icon="close">close</button>
+<div class="fixed bottom-8 left-8 z-[150] bg-primary text-on-primary px-8 py-5 rounded-2xl shadow-2xl flex items-center gap-5 animate-in slide-in-from-bottom-10 border border-white/10">
+  <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+  </div>
+  <div>
+    <div class="text-sm font-black">{{ successMessage() }}</div>
+    <div class="text-[10px] opacity-60">تم تحديث النظام بنجاح</div>
+  </div>
+  <button (click)="successMessage.set('')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+    <span class="material-symbols-outlined text-white/40 text-lg" data-icon="close">close</span>
+  </button>
 </div>
 }
