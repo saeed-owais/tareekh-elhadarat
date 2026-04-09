@@ -36,10 +36,21 @@ export class AdminArticleViewComponent implements OnInit {
     });
   }
 
-  changeStatus(newStatus: 'published' | 'draft' | 'pending' | 'rejected') {
-    if (this.article()) {
-       // Mock logic for status change if API not yet ready
-       // this.article().isPublished = newStatus === 'published';
-    }
+  /**
+   * Placeholder for status management (Publish/Draft/Archive)
+   * This can be expanded when background endpoints for individual status toggles are ready.
+   */
+  updateArticleStatus(newStatus: boolean) {
+    if (!this.article()) return;
+    
+    // Simulate update for UI feedback
+    const current = this.article()!;
+    this.article.set({
+      ...current,
+      isPublished: newStatus
+    });
+    
+    // In a real scenario, we would call this.articleService.toggleArticle(id) here
+    console.log(`Status update requested: ${newStatus ? 'Publish' : 'Unpublish'}`);
   }
 }

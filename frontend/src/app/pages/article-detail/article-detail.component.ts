@@ -33,7 +33,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   commentSubmitted = signal(false);
   commentForm!: FormGroup;
 
-  private viewTimer : any = null;
+  private viewTimer: any = null;
 
   ngOnInit(): void {
     this.isLoggedIn.set(this.authService.isLoggedIn());
@@ -56,15 +56,14 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       next: (article) => {
         this.article.set(article);
         this.isLoading.set(false);
-        this.comments.set([]); // Reset comments before loading new ones
-        this.commentService.getCommentsByPostId(article.id).subscribe({
-          next: (comments) => this.comments.set(comments),
-          error: (err) => console.error('Error fetching comments:', err)
-        });
+        // Populate comments from the article object itself if available
+        if (article.comments) {
+          this.comments.set(article.comments);
+        }
 
         // Mark as viewed after half of reading time (minutes * 60 * 1000 / 2)
-        const delayMs = article.readTimeInMiniutes > 0 
-          ? (article.readTimeInMiniutes * 60 * 1000) / 2 
+        const delayMs = article.readTimeInMiniutes > 0
+          ? (article.readTimeInMiniutes * 60 * 1000) / 2
           : 30000;
 
         this.viewTimer = setTimeout(() => {

@@ -201,7 +201,7 @@ export class ArticleService {
 
     // ================= LOAD ARTICLE (ADMIN) =================
     loadArticleAdmin(id: number): Observable<AdminArticle> {
-        return this.http.get<any>(`${this.apiUrl}/Get-Article/${id}`, {
+        return this.http.get<any>(`${this.apiUrl}/Get-Article-Admin/${id}`, {
             headers: {
                 'Authorization': `Bearer ${this.tokenService.getToken()}`
             }

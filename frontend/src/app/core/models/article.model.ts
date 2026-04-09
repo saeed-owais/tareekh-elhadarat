@@ -19,14 +19,16 @@ export interface AdminArticle {
   title: string;
   authorName: string;
   content: string;
-  createdAt: string;
+  createdAt: string | null;
   updatedAt: string | null;
   imageUrl: string;
-  views: number;
+  views: number | null;
   readTimeInMiniutes: number;
-  isPublished: boolean;
-  isDeleted: boolean;
+  isPublished?: boolean;
+  isDeleted?: boolean;
   categoryId: number | null;
   category: string;
-  articleTagsIds: number[];
+  articleTagsIds?: number[];
+  tags?: string[];
+  comments?: any[] | null;
 }

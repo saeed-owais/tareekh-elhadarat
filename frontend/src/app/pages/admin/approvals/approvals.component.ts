@@ -59,7 +59,11 @@ export class ApprovalsComponent implements OnInit {
 
   loadSubmittedComments() {
     this.commentService.getSubmittedComments().subscribe({
-      next: (data) => this.comments.set(data),
+      next: (data) => {
+        this.comments.set(data)
+        // console.log("loadSubmittedComments",data);
+        
+      },
       error: (err) => console.error('Error fetching comments:', err)
     });
   }
@@ -133,8 +137,19 @@ export class ApprovalsComponent implements OnInit {
 
   viewCommentDetails(id: number) {
     this.isLoading.set(true);
+    // Find local data for fallback articleId/articleTitle
+    const localData = this.comments().find(c => c.id === id);
+    
     this.commentService.getComment(id).subscribe({
       next: (data) => {
+        // Fallback to local data if API returns null/missing IDs
+        if (localData && !data.articleId) {
+           data.articleId = localData.articleId;
+        }
+        if (localData && !data.articleTitle) {
+          data.articleTitle = localData.articleTitle;
+        }
+        
         this.detailedComment.set(data);
         this.isViewingComment.set(true);
         this.isLoading.set(false);

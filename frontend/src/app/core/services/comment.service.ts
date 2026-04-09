@@ -20,12 +20,6 @@ export class CommentService {
     });
   }
 
-  getCommentsByPostId(postId: number): Observable<Comment[]> {
-    // Note: Assuming there's a public endpoint for post comments. 
-    // If not, this remains as a placeholder or uses existing public API.
-    return this.http.get<Comment[]>(`${this.baseUrl}/Get-Comments-By-Post-Id/${postId}`);
-  }
-
   addComment(data: AddCommentRequest): Observable<any> {
     return this.http.post(`${this.baseUrl}/Add-Comment`, data);
   }

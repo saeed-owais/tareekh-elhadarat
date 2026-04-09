@@ -177,9 +177,10 @@
                   </div>
                 </td>
                 <td class="px-6 py-5">
-                  <div class="text-[11px] font-bold text-secondary max-w-[200px] line-clamp-1 italic underline underline-offset-4 decoration-secondary/10">
+                  <a [routerLink]="['/articles', comment.articleId]" 
+                     class="text-[11px] font-bold text-secondary max-w-[200px] line-clamp-1 italic underline underline-offset-4 decoration-secondary/10 hover:text-primary transition-colors">
                     {{ comment.articleTitle }}
-                  </div>
+                  </a>
                 </td>
                 <td class="px-6 py-5 text-center text-[10px] text-on-surface/60 font-mono whitespace-nowrap">
                   {{ comment.createdAt | date:'HH:mm - dd/MM/yyyy' }}

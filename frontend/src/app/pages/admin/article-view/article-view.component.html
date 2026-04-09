@@ -1,4 +1,4 @@
-<main class="min-w-0 lg:mr-64 pt-20 pb-24 min-h-screen bg-surface-container-lowest relative">
+<main class="min-w-0 lg:mr-64 pt-20 pb-24 min-h-screen relative">
   @if (isLoading()) {
     <div class="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center p-12">
       <div class="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
@@ -6,81 +6,165 @@
   }
 
   @if (article(); as articleData) {
-    <!-- Admin Control Bar -->
-    <div class="sticky z-40 bg-surface/90 backdrop-blur-md border-b border-outline-variant/20 shadow-sm top-[72px] lg:top-0">
-      <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between flex-row-reverse">
+    <!-- Admin Header -->
+    <div class="z-10 bg-transparent mb-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-16 flex items-center justify-between">
         
-        <div class="flex items-center gap-3 flex-row-reverse">
-          <a routerLink="/admin/articles" title="العودة للإدارة"
-             class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors text-on-surface-variant">
-            <span class="material-symbols-outlined text-sm" style="direction: ltr;">arrow_forward</span>
+        <div class="flex items-center gap-4">
+          <a routerLink="/admin/articles" 
+             class="w-10 h-10 rounded-xl flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-all text-primary"
+             title="العودة للإدارة">
+            <span class="material-symbols-outlined text-xl">arrow_forward</span>
           </a>
-          <div class="w-px h-6 bg-outline-variant/30"></div>
-          
-          <span class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"
-                [ngClass]="{
-                  'bg-green-100 text-green-800': articleData.isPublished,
-                  'bg-surface-container-highest text-on-surface': !articleData.isPublished,
-                  'bg-error/10 text-error': articleData.isDeleted
-                }">
-            {{ articleData.isDeleted ? 'محذوف' : (articleData.isPublished ? 'منشور' : 'مسودة') }}
-          </span>
-          <span class="text-xs text-on-surface/50 hidden sm:inline">حالة المقال</span>
+          <div class="hidden sm:block">
+            <h2 class="text-sm font-bold text-primary truncate max-w-[200px] lg:max-w-md">{{ articleData.title }}</h2>
+            <p class="text-[10px] text-on-surface/40 uppercase font-black tracking-widest mt-0.5">معاينة المقال</p>
+          </div>
         </div>
   
-        <div class="flex items-center gap-2">
-          <a [routerLink]="['/admin/articles/edit', articleData.id]" class="text-xs font-bold bg-primary text-on-primary px-4 py-2 rounded-lg hover:bg-primary/90 transition shadow-md flex items-center gap-1 mr-2">
-            <span class="material-symbols-outlined text-sm">edit</span> تعديل
+        <div class="flex items-center gap-3">
+          <!-- Status Badge -->
+          <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface">
+            <div class="w-2 h-2 rounded-full" 
+                 [ngClass]="{
+                   'bg-green-500 animate-pulse': articleData.isPublished,
+                   'bg-on-surface/20': !articleData.isPublished && !articleData.isDeleted,
+                   'bg-error': articleData.isDeleted
+                 }"></div>
+            <span class="text-[11px] font-bold text-on-surface/70 uppercase">
+              {{ articleData.isDeleted ? 'محذوف' : (articleData.isPublished ? 'منشور' : 'مسودة') }}
+            </span>
+          </div>
+
+          <div class="w-px h-6 bg-outline-variant/30 hidden sm:block mx-1"></div>
+
+          <a [routerLink]="['/admin/articles/edit', articleData.id]" 
+             class="bg-primary text-on-primary px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 active:scale-95 group">
+            <span class="material-symbols-outlined text-lg transition-transform group-hover:rotate-12" data-icon="edit_square">edit_square</span>
+            <span class="hidden xs:inline">تعديل المقال</span>
           </a>
         </div>
       </div>
     </div>
   
-    <div class="p-8 max-w-4xl mx-auto pb-24">
-      
-      <!-- Article Header -->
-      <header class="text-center mb-10">
-        <div class="flex items-center justify-center gap-3 mb-6">
-          <span class="text-xs font-bold text-secondary bg-secondary/10 px-3 py-1 rounded-full">{{ 'مقالات عامة' }}</span>
-        </div>
-        <h1 class="text-4xl md:text-5xl font-headline font-black text-primary leading-tight mb-6">
-          {{ articleData.title }}
-        </h1>
-        <div class="flex items-center justify-center gap-6 text-sm text-on-surface-variant font-label">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-lg">person</span>
-            {{ articleData.authorName }}
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 md:p-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left: Main Content Area -->
+        <div class="lg:col-span-2 space-y-8">
+          
+          <!-- Article Cover -->
+          <div class="rounded-3xl overflow-hidden aspect-21/9 shadow-2xl relative group bg-surface-container">
+            <img [src]="articleData.imageUrl" [alt]="articleData.title" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-6 right-6 left-6 text-white text-right">
+               <span class="inline-block px-3 py-1 rounded-full bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-widest mb-3">
+                 {{ articleData.category || 'غير مصنف' }}
+               </span>
+               <h1 class="text-2xl md:text-4xl font-headline font-black leading-tight drop-shadow-md">
+                 {{ articleData.title }}
+               </h1>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-lg">calendar_today</span>
-            {{ articleData.createdAt | date: 'dd MMMM yyyy' }}
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-lg">visibility</span>
-            {{ articleData.views }} مشاهدة
+
+          <!-- Content Body -->
+          <div class="bg-surface-container-lowest p-6 md:p-10 rounded-3xl border border-outline-variant/10 shadow-sm">
+            <article class="prose prose-lg max-w-none text-right font-body leading-[1.8] text-on-surface
+              prose-headings:font-headline prose-headings:font-bold prose-headings:text-primary 
+              prose-p:mb-6 prose-a:text-secondary prose-img:rounded-2xl" 
+              [innerHTML]="articleData.content">
+            </article>
           </div>
         </div>
-      </header>
-  
-      <!-- Featured Image Area -->
-      <div class="w-full aspect-21/9 rounded-3xl overflow-hidden mb-12 shadow-2xl relative group">
-        <img [src]="articleData.imageUrl" alt="Featured Image" class="w-full h-full object-cover">
-        <!-- Display Admin UI overlay over the image -->
-        <div class="absolute inset-x-0 bottom-0 p-4 bg-linear-to-t from-black/80 to-transparent flex justify-end">
-           <span class="text-white text-xs bg-black/40 px-3 py-1 rounded-lg backdrop-blur-md">رؤية كـ : أدمن</span>
+
+        <!-- Right: Management Sidebar -->
+        <div class="space-y-6">
+          
+          <!-- Quick Stats Cards Grid -->
+          <div class="grid grid-cols-2 gap-4">
+             <div class="bg-surface-container-low/50 p-4 rounded-2xl border border-outline-variant/10 text-center flex flex-col items-center">
+                <span class="material-symbols-outlined text-secondary mb-2" data-icon="visibility">visibility</span>
+                <span class="text-sm font-black text-primary">{{ articleData.views || 0 }}</span>
+                <span class="text-[9px] text-on-surface/40 uppercase font-bold tracking-tighter">إجمالي المشاهدات</span>
+             </div>
+             <div class="bg-surface-container-low/50 p-4 rounded-2xl border border-outline-variant/10 text-center flex flex-col items-center">
+                <span class="material-symbols-outlined text-secondary mb-2" data-icon="schedule">schedule</span>
+                <span class="text-sm font-black text-primary">{{ articleData.readTimeInMiniutes || 0 }}</span>
+                <span class="text-[9px] text-on-surface/40 uppercase font-bold tracking-tighter">دقائق قراءة</span>
+             </div>
+          </div>
+
+          <!-- Metadata Box -->
+          <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/10 shadow-sm space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-outline-variant/5">
+              <h3 class="text-sm font-headline font-bold text-primary">تفاصيل الأرشفة</h3>
+              <span class="text-[10px] text-on-surface/30 font-mono">#ID-{{ articleData.id }}</span>
+            </div>
+
+            <!-- Author Info -->
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                  {{ (articleData.authorName || 'A').charAt(0) }}
+                </div>
+                <div>
+                   <p class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">المؤلف</p>
+                   <p class="text-sm font-bold text-primary">{{ articleData.authorName }}</p>
+                </div>
+            </div>
+
+            <!-- Dates Info -->
+            <div class="space-y-4">
+               <div class="flex items-start gap-4">
+                  <span class="material-symbols-outlined text-on-surface/30 text-lg">event_available</span>
+                  <div>
+                    <p class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">تاريخ النشر</p>
+                    <p class="text-xs font-medium text-on-surface-variant">{{ articleData.createdAt | date: 'dd MMMM yyyy' }}</p>
+                  </div>
+               </div>
+               @if (articleData.updatedAt) {
+                 <div class="flex items-start gap-4">
+                    <span class="material-symbols-outlined text-on-surface/30 text-lg">update</span>
+                    <div>
+                      <p class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">آخر تحديث</p>
+                      <p class="text-xs font-medium text-on-surface-variant">{{ articleData.updatedAt | date: 'dd MMMM yyyy' }}</p>
+                    </div>
+                 </div>
+               }
+            </div>
+
+            <!-- Tags Section -->
+            @if (articleData.tags && articleData.tags.length > 0) {
+              <div class="pt-4 border-t border-outline-variant/5">
+                <p class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest mb-3">الوسوم</p>
+                <div class="flex flex-wrap gap-2">
+                  @for (tag of articleData.tags; track tag) {
+                    <span class="px-2 py-1 bg-surface-container-highest/30 rounded text-[10px] font-bold text-on-surface-variant border border-outline-variant/10">
+                      {{ tag }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Comments Summary Link (Future use) -->
+          <button class="w-full bg-secondary/10 hover:bg-secondary/20 text-secondary p-4 rounded-2xl border border-secondary/10 transition-all flex items-center justify-between group">
+             <div class="flex items-center gap-3">
+               <span class="material-symbols-outlined group-hover:rotate-12 transition-transform" data-icon="forum">forum</span>
+               <span class="text-sm font-bold">إدارة تعليقات المقال</span>
+             </div>
+             <span class="text-xs font-black">{{ articleData.comments?.length || 0 }}</span>
+          </button>
         </div>
+
       </div>
-  
-      <!-- Article Content Render -->
-      <article class="prose prose-lg prose-headings:font-headline prose-headings:font-bold prose-headings:text-primary prose-a:text-secondary max-w-none text-right font-body leading-loose text-on-surface" [innerHTML]="articleData.content">
-      </article>
-  
     </div>
   } @else if (!isLoading()) {
     <div class="p-20 text-center text-on-surface/40">
-        <span class="material-symbols-outlined text-5xl mb-4 block">error</span>
-        <p>عذراً، لم يتم العثور على هذا المقال.</p>
-        <a routerLink="/admin/articles" class="mt-4 inline-block text-secondary font-bold underline">العودة لقائمة المقالات</a>
+        <span class="material-symbols-outlined text-5xl mb-4 block animate-bounce">error</span>
+        <h2 class="text-2xl font-headline font-bold text-primary mb-2">المقال مفقود</h2>
+        <p class="mb-8">عذراً، لم نتمكن من العثور على هذا المقال في سجلاتنا.</p>
+        <a routerLink="/admin/articles" class="px-8 py-3 bg-primary text-on-primary rounded-xl font-bold hover:shadow-lg transition-all active:scale-95 inline-block">العودة لقائمة المقالات</a>
     </div>
   }
 </main>

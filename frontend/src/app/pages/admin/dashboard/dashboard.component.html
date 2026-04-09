@@ -166,6 +166,7 @@
             <table class="w-full text-right border-collapse min-w-[800px]">
               <thead>
                 <tr class="bg-surface-container-low/10 text-on-surface/40 text-[10px] font-black uppercase tracking-widest border-b border-outline-variant/5">
+                  <th class="px-6 py-5 w-20">الصورة</th>
                   <th class="px-6 py-5">عنوان المقال</th>
                   <th class="px-6 py-5">الكاتب</th>
                   <th class="px-6 py-5 text-center">المشاهدات</th>
@@ -176,6 +177,11 @@
               <tbody class="divide-y divide-outline-variant/5">
                 @for (article of newestArticles(); track article.id) {
                   <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                    <td class="px-6 py-4">
+                      <div class="w-12 h-12 rounded-lg overflow-hidden border border-outline-variant/10 shadow-sm transition-transform group-hover:scale-105">
+                         <img [src]="article.imageUrl" [alt]="article.title" class="w-full h-full object-cover">
+                      </div>
+                    </td>
                     <td class="px-6 py-5">
                       <span class="font-bold text-sm text-primary group-hover:text-secondary transition-colors">{{ article.title }}</span>
                     </td>
@@ -190,15 +196,24 @@
                     </td>
                     <td class="px-6 py-5 text-xs text-on-surface/40 font-medium whitespace-nowrap">{{ article.createdAt | date:'dd MMMM yyyy' }}</td>
                     <td class="px-6 py-5">
-                      <a [routerLink]="['/admin/articles/edit', article.id]" class="p-2 hover:bg-primary/10 rounded-full text-primary/60 hover:text-primary transition-all inline-block shadow-sm">
-                        <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
-                      </a>
+                      <div class="flex items-center gap-2">
+                        <a [routerLink]="['/admin/articles/view', article.id]"
+                          class="p-2 hover:bg-secondary/10 rounded-full text-secondary/60 hover:text-secondary transition-all inline-block shadow-sm"
+                          title="عرض التفاصيل">
+                          <span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
+                        </a>
+                        <a [routerLink]="['/admin/articles/edit', article.id]"
+                          class="p-2 hover:bg-primary/10 rounded-full text-primary/60 hover:text-primary transition-all inline-block shadow-sm"
+                          title="تعديل">
+                          <span class="material-symbols-outlined text-xl" data-icon="edit_square">edit_square</span>
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 }
                 @if (newestArticles().length === 0) {
                   <tr>
-                    <td colspan="5" class="px-6 py-20 text-center text-on-surface/20 italic">لا توجد مقالات منشورة حالياً</td>
+                    <td colspan="6" class="px-6 py-20 text-center text-on-surface/20 italic">لا توجد مقالات منشورة حالياً</td>
                   </tr>
                 }
               </tbody>
