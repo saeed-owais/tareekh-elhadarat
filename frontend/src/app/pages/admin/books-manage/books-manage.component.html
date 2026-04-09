@@ -1,151 +1,154 @@
 <!-- Main Books Management Area -->
-<main class="min-w-0 lg:mr-64 min-h-screen" dir="rtl">
+<main class="min-w-0 lg:mr-64 pt-20 pb-24 min-h-screen" dir="rtl">
 
-    <div class="p-8 max-w-7xl mx-auto">
+    <div class="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
         <!-- Page Header & Actions -->
-        <div class="flex justify-between items-center mb-10">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
             <div class="text-right">
-                <h2 class="text-3xl font-headline font-bold text-primary mb-2">إدارة الكتب والمؤلفات</h2>
-                <p class="text-on-surface/60 text-sm max-w-md leading-relaxed">تولَّ التحكم في مكتبتك الرقمية؛ أضف إصدارات جديدة، أو حدّث بيانات الإصدارات الحالية أو احذفها.</p>
+                <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">إدارة الكتب والمؤلفات</h2>
+                <p class="text-on-surface/60 text-xs md:text-sm max-w-md leading-relaxed">تولَّ التحكم في مكتبتك الرقمية؛ أضف إصدارات جديدة، أو حدّث بيانات الإصدارات الحالية أو احذفها.</p>
             </div>
             <a routerLink="/admin/books/add"
-                class="bg-primary text-on-primary px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg active:scale-95">
+                class="w-full sm:w-auto bg-primary text-on-primary px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg active:scale-95">
                 <span class="material-symbols-outlined" data-icon="library_add">library_add</span>
                 <span class="font-bold">إضافة كتاب جديد</span>
             </a>
         </div>
 
         <!-- Search & Control Section -->
-        <div class="bg-surface-container-low p-6 rounded-2xl mb-8 flex flex-wrap gap-4 items-center justify-between border border-outline-variant/10">
-            <div class="flex gap-4 flex-1 min-w-[300px]">
+        <div class="bg-surface-container-low p-4 md:p-6 rounded-2xl mb-8 flex flex-col md:flex-row gap-6 items-stretch md:items-center justify-between border border-outline-variant/10 shadow-sm">
+            <div class="flex gap-4 flex-1">
                 <div class="relative flex-1 group">
                     <span
                         class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/30 group-focus-within:text-primary transition-colors"
                         data-icon="search">search</span>
                     <input
-                        class="w-full pr-12 py-3 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none placeholder:text-on-surface/30 transition-all font-arabic"
+                        class="w-full pr-12 py-3.5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none placeholder:text-on-surface/30 transition-all font-arabic"
                         placeholder="ابحث عن عنوان الكتاب أو المؤلف..." type="text" 
                         [(ngModel)]="searchQuery" />
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <span class="text-[10px] font-bold text-on-surface/40 uppercase tracking-widest px-4 py-2 bg-surface-container-lowest border border-outline-variant/10 rounded-xl">الإجمالي: {{ totalItems() }} كتاب</span>
+            <div class="flex items-center justify-center gap-3">
+                <span class="text-[10px] font-bold text-on-surface/40 uppercase tracking-widest px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl shadow-sm">الإجمالي: {{ totalItems() }} كتاب</span>
             </div>
         </div>
 
         <!-- Table View -->
         <div
-            class="bg-surface-container-low rounded-2xl overflow-hidden border border-outline-variant/10 shadow-sm relative animate-in fade-in slide-in-from-bottom-2 duration-300">
+            class="bg-surface-container-low rounded-2xl border border-outline-variant/10 shadow-sm relative animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden">
             @if (isLoading() && books().length === 0) {
               <div class="absolute inset-0 bg-surface-container-low/40 backdrop-blur-[2px] z-50 flex items-center justify-center">
                 <div class="w-12 h-12 border-4 border-primary/10 border-t-primary rounded-full animate-spin"></div>
               </div>
             }
 
-            <table class="w-full text-right border-collapse">
-                <thead>
-                    <tr class="bg-surface-container/50 border-b border-outline-variant/10">
-                        <th (click)="toggleSort('title')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
-                            <div class="flex items-center gap-2">
-                                الكتاب
-                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'title'" [class.rotate-180]="sortKey() === 'title' && sortDirection() === 'desc'">arrow_upward</span>
-                            </div>
-                        </th>
-                        <th (click)="toggleSort('author')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-right cursor-pointer hover:bg-surface-container transition-colors group">
-                            <div class="flex items-center gap-2">
-                                المؤلف
-                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'author'" [class.rotate-180]="sortKey() === 'author' && sortDirection() === 'desc'">arrow_upward</span>
-                            </div>
-                        </th>
-                        <th (click)="toggleSort('pageCount')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
-                            <div class="flex items-center gap-2">
-                                عدد الصفحات
-                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'pageCount'" [class.rotate-180]="sortKey() === 'pageCount' && sortDirection() === 'desc'">arrow_upward</span>
-                            </div>
-                        </th>
-                        <th (click)="toggleSort('releaseDate')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
-                            <div class="flex items-center gap-2">
-                                تاريخ الإصدار
-                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'releaseDate'" [class.rotate-180]="sortKey() === 'releaseDate' && sortDirection() === 'desc'">arrow_upward</span>
-                            </div>
-                        </th>
-                        <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider">إجراءات</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-outline-variant/5">
-                    @for (book of pagedBooks(); track book.id) {
-                    <tr class="hover:bg-surface-container-highest/30 transition-colors group relative">
-                        <td class="px-6 py-5">
-                            <a [routerLink]="['/books', book.id]" class="flex items-center gap-4 hover:opacity-80 transition-opacity">
-                                <div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden shrink-0 shadow-sm border border-outline-variant/10">
-                                    <img class="w-full h-full object-cover"
-                                        [src]="cleanUrl(book.poster) || 'assets/images/book-placeholder.jpg'" />
+            <!-- Horizontal Scroll Wrapper -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="bg-surface-container/50 border-b border-outline-variant/10">
+                            <th (click)="toggleSort('title')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+                                <div class="flex items-center gap-2">
+                                    الكتاب
+                                    <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'title'" [class.rotate-180]="sortKey() === 'title' && sortDirection() === 'desc'">arrow_upward</span>
                                 </div>
-                                <div>
-                                    <div class="font-headline font-bold text-primary mb-1 line-clamp-1 max-w-[250px] italic underline-offset-4 decoration-primary/10 group-hover:underline">{{ book.title }}</div>
-                                    <div class="text-[10px] text-on-surface/40 font-medium line-clamp-2 max-w-[250px] leading-relaxed">{{ book.about }}</div>
+                            </th>
+                            <th (click)="toggleSort('author')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-right cursor-pointer hover:bg-surface-container transition-colors group">
+                                <div class="flex items-center gap-2">
+                                    المؤلف
+                                    <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'author'" [class.rotate-180]="sortKey() === 'author' && sortDirection() === 'desc'">arrow_upward</span>
                                 </div>
-                            </a>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-bold text-on-surface/80">{{ book.author }}</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm text-on-surface/60 font-mono">{{ book.pageCount }} ص</td>
-                        <td class="px-6 py-5 text-xs text-on-surface/60 font-medium whitespace-nowrap">{{ book.releaseDate | date: 'dd MMMM yyyy' }}</td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <a [href]="book.downloadLink" target="_blank" class="p-2 hover:bg-secondary/10 rounded-full text-secondary/60 hover:text-secondary transition-all" title="تحميل الملف">
-                                    <span class="material-symbols-outlined text-xl" data-icon="download">download</span>
+                            </th>
+                            <th (click)="toggleSort('pageCount')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+                                <div class="flex items-center gap-2">
+                                    عدد الصفحات
+                                    <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'pageCount'" [class.rotate-180]="sortKey() === 'pageCount' && sortDirection() === 'desc'">arrow_upward</span>
+                                </div>
+                            </th>
+                            <th (click)="toggleSort('releaseDate')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+                                <div class="flex items-center gap-2">
+                                    تاريخ الإصدار
+                                    <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'releaseDate'" [class.rotate-180]="sortKey() === 'releaseDate' && sortDirection() === 'desc'">arrow_upward</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider">إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/5">
+                        @for (book of pagedBooks(); track book.id) {
+                        <tr class="hover:bg-surface-container-highest/30 transition-colors group relative">
+                            <td class="px-6 py-5">
+                                <a [routerLink]="['/books', book.id]" class="flex items-center gap-4 hover:opacity-80 transition-opacity">
+                                    <div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden shrink-0 shadow-sm border border-outline-variant/10">
+                                        <img class="w-full h-full object-cover"
+                                            [src]="cleanUrl(book.poster) || 'assets/images/book-placeholder.jpg'" />
+                                    </div>
+                                    <div>
+                                        <div class="font-headline font-bold text-primary mb-1 line-clamp-1 max-w-[250px] italic underline-offset-4 decoration-primary/10 group-hover:underline">{{ book.title }}</div>
+                                        <div class="text-[10px] text-on-surface/40 font-medium line-clamp-2 max-w-[250px] leading-relaxed">{{ book.about }}</div>
+                                    </div>
                                 </a>
-                                <button (click)="toggleDelete(book.id, $event)" class="p-2 hover:bg-error/10 rounded-full text-error/60 hover:text-error transition-all" title="حذف">
-                                    <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
-                                </button>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="text-sm font-bold text-on-surface/80">{{ book.author }}</span>
+                            </td>
+                            <td class="px-6 py-5 text-sm text-on-surface/60 font-mono">{{ book.pageCount }} ص</td>
+                            <td class="px-6 py-5 text-xs text-on-surface/60 font-medium whitespace-nowrap">{{ book.releaseDate | date: 'dd MMMM yyyy' }}</td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-3">
+                                    <a [href]="book.downloadLink" target="_blank" class="p-2 hover:bg-secondary/10 rounded-full text-secondary/60 hover:text-secondary transition-all" title="تحميل الملف">
+                                        <span class="material-symbols-outlined text-xl" data-icon="download">download</span>
+                                    </a>
+                                    <button (click)="toggleDelete(book.id, $event)" class="p-2 hover:bg-error/10 rounded-full text-error/60 hover:text-error transition-all" title="حذف">
+                                        <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+                                    </button>
 
-                                <!-- Deletion Modal (Standardized Center Design) -->
-                                @if (confirmDeleteId() === book.id) {
-                                  <div class="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200" (click)="toggleDelete(book.id, $event)">
-                                    <div (click)="$event.stopPropagation()" class="bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-3xl shadow-2xl max-w-sm w-full animate-in zoom-in-95 duration-200">
-                                      <div class="flex flex-col items-center text-center gap-4">
-                                        <div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center text-error mb-2">
-                                          <span class="material-symbols-outlined text-4xl">warning</span>
-                                        </div>
-                                        <h3 class="text-xl font-headline font-bold text-primary">تأكيد حذف الكتاب</h3>
-                                        <p class="text-on-surface/60 leading-relaxed text-sm">
-                                          سيتم إزالة هذا الكتاب نهائياً من المكتبة الرقمية. هل تود الاستمرار؟ <br> 
-                                          <span class="font-black text-error mt-2 block">"{{ book.title }}"</span>
-                                        </p>
-                                        <div class="flex gap-3 w-full mt-4">
-                                          <button (click)="confirmDelete(book.id)" class="flex-1 bg-error text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-error/90 transition-all active:scale-95">نعم، احذف</button>
-                                          <button (click)="toggleDelete(book.id, $event)" class="flex-1 bg-surface-container-high text-on-surface/60 font-bold py-3.5 rounded-2xl hover:bg-surface-variant hover:text-on-surface transition-all">إلغاء</button>
+                                    <!-- Deletion Modal (Standardized Center Design) -->
+                                    @if (confirmDeleteId() === book.id) {
+                                      <div class="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200" (click)="toggleDelete(book.id, $event)">
+                                        <div (click)="$event.stopPropagation()" class="bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-3xl shadow-2xl max-w-sm w-full animate-in zoom-in-95 duration-200">
+                                          <div class="flex flex-col items-center text-center gap-4">
+                                            <div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center text-error mb-2">
+                                              <span class="material-symbols-outlined text-4xl">warning</span>
+                                            </div>
+                                            <h3 class="text-xl font-headline font-bold text-primary">تأكيد حذف الكتاب</h3>
+                                            <p class="text-on-surface/60 leading-relaxed text-sm">
+                                              سيتم إزالة هذا الكتاب نهائياً من المكتبة الرقمية. هل تود الاستمرار؟ <br> 
+                                              <span class="font-black text-error mt-2 block">"{{ book.title }}"</span>
+                                            </p>
+                                            <div class="flex gap-3 w-full mt-4">
+                                              <button (click)="confirmDelete(book.id)" class="flex-1 bg-error text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-error/90 transition-all active:scale-95">نعم، احذف</button>
+                                              <button (click)="toggleDelete(book.id, $event)" class="flex-1 bg-surface-container-high text-on-surface/60 font-bold py-3.5 rounded-2xl hover:bg-surface-variant hover:text-on-surface transition-all">إلغاء</button>
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  </div>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                    }
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        }
 
-                    @if (books().length === 0 && !isLoading()) {
-                      <tr>
-                        <td colspan="5" class="px-6 py-24 text-center text-on-surface/30 italic">
-                          <span class="material-symbols-outlined text-6xl mb-4 block opacity-10">menu_book</span>
-                          لا توجد سجلات حالياً. ابدأ بإضافة كتابك الأول!
-                        </td>
-                      </tr>
-                    }
-                </tbody>
-            </table>
+                        @if (books().length === 0 && !isLoading()) {
+                          <tr>
+                            <td colspan="5" class="px-6 py-24 text-center text-on-surface/30 italic">
+                              <span class="material-symbols-outlined text-6xl mb-4 block opacity-10">menu_book</span>
+                              لا توجد سجلات حالياً. ابدأ بإضافة كتابك الأول!
+                            </td>
+                          </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Pagination Section -->
-            <div class="px-8 py-6 bg-surface-container/30 flex items-center justify-between border-t border-outline-variant/10">
+            <div class="px-4 sm:px-8 py-6 bg-surface-container/30 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-outline-variant/10">
                 <div class="flex items-center gap-3">
                     <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
                         class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 bg-surface-container-lowest text-on-surface/60 hover:bg-primary hover:text-on-primary hover:border-primary disabled:opacity-20 transition-all shadow-sm">
                         <span class="material-symbols-outlined text-lg">chevron_right</span>
                     </button>
-                    <div class="flex gap-2 mx-2">
+                    <div class="flex flex-wrap justify-center gap-2 mx-2">
                       @for (page of [].constructor(totalPages()); track $index) {
                         <button (click)="onPageChange($index + 1)"
                             class="w-10 h-10 flex items-center justify-center rounded-xl text-xs font-black transition-all"
@@ -159,7 +162,7 @@
                         <span class="material-symbols-outlined text-lg">chevron_left</span>
                     </button>
                 </div>
-                <span class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">
+                <span class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest text-center">
                   عرض {{(pageNumber()-1)*pageSize()+1}} - {{pageNumber()*pageSize() > totalItems() ? totalItems() : pageNumber()*pageSize()}} من أصل {{totalItems()}} كتاب
                 </span>
             </div>

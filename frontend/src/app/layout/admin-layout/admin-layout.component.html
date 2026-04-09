@@ -1,4 +1,46 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
 
-<router-outlet />
+<main class="min-h-screen">
+    <router-outlet />
+</main>
+
+<!-- Global Mobile Navigation Shell -->
+<nav
+    class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/10 shadow-[0_-8px_32px_rgba(6,27,14,0.08)] z-50 flex flex-row-reverse justify-around items-center py-3 px-6 rounded-t-[2.5rem]" 
+    dir="rtl">
+    
+    <a class="flex flex-col items-center gap-1 group" routerLink="/admin/dashboard" routerLinkActive="text-primary font-bold">
+        <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+        </div>
+        <span class="text-[10px] font-bold">الرئيسية</span>
+    </a>
+
+    <a class="flex flex-col items-center gap-1 group" routerLink="/admin/articles" routerLinkActive="text-primary font-bold">
+        <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
+            <span class="material-symbols-outlined" data-icon="article">article</span>
+        </div>
+        <span class="text-[10px] font-bold">المقالات</span>
+    </a>
+
+    <div class="relative -top-8">
+        <button routerLink="/admin/articles/add" class="bg-primary text-on-primary p-5 rounded-3xl shadow-[0_8px_24px_rgba(115,92,0,0.3)] hover:scale-105 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+        </button>
+    </div>
+
+    <a class="flex flex-col items-center gap-1 group" routerLink="/admin/books" routerLinkActive="text-primary font-bold">
+        <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
+            <span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+        </div>
+        <span class="text-[10px] font-bold">المكتبة</span>
+    </a>
+
+    <a class="flex flex-col items-center gap-1 group" routerLink="/admin/categories-tags" routerLinkActive="text-primary font-bold">
+        <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
+            <span class="material-symbols-outlined" data-icon="category">category</span>
+        </div>
+        <span class="text-[10px] font-bold">الفئات</span>
+    </a>
+</nav>

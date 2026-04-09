@@ -58,7 +58,6 @@ export class DashboardComponent implements OnInit {
         this.viewsCount.set(data.views);
         this.mostViewedArticles.set(data.mostViewed);
         this.newestArticles.set(data.newest);
-        console.log(data);
       },
       error: (err) => console.error('Dashboard fatal error:', err)
     });
