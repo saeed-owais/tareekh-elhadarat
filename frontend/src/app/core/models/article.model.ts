@@ -7,6 +7,8 @@ export interface Article {
   content: string | null;
   imageUrl: string;
   category: string;
+  views: number;
+  createdAt: string;
   readTimeInMiniutes: number;
   tags: string[];
   comments: Comment[] | null;
