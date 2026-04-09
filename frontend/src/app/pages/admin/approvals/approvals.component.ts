@@ -1,7 +1,8 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArticleService } from '../../../core/services/article.service';
-import { AdminArticle } from '../../../core/models';
+import { CommentService } from '../../../core/services/comment.service';
+import { AdminArticle, SubmittedComment } from '../../../core/models';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -12,12 +13,23 @@ import { RouterLink } from '@angular/router';
 })
 export class ApprovalsComponent implements OnInit {
   private articleService = inject(ArticleService);
+  private commentService = inject(CommentService);
 
-  articles = signal<AdminArticle[]>([]);
+  // State Management
+  activeTab = signal<'articles' | 'comments'>('articles');
   isLoading = signal(false);
   successMessage = signal('');
   
-  // Pagination
+  // Data Signals
+  articles = signal<AdminArticle[]>([]);
+  comments = signal<SubmittedComment[]>([]);
+  
+  // Modals/UI State
+  confirmDeleteCommentId = signal<number | null>(null);
+  detailedComment = signal<SubmittedComment | null>(null);
+  isViewingComment = signal(false);
+
+  // Pagination (Keeping for articles, comments use simple list for now)
   pageNumber = signal(1);
   pageSize = signal(10);
   totalItems = signal(0);
@@ -25,6 +37,7 @@ export class ApprovalsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSubmittedArticles();
+    this.loadSubmittedComments();
   }
 
   loadSubmittedArticles() {
@@ -44,6 +57,13 @@ export class ApprovalsComponent implements OnInit {
       });
   }
 
+  loadSubmittedComments() {
+    this.commentService.getSubmittedComments().subscribe({
+      next: (data) => this.comments.set(data),
+      error: (err) => console.error('Error fetching comments:', err)
+    });
+  }
+
   onPageChange(newPage: number) {
     if (newPage >= 1 && newPage <= this.totalPages()) {
       this.pageNumber.set(newPage);
@@ -51,12 +71,12 @@ export class ApprovalsComponent implements OnInit {
     }
   }
 
+  // --- Article Actions ---
   acceptArticle(id: number) {
     this.isLoading.set(true);
     this.articleService.acceptArticle(id).subscribe({
       next: (success) => {
         if (success) {
-          // Remove from list
           this.articles.update(list => list.filter(a => a.id !== id));
           this.successMessage.set('تم قبول ونشر المقال بنجاح!');
           setTimeout(() => this.successMessage.set(''), 3000);
@@ -68,5 +88,66 @@ export class ApprovalsComponent implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  // --- Comment Actions ---
+  acceptComment(id: number) {
+    this.isLoading.set(true);
+    this.commentService.acceptComment(id).subscribe({
+      next: () => {
+        this.comments.update(list => list.filter(c => c.id !== id));
+        this.successMessage.set('تم قبول التعليق بنجاح');
+        this.isLoading.set(false);
+        setTimeout(() => this.successMessage.set(''), 3000);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  toggleDeleteComment(id: number, event: Event) {
+    event.stopPropagation();
+    this.confirmDeleteCommentId.set(this.confirmDeleteCommentId() === id ? null : id);
+  }
+
+  confirmDeleteComment(id: number, event: Event) {
+    event.stopPropagation();
+    this.isLoading.set(true);
+    this.commentService.deleteComment(id).subscribe({
+      next: () => {
+        this.comments.update(list => list.filter(c => c.id !== id));
+        this.successMessage.set('تم حذف التعليق بنجاح');
+        this.confirmDeleteCommentId.set(null);
+        this.isLoading.set(false);
+        setTimeout(() => this.successMessage.set(''), 3000);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+        this.confirmDeleteCommentId.set(null);
+      }
+    });
+  }
+
+  viewCommentDetails(id: number) {
+    this.isLoading.set(true);
+    this.commentService.getComment(id).subscribe({
+      next: (data) => {
+        this.detailedComment.set(data);
+        this.isViewingComment.set(true);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  closeCommentModal() {
+    this.isViewingComment.set(false);
+    setTimeout(() => this.detailedComment.set(null), 200);
   }
 }

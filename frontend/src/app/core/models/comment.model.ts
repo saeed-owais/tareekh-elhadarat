@@ -7,3 +7,13 @@ export interface Comment {
   createdAt: Date;
   postId: number;
 }
+
+export interface SubmittedComment {
+  id: number;
+  userName: string;
+  text: string;
+  createdAt: string;
+  articleTitle: string;
+  articleId: number;
+  isPublished: boolean;
+}

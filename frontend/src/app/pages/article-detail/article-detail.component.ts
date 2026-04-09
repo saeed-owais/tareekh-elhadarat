@@ -56,7 +56,11 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       next: (article) => {
         this.article.set(article);
         this.isLoading.set(false);
-        this.comments.set(this.commentService.getCommentsByPostId(article.id));
+        this.comments.set([]); // Reset comments before loading new ones
+        this.commentService.getCommentsByPostId(article.id).subscribe({
+          next: (comments) => this.comments.set(comments),
+          error: (err) => console.error('Error fetching comments:', err)
+        });
 
         // Mark as viewed after half of reading time (minutes * 60 * 1000 / 2)
         const delayMs = article.readTimeInMiniutes > 0 

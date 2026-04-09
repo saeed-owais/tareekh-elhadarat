@@ -2,7 +2,7 @@ export type { Category } from './category.model';
 export type { Article, AdminArticle } from './article.model';
 export type { Book } from './book.model';
 export type { User } from './user.model';
-export type { Comment } from './comment.model';
+export type { Comment, SubmittedComment } from './comment.model';
 export type { ApiResponse } from './api-response.model';
 export type { PaginatedResponse } from './paginated-response.model';
 export type { RegisterRequest } from './register.model';

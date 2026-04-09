@@ -135,6 +135,11 @@ export const routes: Routes = [
         title: 'إضافة كتاب جديد | لوحة التحكم'
       },
       {
+        path: 'comments',
+        loadComponent: () => import('./pages/admin/comments-manage/comments-manage.component').then(m => m.CommentsManageComponent),
+        title: 'إدارة التعليقات | لوحة التحكم'
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
