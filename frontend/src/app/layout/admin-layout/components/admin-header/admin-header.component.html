@@ -7,9 +7,54 @@
       <div class="relative w-full flex-1">
         <input
           class="w-full bg-surface-container-low border-none rounded-full px-12 py-2 text-sm focus:ring-2 focus:ring-secondary/30 transition-all text-right"
-          placeholder="ابحث في لوحة التحكم..." type="text" />
+          placeholder="ابحث في لوحة التحكم..." type="text"
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)" />
         <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50"
           data-icon="search">search</span>
+        
+        <!-- Mobile Search Results -->
+        @if (hasSearched()) {
+          <div class="absolute top-full left-0 right-0 mt-4 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200">
+            <div class="p-4 border-b border-outline-variant/5 bg-surface-container-low/30">
+              <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">نتائج البحث عن: {{ searchQuery() }}</h4>
+            </div>
+            
+            <div class="max-h-[60vh] overflow-y-auto p-2 space-y-1">
+              @if (isSearching()) {
+                <div class="py-12 flex flex-col items-center justify-center gap-3">
+                  <div class="w-6 h-6 border-2 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+                  <span class="text-xs text-on-surface/40">جاري البحث عن المقالات...</span>
+                </div>
+              } @else if (searchResults().length > 0) {
+                @for (article of searchResults(); track article.id) {
+                  <div class="flex items-center gap-3 p-3 hover:bg-surface-container-high rounded-xl transition-colors group">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/10 shadow-sm">
+                      <img [src]="article.imageUrl" [alt]="article.title" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h5 class="text-sm font-bold text-primary truncate group-hover:text-secondary transition-colors">{{ article.title }}</h5>
+                      <p class="text-[10px] text-on-surface/40 truncate">{{ article.authorName }}</p>
+                    </div>
+                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <a [routerLink]="['/admin/articles/view', article.id]" (click)="toggleMobileSearch()" class="p-2 hover:bg-secondary/10 rounded-full text-secondary" title="معاينة">
+                        <span class="material-symbols-outlined text-lg">visibility</span>
+                      </a>
+                      <a [routerLink]="['/admin/articles/edit', article.id]" (click)="toggleMobileSearch()" class="p-2 hover:bg-primary/10 rounded-full text-primary" title="تعديل">
+                        <span class="material-symbols-outlined text-lg" data-icon="edit_square">edit_square</span>
+                      </a>
+                    </div>
+                  </div>
+                }
+              } @else {
+                <div class="py-12 flex flex-col items-center justify-center gap-3">
+                  <span class="material-symbols-outlined text-4xl text-on-surface/10">search_off</span>
+                  <span class="text-xs text-on-surface/40">لم يتم العثور على نتائج</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
       </div>
       <button (click)="toggleMobileSearch()" class="p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors">
         <span class="material-symbols-outlined text-xl" data-icon="close">close</span>
@@ -34,9 +79,58 @@
     <div class="relative group hidden md:block">
       <input
         class="bg-surface-container-low border border-outline-variant/10 rounded-2xl px-12 py-2 text-sm w-48 lg:w-64 focus:ring-4 focus:ring-secondary/5 focus:border-secondary/30 transition-all text-right"
-        placeholder="ابحث عن مقالات، كتب..." type="text" />
+        placeholder="ابحث عن مقالات، كتب..." type="text"
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)" />
       <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50 group-focus-within:text-secondary transition-colors"
         data-icon="search">search</span>
+
+      <!-- Desktop Search Results -->
+      @if (hasSearched()) {
+        <div class="absolute top-[calc(100%+12px)] right-0 left-auto w-80 lg:w-96 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-[100] animate-in slide-in-from-top-2 duration-200">
+          <div class="p-4 border-b border-outline-variant/5 bg-surface-container-low/30 flex justify-between items-center">
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">نتائج البحث</h4>
+            @if (isSearching()) {
+              <div class="w-3 h-3 border border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+            }
+          </div>
+          
+          <div class="max-h-[400px] overflow-y-auto p-2 space-y-1">
+            @if (searchResults().length > 0) {
+              @for (article of searchResults(); track article.id) {
+                <div class="flex items-center gap-3 p-2.5 hover:bg-surface-container-high rounded-xl transition-colors group">
+                  <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/10 shadow-sm">
+                    <img [src]="article.imageUrl" [alt]="article.title" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h5 class="text-sm font-bold text-primary truncate group-hover:text-secondary transition-colors">{{ article.title }}</h5>
+                    <p class="text-[10px] text-on-surface/40 truncate">{{ article.authorName }}</p>
+                  </div>
+                  <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <a [routerLink]="['/admin/articles/view', article.id]" (click)="clearSearch()" class="p-2 hover:bg-secondary/10 rounded-full text-secondary" title="معاينة">
+                      <span class="material-symbols-outlined text-lg">visibility</span>
+                    </a>
+                    <a [routerLink]="['/admin/articles/edit', article.id]" (click)="clearSearch()" class="p-2 hover:bg-primary/10 rounded-full text-primary" title="تعديل">
+                      <span class="material-symbols-outlined text-lg" data-icon="edit_square">edit_square</span>
+                    </a>
+                  </div>
+                </div>
+              }
+            } @else if (!isSearching()) {
+              <div class="py-12 flex flex-col items-center justify-center gap-3">
+                <span class="material-symbols-outlined text-4xl text-on-surface/10">search_off</span>
+                <span class="text-xs text-on-surface/40">لم يتم العثور على نتائج</span>
+              </div>
+            }
+          </div>
+          
+          @if (searchResults().length > 0) {
+            <div class="p-3 bg-surface-container-low/20 border-t border-outline-variant/5">
+              <a routerLink="/admin/articles" [queryParams]="{search: searchQuery()}" (click)="clearSearch()" class="block text-center text-[10px] font-black uppercase tracking-widest text-secondary hover:underline">عرض جميع النتائج</a>
+            </div>
+          }
+        </div>
+      }
     </div>
 
     <div class="flex items-center gap-1 md:gap-4 border-r border-outline-variant/10 pr-4">

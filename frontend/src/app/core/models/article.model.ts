@@ -24,11 +24,11 @@ export interface AdminArticle {
   imageUrl: string;
   views: number | null;
   readTimeInMiniutes: number;
-  isPublished?: boolean;
-  isDeleted?: boolean;
+  isPublished: boolean;
+  isDeleted: boolean;
   categoryId: number | null;
   category: string;
   articleTagsIds?: number[];
-  tags?: string[];
+  tags?: any[] | string[];
   comments?: any[] | null;
 }

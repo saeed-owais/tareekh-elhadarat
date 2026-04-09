@@ -70,7 +70,7 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
       }))
     ).subscribe({
       next: (res: any) => {
-        const article = res.article;
+        const article: AdminArticle = res.article;
         this.lastFetchedArticle = article;
         const allCategories = res.categories;
         const allTags = res.tags;
@@ -80,40 +80,45 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
         this.tags.set(allTags);
 
         // Populate article basic signals
-        this.title.set(article.title || article.Title || '');
-        this.authorName.set(article.authorName || article.AuthorName || '');
-        this.status.set(article.isPublished || article.IsPublished ? 'published' : 'pending');
-        this.imagePreviewUrl.set(article.imageUrl || article.ImageUrl);
+        this.title.set(article.title || article.title || '');
+        this.authorName.set(article.authorName || article.authorName || '');
+        this.status.set(article.isPublished ? 'published' : 'pending');
+        this.imagePreviewUrl.set(article.imageUrl || article.imageUrl);
 
         // Step 3: Resolve Category and Tags from Article Data
-        
+
         // Resolve Category (check ID then Name)
-        const targetCatId = article.categoryId || article.CategoryId;
-        const targetCatName = article.category || article.Category;
+        // Resolve Category (check ID then Name)
+        const targetCatId = article.categoryId;
+        const targetCatName = article.category;
         let selectedCat = null;
         if (targetCatId) selectedCat = allCategories.find((c: any) => c.id === targetCatId);
         if (!selectedCat && targetCatName) selectedCat = allCategories.find((c: any) => c.name === targetCatName);
         if (selectedCat) this.categoryId.set(selectedCat.id);
 
-        // Resolve Tags (check IDs then Names)
-        const targetTagIds = article.articleTagsIds || article.ArticleTagsIds || article.tagsIds || [];
-        const targetTagNames = article.tags || article.Tags || [];
-        let selectedIds: number[] = [...targetTagIds];
-        if (selectedIds.length === 0 && targetTagNames.length > 0) {
-          selectedIds = allTags
-            .filter((t: any) => targetTagNames.includes(t.name))
-            .map((t: any) => t.id);
+        // Resolve Tags
+        let selectedIds: number[] = article.articleTagsIds || [];
+        if (selectedIds.length === 0 && article.tags && article.tags.length > 0) {
+          // Handle array of objects (from the new JSON format) or strings
+          if (typeof article.tags[0] === 'object') {
+            selectedIds = article.tags.map((t: any) => t.id).filter(id => id !== undefined);
+          } else {
+            selectedIds = allTags
+              .filter((t: any) => (article.tags as any[]).includes(t.name))
+              .map((t: any) => t.id);
+          }
         }
         this.selectedTagIds.set(selectedIds);
 
         // Handle content (Quill)
         if (this.quillEditor) {
-          const content = article.content || article.Content || '';
+          const content = article.content || '';
           this.quillEditor.clipboard.dangerouslyPasteHTML(content);
-          setTimeout(() => this.quillEditor.setSelection(0), 10);
+          this.quillEditor.blur();
         }
 
         this.isLoading.set(false);
+        setTimeout(() => window.scrollTo(0, 0), 100);
       },
       error: (err) => {
         this.errorMessage.set('فشل تحميل بيانات المقال');
@@ -217,7 +222,7 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
       if (this.lastFetchedArticle) {
         const content = this.lastFetchedArticle.content || this.lastFetchedArticle.Content || '';
         this.quillEditor.clipboard.dangerouslyPasteHTML(content);
-        setTimeout(() => this.quillEditor.setSelection(0), 10);
+        this.quillEditor.blur();
       }
     }, 100);
   }
