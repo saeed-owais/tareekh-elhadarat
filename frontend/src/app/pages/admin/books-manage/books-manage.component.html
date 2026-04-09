@@ -25,7 +25,7 @@
                     <input
                         class="w-full pr-12 py-3 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none placeholder:text-on-surface/30 transition-all font-arabic"
                         placeholder="ابحث عن عنوان الكتاب أو المؤلف..." type="text" 
-                        (input)="onSearch($event)"/>
+                        [(ngModel)]="searchQuery" />
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -45,15 +45,35 @@
             <table class="w-full text-right border-collapse">
                 <thead>
                     <tr class="bg-surface-container/50 border-b border-outline-variant/10">
-                        <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider">الكتاب</th>
-                        <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-right">المؤلف</th>
-                        <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider">عدد الصفحات</th>
-                        <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider">تاريخ الإصدار</th>
+                        <th (click)="toggleSort('title')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+                            <div class="flex items-center gap-2">
+                                الكتاب
+                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'title'" [class.rotate-180]="sortKey() === 'title' && sortDirection() === 'desc'">arrow_upward</span>
+                            </div>
+                        </th>
+                        <th (click)="toggleSort('author')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-right cursor-pointer hover:bg-surface-container transition-colors group">
+                            <div class="flex items-center gap-2">
+                                المؤلف
+                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'author'" [class.rotate-180]="sortKey() === 'author' && sortDirection() === 'desc'">arrow_upward</span>
+                            </div>
+                        </th>
+                        <th (click)="toggleSort('pageCount')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+                            <div class="flex items-center gap-2">
+                                عدد الصفحات
+                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'pageCount'" [class.rotate-180]="sortKey() === 'pageCount' && sortDirection() === 'desc'">arrow_upward</span>
+                            </div>
+                        </th>
+                        <th (click)="toggleSort('releaseDate')" class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
+                            <div class="flex items-center gap-2">
+                                تاريخ الإصدار
+                                <span class="material-symbols-outlined text-sm transition-all" [class.opacity-0]="sortKey() !== 'releaseDate'" [class.rotate-180]="sortKey() === 'releaseDate' && sortDirection() === 'desc'">arrow_upward</span>
+                            </div>
+                        </th>
                         <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider">إجراءات</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/5">
-                    @for (book of books(); track book.id) {
+                    @for (book of pagedBooks(); track book.id) {
                     <tr class="hover:bg-surface-container-highest/30 transition-colors group relative">
                         <td class="px-6 py-5">
                             <a [routerLink]="['/books', book.id]" class="flex items-center gap-4 hover:opacity-80 transition-opacity">
