@@ -2,68 +2,70 @@
   <div class="fixed inset-0 bg-[#061B0E]/50 z-40 lg:hidden backdrop-blur-sm transition-opacity" (click)="layoutService.closeSidebar()"></div>
 }
 
-<aside class="h-screen fixed right-0 top-0 w-64 border-l-0 z-50 bg-[#F5F5DC] dark:bg-[#1B3022] transition-transform duration-300 transform lg:translate-x-0"
+<aside class="h-screen fixed right-0 top-0 w-64 border-l border-outline-variant/10 z-50 bg-[#F5F5DC] dark:bg-[#1B3022] transition-transform duration-300 transform lg:translate-x-0 overflow-y-auto shadow-xl"
        [class.translate-x-0]="layoutService.isMobileSidebarOpen()"
-       [class.translate-x-full]="!layoutService.isMobileSidebarOpen()">
-  <div class="flex flex-col h-full rtl pt-6 font-['Newsreader'] text-right">
+       [class.translate-x-full]="!layoutService.isMobileSidebarOpen()"
+       dir="rtl">
+  
+  <div class="flex flex-col h-full pt-6 font-['Newsreader'] text-right">
+    <!-- Brand Logo -->
     <div class="px-6 mb-10">
-      <a routerLink="/" class="flex items-center gap-3 mb-2 flex-row-reverse cursor-pointer hover:opacity-80 transition-opacity" title="العودة للموقع الرئيسي">
-        <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+      <a routerLink="/" class="flex items-center gap-3 mb-2 cursor-pointer hover:opacity-80 transition-opacity" title="العودة للموقع الرئيسي">
+        <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center shadow-sm">
           <span class="material-symbols-outlined text-surface text-2xl" data-icon="menu_book">menu_book</span>
         </div>
         <div>
-          <div class="text-xl font-bold text-[#061B0E] dark:text-[#FBFBE2]">تاريخ الشعوب</div>
-          <div class="text-xs text-[#061B0E]/60 dark:text-[#FBFBE2]/60">لوحة التحكم</div>
+          <div class="text-xl font-bold text-[#061B0E] dark:text-[#FBFBE2] tracking-tight">تاريخ الشعوب</div>
+          <div class="text-[10px] text-[#061B0E]/60 dark:text-[#FBFBE2]/60 font-bold uppercase tracking-widest">لوحة التحكم</div>
         </div>
       </a>
     </div>
+
+    <!-- Navigation Menu -->
     <nav class="flex-1 px-4 space-y-1">
-      <a class="flex flex-row-reverse items-center gap-3 bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold px-4 py-3 rounded-l-none border-r-4 border-[#735C00] Active: translate-x-1 duration-200"
-        routerLink="/admin/dashboard" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-        <span>نظرة عامة</span>
+      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/dashboard" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="dashboard">dashboard</span>
+        <span class="text-sm">نظرة عامة</span>
       </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/approvals" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
-        <span>الموافقات</span>
+
+      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/approvals" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="fact_check">fact_check</span>
+        <span class="text-sm">مركز الموافقات</span>
       </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/articles" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="article">article</span>
-        <span>المقالات</span>
+
+      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/articles" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="article">article</span>
+        <span class="text-sm">إدارة المقالات</span>
       </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/books" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
-        <span>الكتب</span>
+
+      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/books" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="menu_book">menu_book</span>
+        <span class="text-sm">المكتبة الرقمية</span>
       </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/comments" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="forum">forum</span>
-        <span>التعليقات</span>
+
+      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/comments" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="forum">forum</span>
+        <span class="text-sm">إدارة التعليقات</span>
       </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/categories-tags" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="category">category</span>
-        <span>الفئات والوسوم</span>
-      </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/users" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="group">group</span>
-        <span>المستخدمون</span>
-      </a>
-      <a class="flex flex-row-reverse items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3 hover:bg-[#FBFBE2]/50 hover:text-[#735C00] transition-all duration-300"
-        routerLink="/admin/settings" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-[#735C00] font-bold border-r-4 border-[#735C00]" (click)="layoutService.closeSidebar()">
-        <span class="material-symbols-outlined" data-icon="settings">settings</span>
-        <span>الإعدادات</span>
+
+      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/categories-tags" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="category">category</span>
+        <span class="text-sm">الفئات والوسوم</span>
       </a>
     </nav>
+
+    <!-- Footer Action -->
     <div class="p-4 mt-auto">
-      <button
-        class="w-full bg-primary-container text-on-primary py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
-        <span class="material-symbols-outlined" data-icon="add">add</span>
-        <span class="text-sm font-bold">إضافة محتوى جديد</span>
+      <button routerLink="/admin/articles/add"
+        class="w-full bg-primary text-on-primary py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95 group">
+        <span class="material-symbols-outlined group-hover:rotate-90 transition-transform" data-icon="add">add</span>
+        <span class="text-xs font-black uppercase tracking-widest">إضافة محتوى</span>
       </button>
     </div>
   </div>
