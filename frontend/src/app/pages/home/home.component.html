@@ -144,7 +144,7 @@
               <!-- Heart Icon for Favorites -->
               @if (isLoggedIn()) {
               <button (click)="toggleHeart(article.id, $event)"
-                class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-secondary hover:text-on-secondary transition-all shadow-lg active:scale-95 group/heart">
+                class="absolute top-4 left-4 w-10 h-10 rounded-full bg-surface/90 backdrop-blur-sm shadow-sm flex items-center justify-center text-secondary hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 group/heart">
                 <span class="material-symbols-outlined text-2xl transition-transform"
                   [style.font-variation-settings]="savedArticleIds().includes(article.id) ? '\'FILL\' 1' : ''"
                   [class.text-secondary]="savedArticleIds().includes(article.id) && !groupHeartHover.matches"
