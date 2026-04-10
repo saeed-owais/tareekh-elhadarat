@@ -23,11 +23,11 @@ export class AuthService {
     ) { }
 
     // ================= LOGIN =================
-    login(data: LoginRequest): Observable<string> {
+    login(data: LoginRequest, rememberMe: boolean = false): Observable<string> {
         return this.http.post<AuthResponse>(`${this.baseUrl}/login`, data).pipe(
             tap(res => {
                 if (res.isSuccess) {
-                    this.tokenService.saveToken(res.data.jwtToken);
+                    this.tokenService.saveToken(res.data.jwtToken, rememberMe);
                 }
             }),
             map(res => res.data.jwtToken),

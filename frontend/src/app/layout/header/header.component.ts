@@ -126,6 +126,15 @@ export class HeaderComponent implements OnDestroy {
     this.authService.logout();
   }
 
+  cleanUrl(url: string | null | undefined): string {
+    if (!url || url === 'https://modawanty.runasp.net/') return 'assets/images/avatar-placeholder.png';
+    
+    if (url.includes('/https://')) {
+      return 'https://' + url.split('/https://')[1];
+    }
+    return url;
+  }
+
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     if (this.searchOpen()) {

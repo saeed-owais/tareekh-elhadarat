@@ -19,11 +19,19 @@ export class RegisterComponent {
   isSuccess = signal(false);
 
   registerForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    userName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+    lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+    userName: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+      Validators.pattern(/^[a-zA-Z0-9._-]+$/)
+    ]),
+    email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(100)]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(250),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&]).{6,}$/)
+    ]),
     confirmPassword: new FormControl('', [Validators.required]),
     terms: new FormControl(false, [Validators.requiredTrue])
   }, { validators: this.passwordMatchValidator });

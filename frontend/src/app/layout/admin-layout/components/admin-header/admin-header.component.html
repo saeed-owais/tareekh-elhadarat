@@ -149,14 +149,14 @@
 
       <!-- User Profile -->
       @if (userProfile$ | async; as user) {
-        <div class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20">
+        <a routerLink="/profile" class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20 hover:opacity-80 transition-opacity cursor-pointer group/profile">
           <div class="flex flex-col text-left items-end hidden sm:flex">
-            <span class="text-xs font-bold">{{user.firstName}} {{user.lastName}}</span>
+            <span class="text-xs font-bold group-hover/profile:text-secondary transition-colors">{{user.firstName}} {{user.lastName}}</span>
             <span class="text-[9px] font-black uppercase text-secondary tracking-tighter">مدير النظام</span>
           </div>
-          <img [alt]="user.firstName + ' ' + user.lastName" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-outline-variant/10"
+          <img [alt]="user.firstName + ' ' + user.lastName" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-outline-variant/10 group-hover/profile:ring-2 group-hover/profile:ring-secondary/30 transition-all"
             [src]="user.profilePhoto" />
-        </div>
+        </a>
       } @else {
         <div class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20">
           <div class="w-9 h-9 rounded-xl bg-outline-variant/20 animate-pulse"></div>

@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { AuthorService } from '../../core/services/author.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-about',
@@ -9,6 +8,4 @@ import { AuthorService } from '../../core/services/author.service';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
-  private authorService = inject(AuthorService);
-  authors = this.authorService.getAuthors();
 }

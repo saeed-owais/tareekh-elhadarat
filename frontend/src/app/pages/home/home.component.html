@@ -1,4 +1,4 @@
-  <main class="lg:pt-0">
+<main class="lg:pt-0">
   <!-- Hero Section -->
   @if (featuredArticle()) {
   <section class="relative min-h-[819px] flex items-center overflow-hidden mb-20 pt-28 lg:pt-0">
@@ -56,26 +56,30 @@
     <div class="container mx-auto px-8">
       <h2 class="text-3xl font-headline font-bold text-primary mb-8">تصفح حسب التصنيف</h2>
     </div>
-    
+
     <div class="z-10 bg-surface/80 backdrop-blur-xl border-y border-outline-variant/10 transition-all">
       <div class="container mx-auto px-8">
         <div class="flex items-center gap-3">
           <!-- Scroll Arrows -->
           <button (click)="scrollCategories('right')"
-                  class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+            class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
             <span class="material-symbols-outlined text-lg">chevron_right</span>
           </button>
-          
+
           <!-- Slider -->
           <div class="relative flex-1 min-w-0">
-            <div class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none"></div>
-            <div class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none"></div>
-            <div #categoriesSlider
-                 class="flex gap-2 overflow-x-auto py-3 scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
-              
+            <div
+              class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none">
+            </div>
+            <div
+              class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none">
+            </div>
+            <div #categoriesSlider class="flex gap-2 overflow-x-auto py-3 scroll-smooth"
+              style="scrollbar-width: none; -ms-overflow-style: none;">
+
               <!-- All Articles Tab -->
               <a routerLink="/articles"
-                 class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
+                class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
                 <span class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-lg">grid_view</span>
                   كل المقالات
@@ -84,17 +88,17 @@
 
               <!-- Category Tabs -->
               @for (category of categories(); track category.id) {
-                <a [routerLink]="['/articles']" [queryParams]="{ category: category.id }"
-                   class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
-                  {{ category.name }}
-                </a>
+              <a [routerLink]="['/articles']" [queryParams]="{ category: category.id }"
+                class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
+                {{ category.name }}
+              </a>
               }
             </div>
           </div>
 
           <!-- Scroll Arrows -->
           <button (click)="scrollCategories('left')"
-                  class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+            class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
             <span class="material-symbols-outlined text-lg">chevron_left</span>
           </button>
         </div>
@@ -150,7 +154,8 @@
               </button>
               }
             </div>
-            <h3 class="text-2xl font-headline font-bold mb-3 group-hover:text-secondary transition-colors leading-snug line-clamp-none md:line-clamp-1">
+            <h3
+              class="text-2xl font-headline font-bold mb-3 group-hover:text-secondary transition-colors leading-snug line-clamp-none md:line-clamp-1">
               {{ article.title }}
             </h3>
           </a>
@@ -190,10 +195,12 @@
             {{ arabicNumbers[i] }}
           </span>
           <div>
-            <h4 class="text-lg font-headline font-bold leading-snug group-hover:text-secondary transition-colors line-clamp-none md:line-clamp-1">
+            <h4
+              class="text-lg font-headline font-bold leading-snug group-hover:text-secondary transition-colors line-clamp-none md:line-clamp-1">
               {{ item.title }}
             </h4>
-            <span class="text-xs font-label text-on-surface-variant whitespace-normal md:truncate" [title]="item.authorName">
+            <span class="text-xs font-label text-on-surface-variant whitespace-normal md:truncate"
+              [title]="item.authorName">
               {{ item.authorName }} · {{ item.readTimeInMiniutes }} دقائق
             </span>
           </div>
@@ -241,7 +248,9 @@
         <a [routerLink]="['/books', book.id]"
           class="block relative group transition-transform duration-500 hover:-translate-y-2 flex-grow">
           <div class="bg-surface-container-high aspect-[2/3] mb-6 rounded shadow-lg overflow-hidden relative">
-            <img loading="lazy" [alt]="book.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" [src]="cleanUrl(book.poster)">
+            <img loading="lazy" [alt]="book.title"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              [src]="cleanUrl(book.poster)">
             <div
               class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
               <div
@@ -251,12 +260,14 @@
               </div>
             </div>
           </div>
-          <h3 class="text-xl font-headline font-bold mb-2 group-hover:text-secondary transition-colors line-clamp-none md:line-clamp-1">
+          <h3
+            class="text-xl font-headline font-bold mb-2 group-hover:text-secondary transition-colors line-clamp-none md:line-clamp-1">
             {{ book.title }}
           </h3>
         </a>
         <div class="mt-auto">
-          <p class="text-sm text-on-surface-variant font-label mb-4 whitespace-normal md:truncate" [title]="book.author">{{ book.author }}</p>
+          <p class="text-sm text-on-surface-variant font-label mb-4 whitespace-normal md:truncate"
+            [title]="book.author">{{ book.author }}</p>
           <a [href]="book.downloadLink" target="_blank"
             class="block w-full py-3 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all rounded font-label text-sm text-center">
             تحميل النسخة الرقمية (PDF)
@@ -267,70 +278,58 @@
     </div>
   </section>
 
-  <!-- Authors Section -->
-  <section class="container mx-auto px-8 mb-32 bg-surface-container-low py-16 rounded-3xl">
-    <h2 class="text-3xl font-headline font-bold text-center mb-16">كتّاب المنصة</h2>
-    <div class="flex flex-wrap justify-center gap-12 lg:gap-24">
-      @for (author of authors; track author.id) {
-      <div class="text-center group">
-        <div
-          class="w-32 h-32 rounded-full overflow-hidden mb-4 p-1 ring-2 ring-outline-variant ring-offset-4 ring-offset-surface-container-low group-hover:ring-secondary transition-all">
-          <img loading="lazy" [alt]="author.name"
-            class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all"
-            [src]="cleanUrl(author.avatar)">
-        </div>
-        <p class="font-headline font-bold text-lg">{{ author.name }}</p>
-        <p class="text-xs font-label text-on-surface-variant uppercase tracking-wider">{{ author.title }}</p>
-      </div>
-      }
-    </div>
-  </section>
+
 
   <!-- Call to Action / Community -->
   @if (!isLoggedIn()) {
   <section class="container mx-auto px-8 mb-32">
     <div class="relative group">
       <!-- Decoration: Animated Gradient Borders -->
-      <div class="absolute -inset-0.5 bg-linear-to-r from-secondary to-primary rounded-[2.1rem] blur opacity-25 group-hover:opacity-40 transition-all duration-1000"></div>
-      
-      <div class="relative bg-linear-to-br from-[#0F2A1D] to-[#0A1A12] p-12 lg:p-24 rounded-[2rem] text-center overflow-hidden border border-[#E6C97A]/20">
+      <div
+        class="absolute -inset-0.5 bg-linear-to-r from-secondary to-primary rounded-[2.1rem] blur opacity-25 group-hover:opacity-40 transition-all duration-1000">
+      </div>
+
+      <div
+        class="relative bg-linear-to-br from-[#0F2A1D] to-[#0A1A12] p-12 lg:p-24 rounded-[2rem] text-center overflow-hidden border border-[#E6C97A]/20">
         <!-- Decoration: Enhanced Pattern -->
         <div class="absolute inset-0 islamic-pattern opacity-10 scale-125 pointer-events-none"></div>
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
-        
+
         <div class="relative z-10 max-w-3xl mx-auto space-y-10">
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-label text-sm uppercase tracking-widest">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-label text-sm uppercase tracking-widest">
             <span class="material-symbols-outlined text-sm">stars</span>
             كن جزءاً من الحكاية
           </div>
-          
+
           <h2 class="text-4xl lg:text-6xl font-headline font-bold text-[#E6C97A] leading-tight">
             انضم إلى مجتمع <br class="hidden md:block"> القراء والمثقفين
           </h2>
-          
+
           <p class="text-[#FBFBE2]/70 text-lg lg:text-2xl font-body leading-relaxed max-w-xl mx-auto">
             احصل على وصول كامل للمقالات المتعمقة، والكتب الحصرية، وانخرط في حوارات فكرية تثري الوعي الحضاري.
           </p>
-          
+
           <div class="pt-6">
             <a routerLink="/auth/login"
-               class="inline-flex items-center gap-4 px-12 py-5 bg-secondary text-on-secondary rounded-2xl font-headline text-2xl font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all shadow-[0_8px_32px_rgba(115,92,0,0.3)] hover:shadow-[0_12px_48px_rgba(115,92,0,0.5)] active:scale-95 group/btn">
+              class="inline-flex items-center gap-4 px-12 py-5 bg-secondary text-on-secondary rounded-2xl font-headline text-2xl font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all shadow-[0_8px_32px_rgba(115,92,0,0.3)] hover:shadow-[0_12px_48px_rgba(115,92,0,0.5)] active:scale-95 group/btn">
               ابدأ رحلتك المعرفية
               <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
             </a>
           </div>
-          
-          <div class="flex items-center justify-center gap-8 pt-8 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
-             <div class="flex flex-col items-center gap-1">
-               <span class="material-symbols-outlined">library_books</span>
-               <span class="text-[10px] font-label">محتوى حصري</span>
-             </div>
-             <div class="flex flex-col items-center gap-1">
-               <span class="material-symbols-outlined">forum</span>
-               <span class="text-[10px] font-label">مجتمع فكري</span>
-             </div>
-           </div>
+
+          <div
+            class="flex items-center justify-center gap-8 pt-8 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
+            <div class="flex flex-col items-center gap-1">
+              <span class="material-symbols-outlined">library_books</span>
+              <span class="text-[10px] font-label">محتوى حصري</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span class="material-symbols-outlined">forum</span>
+              <span class="text-[10px] font-label">مجتمع فكري</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

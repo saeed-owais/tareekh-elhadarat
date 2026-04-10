@@ -11,18 +11,28 @@ export class TokenService {
     private TOKEN_KEY = 'token';
 
     // ================= SAVE =================
-    saveToken(token: string) {
-        localStorage.setItem(this.TOKEN_KEY, token);
+    saveToken(token: string, rememberMe: boolean = false) {
+        if (rememberMe) {
+            localStorage.setItem(this.TOKEN_KEY, token);
+        } else {
+            sessionStorage.setItem(this.TOKEN_KEY, token);
+        }
     }
 
     // ================= GET =================
     getToken(): string | null {
-        return localStorage.getItem(this.TOKEN_KEY);
+        // Check localStorage first (remembered session)
+        let token = localStorage.getItem(this.TOKEN_KEY);
+        if (token) return token;
+
+        // Fallback to sessionStorage (ephemeral session)
+        return sessionStorage.getItem(this.TOKEN_KEY);
     }
 
     // ================= CLEAR =================
     clear() {
         localStorage.removeItem(this.TOKEN_KEY);
+        sessionStorage.removeItem(this.TOKEN_KEY);
     }
 
     // ================= DECODE =================

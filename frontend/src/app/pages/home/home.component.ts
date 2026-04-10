@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { ArticleService } from '../../core/services/article.service';
 import { CategoryService } from '../../core/services/category.service';
 import { BookService } from '../../core/services/book.service';
-import { AuthorService } from '../../core/services/author.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { Article } from '../../core/models/article.model';
@@ -21,7 +20,6 @@ export class HomeComponent implements OnInit {
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
   private bookService = inject(BookService);
-  private authorService = inject(AuthorService);
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
 
@@ -32,7 +30,6 @@ export class HomeComponent implements OnInit {
   popularArticles = signal<Article[]>([]);
   categories = signal<Category[]>([]);
   books = signal<Book[]>([]);
-  authors = this.authorService.getAuthors();
 
   // Favorites
   savedArticleIds = signal<number[]>([]);
@@ -131,6 +128,8 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+
 
   scrollCategories(direction: 'left' | 'right'): void {
     const el = this.categoriesSlider?.nativeElement;

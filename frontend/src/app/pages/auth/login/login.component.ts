@@ -18,7 +18,8 @@ export class LoginComponent {
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    rememberMe: new FormControl(false)
   });
 
   constructor(
@@ -38,9 +39,9 @@ export class LoginComponent {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    const { email, password } = this.loginForm.value;
+    const { email, password, rememberMe } = this.loginForm.value;
 
-    this.authService.login({ email: email!, password: password! }).subscribe({
+    this.authService.login({ email: email!, password: password! }, rememberMe!).subscribe({
       next: () => {
         this.isLoading.set(false);
         this.router.navigate(['/']);

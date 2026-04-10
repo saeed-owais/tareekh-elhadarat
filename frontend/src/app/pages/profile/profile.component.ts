@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
     bio: ''
   };
   selectedPhoto: File | null = null;
-  photoPreview: string | null = null;
+  photoPreview = signal<string | null>(null);
 
   ngOnInit() {
     this.loadUserProfile();
@@ -97,7 +97,9 @@ export class ProfileComponent implements OnInit {
     if (file) {
       this.selectedPhoto = file;
       const reader = new FileReader();
-      reader.onload = () => this.photoPreview = reader.result as string;
+      reader.onload = () => {
+        this.photoPreview.set(reader.result as string);
+      };
       reader.readAsDataURL(file);
     }
   }
@@ -125,6 +127,8 @@ export class ProfileComponent implements OnInit {
       .subscribe({
         next: () => {
           this.successMessage.set('تم تحديث الملف الشخصي بنجاح');
+          this.photoPreview.set(null);
+          this.selectedPhoto = null;
           this.loadUserProfile();
           setTimeout(() => this.successMessage.set(''), 3000);
         },
@@ -142,7 +146,7 @@ export class ProfileComponent implements OnInit {
   }
 
   cleanUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/images/avatar-placeholder.png'; // Fallback
+    if (!url || url === 'https://modawanty.runasp.net/') return 'assets/images/avatar-placeholder.png';
     if (url.includes('/https://')) {
       return 'https://' + url.split('/https://')[1];
     }

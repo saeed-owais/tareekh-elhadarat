@@ -151,7 +151,7 @@
             <div class="flex flex-col items-center mb-8 gap-4">
               <div class="relative group">
                 <div class="w-32 h-32 rounded-full border-4 border-surface shadow-lg overflow-hidden bg-surface-container">
-                  <img class="w-full h-full object-cover" [src]="photoPreview || cleanUrl(userData.profilePhoto)">
+                  <img class="w-full h-full object-cover" [src]="photoPreview() || cleanUrl(userData.profilePhoto)">
                 </div>
                 <div (click)="photoInput.click()" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full cursor-pointer">
                    <span class="material-symbols-outlined text-white text-3xl">add_a_photo</span>

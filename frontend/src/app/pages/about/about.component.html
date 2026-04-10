@@ -41,23 +41,6 @@
       </div>
     </section>
 
-    <!-- Team -->
-    <section class="mb-20">
-      <h2 class="text-3xl font-headline font-bold text-primary mb-12 text-center">فريق العمل</h2>
-      <div class="flex flex-wrap justify-center gap-12 lg:gap-20">
-        @for (author of authors; track author.id) {
-          <div class="text-center group">
-            <div class="w-32 h-32 rounded-full overflow-hidden mb-4 p-1 ring-2 ring-outline-variant ring-offset-4 ring-offset-surface group-hover:ring-secondary transition-all">
-              <img loading="lazy"
-                   [alt]="author.name"
-                   class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all"
-                   [src]="author.avatar">
-            </div>
-            <p class="font-headline font-bold text-lg">{{ author.name }}</p>
-            <p class="text-xs font-label text-on-surface-variant uppercase tracking-wider">{{ author.title }}</p>
-          </div>
-        }
-      </div>
-    </section>
+
   </div>
 </main>
