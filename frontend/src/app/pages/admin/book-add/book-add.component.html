@@ -111,9 +111,17 @@
         <button type="submit" [disabled]="isLoading()"
           class="flex-1 bg-secondary text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-secondary/20 hover:shadow-secondary/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3 text-lg">
           @if (isLoading()) { <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> }
-          إضافة الكتاب ونقله للمكتبة
+          {{ isLoading() ? (isUploading() ? 'جاري رفع الملف...' : 'جاري الحفظ...') : 'إضافة الكتاب ونقله للمكتبة' }}
         </button>
       </div>
+
+      <!-- Upload Progress -->
+      @if (uploadProgress()) {
+        <div class="p-4 bg-secondary/10 text-secondary rounded-xl text-center text-sm font-bold border border-secondary/10 flex items-center justify-center gap-3">
+          <div class="w-4 h-4 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin"></div>
+          {{ uploadProgress() }}
+        </div>
+      }
 
       <!-- Messages -->
       @if (errorMessage()) {
