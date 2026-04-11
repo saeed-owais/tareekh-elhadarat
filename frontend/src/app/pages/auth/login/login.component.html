@@ -100,7 +100,7 @@
         </div>
 
         <button type="submit" [disabled]="isLoading()"
-          class="w-full bg-primary text-white py-3 px-4 rounded-xl hover:bg-inverse-surface transition-colors font-medium text-lg flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+          class="w-full cursor-pointer bg-linear-to-r from-secondary to-secondary-fixed-dim text-on-secondary-fixed py-4 px-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all font-extrabold text-lg flex justify-center items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
           @if (isLoading()) {
           <span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
           }

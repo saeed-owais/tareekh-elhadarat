@@ -10,27 +10,31 @@
     <!-- Guidelines -->
     <section class="mb-16">
       <div class="bg-surface-container-low p-10 rounded-2xl">
-        <h2 class="text-2xl font-headline font-bold text-primary mb-6">شروط النشر</h2>
-        <div class="space-y-4 text-on-surface-variant font-body leading-relaxed">
+        <h2 class="text-2xl font-headline font-bold text-primary mb-6">شروط ومعايير النشر</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-on-surface-variant font-body leading-relaxed">
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>أن يكون المحتوى أصلياً ولم يُنشر سابقاً في أي منصة أخرى.</p>
+            <p>أن يكون المحتوى أصلياً، مملوكاً بالكامل للناشر، ولم يسبق نشره ورقياً أو إلكترونياً.</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>أن يتوافق المقال مع رؤية المنصة في بناء الوعي الحضاري.</p>
+            <p>سلامة اللغة وجودة الصياغة، والخلو التام من الأخطاء الإملائية والنحوية.</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>الالتزام بالمعايير الأكاديمية والموضوعية في الطرح.</p>
+            <p>أن يتوافق المقال مع رؤية المنصة في بناء الوعي الحضاري والثقافي.</p>
           </div>
-          <!-- <div class="flex gap-3 items-start">
-            <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>ألا يقل المقال عن ١٠٠٠ كلمة ولا يزيد عن ٥٠٠٠ كلمة.</p>
-          </div> -->
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>توثيق المصادر والمراجع بشكل دقيق وواضح.</p>
+            <p>ألا يتجاوز طول المقال ٥٠٠٠ كلمة، مع مراعاة العمق والشمولية في الطرح.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+            <p>الالتزام بالمعايير الموضوعية والأمانة العلمية في عرض الحقائق.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+            <p>توثيق المصادر والمراجع بشكل دقيق وواضح لضمان مصداقية المحتوى.</p>
           </div>
         </div>
       </div>
@@ -107,7 +111,7 @@
                 @for (category of categories(); track category.id) {
                   <li>
                     <button type="button" (click)="selectCategory(category.id)"
-                      class="w-full text-right px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex items-center justify-between"
+                      class="w-full cursor-pointer text-right px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex items-center justify-between"
                       [class.bg-secondary-container]="categoryId() === category.id"
                       [class.text-on-secondary-container]="categoryId() === category.id">
                       <span>{{ category.name }}</span>
@@ -136,8 +140,8 @@
             @for (tag of tags(); track tag.id) {
             <button type="button" (click)="toggleTag(tag.id)"
               [class]="isTagSelected(tag.id)
-                            ? 'bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full text-sm font-medium transition-all hover:opacity-80 ring-2 ring-secondary'
-                            : 'bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-surface-variant'">
+                            ? 'bg-secondary-container cursor-pointer text-on-secondary-container px-4 py-2 rounded-full text-sm font-medium transition-all hover:opacity-80 ring-2 ring-secondary'
+                            : 'bg-surface-container-high cursor-pointer text-on-surface-variant px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-surface-variant'">
               @if (isTagSelected(tag.id)) {
               <span class="material-symbols-outlined text-xs align-middle ml-1">check</span>
               }
@@ -255,8 +259,8 @@
         <div class="flex flex-col items-center gap-4 pt-4">
             <button type="submit" [disabled]="isSubmitting()"
             [class]="isSubmitting()
-                      ? 'w-full md:w-auto px-16 py-4 bg-outline/50 text-on-surface/50 font-extrabold text-xl rounded-lg cursor-not-allowed'
-                      : 'w-full md:w-auto px-16 py-4 bg-linear-to-r from-secondary to-secondary-fixed-dim text-on-secondary-fixed font-extrabold text-xl rounded-lg ambient-shadow hover:scale-[1.02] transition-transform'">
+                      ? 'w-full md:w-auto px-16 py-4 cursor-not-allowed bg-outline/50 text-on-surface/50 font-extrabold text-xl rounded-lg cursor-not-allowed'
+                      : 'w-full md:w-auto px-16 py-4 cursor-pointer bg-linear-to-r from-secondary to-secondary-fixed-dim text-on-secondary-fixed font-extrabold text-xl rounded-lg ambient-shadow hover:scale-[1.02] transition-transform cursor-pointer'">
             @if (isSubmitting()) {
             <span class="flex items-center justify-center gap-3">
               <span
@@ -282,7 +286,7 @@
         شكراً لمساهمتك. سيقوم فريق التحرير بمراجعة المقال وإعلامك بالنتيجة خلال ٧ أيام عمل.
       </p>
       <button (click)="resetForm()"
-        class="px-8 py-3 bg-primary text-on-primary rounded-lg font-headline font-bold hover:bg-primary-container transition-all">
+        class="px-8 py-3 bg-primary cursor-pointer text-on-primary rounded-lg font-headline font-bold hover:bg-primary-container transition-all">
         إرسال مقال جديد
       </button>
     </div>

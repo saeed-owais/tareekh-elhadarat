@@ -8,6 +8,7 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ScrollService } from '../../core/services/scroll.service';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnDestroy {
   private authService = inject(AuthService);
   private router = inject(Router);
   private articleService = inject(ArticleService);
+  public scrollService = inject(ScrollService);
 
   private searchSubject = new Subject<string>();
   private searchSub: Subscription;

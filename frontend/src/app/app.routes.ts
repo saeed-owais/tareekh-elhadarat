@@ -59,6 +59,11 @@ export const routes: Routes = [
         title: 'الملف الشخصي | تاريخ الشعوب',
         canActivate: [authGuard]
       },
+      {
+        path: 'terms',
+        loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsComponent),
+        title: 'الشروط والأحكام وسياسة الخصوصية | تاريخ الشعوب'
+      },
     ]
   },
   {

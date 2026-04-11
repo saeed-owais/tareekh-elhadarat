@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "world-civilizations": {
+    "tareekh-alshoob": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "world-civilizations:build:production"
+              "buildTarget": "tareekh-alshoob:build:production"
             },
             "development": {
-              "buildTarget": "world-civilizations:build:development"
+              "buildTarget": "tareekh-alshoob:build:development"
             }
           },
           "defaultConfiguration": "development"

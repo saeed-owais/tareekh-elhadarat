@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, HostListener } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +9,7 @@ import { Comment } from '../../core/models/comment.model';
 import { ProfileService } from '../../core/services/profile.service';
 import { AuthService } from '../../core/services/auth.service';
 import { AddCommentRequest } from '../../core/models/add-comment.model';
+import { ScrollService } from '../../core/services/scroll.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -24,6 +25,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
+  private scrollService = inject(ScrollService);
 
   article = signal<Article | null>(null);
   isLoading = signal(true);
@@ -31,6 +33,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   isSaved = signal(false);
   isLoggedIn = signal(false);
   commentSubmitted = signal(false);
+  showCopiedMessage = signal(false);
   commentForm!: FormGroup;
 
   private viewTimer: any = null;
@@ -49,6 +52,37 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
     if (this.viewTimer) {
       clearTimeout(this.viewTimer);
     }
+    this.scrollService.resetProgress();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    const current = window.scrollY;
+    const viewportHeight = window.innerHeight;
+
+    // Find the article element
+    const content = document.querySelector('.article-content') as HTMLElement;
+    if (!content) return;
+
+    const rect = content.getBoundingClientRect();
+    const contentTop = rect.top + current;
+    const contentHeight = content.offsetHeight;
+    
+    // The progress should start when the content is near the top of the viewport
+    // and reach 100% when the bottom of the content reached the bottom of the viewport
+    const start = contentTop - 100;
+    const end = contentTop + contentHeight - 150;
+
+    let progress = 0;
+    if (current > start) {
+      progress = ((current - start) / (end - start)) * 100;
+    }
+    
+    // Safeguard against NaN or Infinity
+    if (isNaN(progress) || !isFinite(progress)) progress = 0;
+    
+
+    this.scrollService.updateProgress(Math.min(100, Math.max(0, progress)));
   }
 
   private loadArticle(id: number): void {
@@ -127,5 +161,63 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  share(platform: string): void {
+    const article = this.article();
+    if (!article) return;
+
+    const url = window.location.href;
+    const text = article.title;
+    let shareUrl = '';
+
+    switch (platform) {
+      case 'whatsapp':
+        shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`;
+        break;
+      case 'telegram':
+        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(
+          text
+        )}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          text
+        )}&url=${encodeURIComponent(url)}`;
+        break;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank');
+    }
+  }
+
+  copyLink(): void {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      this.showCopiedMessage.set(true);
+      setTimeout(() => this.showCopiedMessage.set(false), 2000);
+    });
+  }
+
+  nativeShare(): void {
+    if (navigator.share) {
+      const article = this.article();
+      if (!article) return;
+      navigator.share({
+        title: article.title,
+        text: article.title,
+        url: window.location.href
+      }).catch((error) => console.log('Error sharing', error));
+    } else {
+      this.copyLink();
+    }
+  }
+
+  printArticle(): void {
+    window.print();
   }
 }
