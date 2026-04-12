@@ -2,9 +2,9 @@
   <div class="container mx-auto px-8">
     <!-- Page Header -->
     <div class="text-center mb-12">
-      <h1 class="text-5xl font-headline font-bold text-primary mb-4">المقالات</h1>
+      <h1 class="text-5xl font-headline font-bold text-primary mb-4">{{ ts.t('articles.title') }}</h1>
       <p class="text-xl text-on-surface-variant font-body max-w-2xl mx-auto">
-        استكشف مجموعة متنوعة من المقالات الفكرية والتاريخية والأدبية التي تثري الوعي الحضاري.
+        {{ ts.t('articles.subtitle') }}
       </p>
     </div>
 
@@ -18,7 +18,7 @@
         <!-- Scroll Arrows -->
         <button (click)="scrollCategories('right')"
                 class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
-          <span class="material-symbols-outlined text-lg">chevron_right</span>
+          <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
         </button>
         <!-- Slider -->
         <div class="relative flex-1 min-w-0">
@@ -34,7 +34,7 @@
                 : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'">
               <span class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-lg">grid_view</span>
-                الكل
+                {{ ts.t('articles.all') }}
               </span>
               @if (selectedCategoryId() === null) {
                 <span class="absolute bottom-0 left-2 right-2 h-[3px] bg-primary rounded-full"></span>
@@ -58,7 +58,7 @@
         <!-- Scroll Arrows -->
         <button (click)="scrollCategories('left')"
                 class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
-          <span class="material-symbols-outlined text-lg">chevron_left</span>
+          <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
         </button>
       </div>
     </div>
@@ -88,19 +88,19 @@
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                      [src]="article.imageUrl">
                 
-                <span class="absolute top-4 right-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary">
+                <span class="absolute top-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary"
+                  [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()">
                   {{ article.category }}
                 </span>
 
                 <!-- Heart Icon for Favorites -->
                 @if (isLoggedIn()) {
                   <button (click)="toggleHeart(article.id, $event)" 
-                     class="absolute top-4 left-4 w-10 h-10 rounded-full bg-surface/90 backdrop-blur-sm shadow-sm flex items-center justify-center text-secondary hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 group/heart">
+                     class="absolute top-4 w-10 h-10 rounded-full bg-surface/90 backdrop-blur-sm shadow-sm flex items-center justify-center text-secondary hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 group/heart"
+                     [class.left-4]="ts.isRtl()" [class.right-4]="!ts.isRtl()">
                     <span class="material-symbols-outlined text-2xl transition-transform" 
                           [style.font-variation-settings]="savedArticleIds().includes(article.id) ? '\'FILL\' 1' : ''"
-                          [class.text-secondary]="savedArticleIds().includes(article.id) && !groupHeartHover.matches"
-                          [class.group-hover\/heart:scale-110]="true"
-                          #groupHeartHover>
+                          [class.text-secondary]="savedArticleIds().includes(article.id)">
                       favorite
                     </span>
                   </button>
@@ -117,7 +117,7 @@
               </span>
               <span class="flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">schedule</span>
-                {{ article.readTimeInMiniutes }} دقائق
+                {{ article.readTimeInMiniutes }} {{ ts.t('articles.minutes') }}
               </span>
             </div>
             @if (article.tags && article.tags.length > 0) {
@@ -134,8 +134,8 @@
       @if (articles().length === 0) {
         <div class="text-center py-20">
           <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6 block">search_off</span>
-          <h3 class="text-2xl font-headline font-bold text-primary mb-3">لا توجد مقالات</h3>
-          <p class="text-lg text-on-surface-variant">لا توجد مقالات في هذا التصنيف حالياً. جرّب تصنيفاً آخر.</p>
+          <h3 class="text-2xl font-headline font-bold text-primary mb-3">{{ ts.t('articles.noArticles') }}</h3>
+          <p class="text-lg text-on-surface-variant">{{ ts.t('articles.noArticlesDesc') }}</p>
         </div>
       }
     }

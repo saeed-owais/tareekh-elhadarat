@@ -6,6 +6,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { ArticleService } from '../../core/services/article.service';
 import { CategoryService } from '../../core/services/category.service';
 import { TagService } from '../../core/services/tag.service';
+import { TranslationService } from '../../core/services/translation.service';
 import { Category } from '../../core/models/category.model';
 import { Tag } from '../../core/models/tag.model';
 import { User } from '../../core/models/user.model';
@@ -29,6 +30,7 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   private categoryService = inject(CategoryService);
   private tagService = inject(TagService);
   private eRef = inject(ElementRef);
+  public ts = inject(TranslationService);
 
   // State
   isLoggedIn = signal(false);
@@ -179,13 +181,13 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Validate file size (5MB max)
       if (file.size > 5 * 1024 * 1024) {
-        this.errorMessage.set('حجم الصورة يجب ألا يتجاوز 5 ميجابايت');
+        this.errorMessage.set(this.ts.t('writeWithUs.imageSizeError'));
         return;
       }
 
       // Validate file type
       if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-        this.errorMessage.set('يُسمح فقط بصور JPG أو PNG أو WebP');
+        this.errorMessage.set(this.ts.t('writeWithUs.imageTypeError'));
         return;
       }
 
@@ -248,7 +250,7 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
     event.preventDefault();
 
     if (!this.isFormValid) {
-      this.errorMessage.set('يرجى ملء جميع الحقول المطلوبة');
+      this.errorMessage.set(this.ts.t('writeWithUs.fillRequired'));
       return;
     }
 
@@ -268,11 +270,11 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
       next: () => {
         this.isSubmitting.set(false);
         this.submitted.set(true);
-        this.successMessage.set('تم إرسال مقالك بنجاح وهو بانتظار مراجعة الإدارة');
+        this.successMessage.set(this.ts.t('writeWithUs.successTitle'));
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(typeof err === 'string' ? err : 'حدث خطأ أثناء إرسال المقال. يرجى المحاولة مرة أخرى.');
+        this.errorMessage.set(typeof err === 'string' ? err : this.ts.t('common.error'));
       }
     });
   }

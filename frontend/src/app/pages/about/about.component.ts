@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-about',
@@ -8,4 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
+  public ts = inject(TranslationService);
 }

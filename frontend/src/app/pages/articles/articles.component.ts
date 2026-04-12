@@ -8,6 +8,7 @@ import { forkJoin, Subscription } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-articles',
@@ -23,6 +24,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  public ts = inject(TranslationService);
 
   articles = signal<Article[]>([]);
   categories = signal<Category[]>([]);

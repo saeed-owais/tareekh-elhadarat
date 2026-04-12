@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-terms',
@@ -11,4 +12,6 @@ import { Component } from '@angular/core';
     }
   `
 })
-export class TermsComponent {}
+export class TermsComponent {
+  public ts = inject(TranslationService);
+}

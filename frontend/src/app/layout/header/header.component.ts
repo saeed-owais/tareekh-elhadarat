@@ -9,6 +9,7 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError, map } from '
 import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ScrollService } from '../../core/services/scroll.service';
+import { TranslationService, AppLang } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnDestroy {
   searchResults = signal<Article[]>([]);
   isSearching = signal(false);
   showResults = signal(false);
+  langMenuOpen = signal(false);
 
   private eRef = inject(ElementRef);
 
@@ -31,6 +33,7 @@ export class HeaderComponent implements OnDestroy {
   private router = inject(Router);
   private articleService = inject(ArticleService);
   public scrollService = inject(ScrollService);
+  public ts = inject(TranslationService);
 
   private searchSubject = new Subject<string>();
   private searchSub: Subscription;
@@ -148,5 +151,22 @@ export class HeaderComponent implements OnDestroy {
         this.closeSearch();
       }
     }
+    // Close language menu when clicking outside
+    if (this.langMenuOpen()) {
+      const targetElement = event.target as HTMLElement;
+      const isInsideLangMenu = targetElement.closest('.lang-menu-container');
+      if (!isInsideLangMenu) {
+        this.langMenuOpen.set(false);
+      }
+    }
+  }
+
+  toggleLangMenu(): void {
+    this.langMenuOpen.set(!this.langMenuOpen());
+  }
+
+  switchLang(lang: AppLang): void {
+    this.ts.setLang(lang);
+    this.langMenuOpen.set(false);
   }
 }

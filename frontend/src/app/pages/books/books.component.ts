@@ -1,9 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BookService } from '../../core/services/book.service';
 import { Book } from '../../core/models/book.model';
 import { finalize } from 'rxjs';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-books',
@@ -13,6 +14,7 @@ import { finalize } from 'rxjs';
   styleUrl: './books.component.css'
 })
 export class BooksComponent implements OnInit {
+  public ts = inject(TranslationService);
   // Data
   books = signal<Book[]>([]);
   isLoading = signal(false);

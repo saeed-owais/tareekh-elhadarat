@@ -5,6 +5,7 @@ import { Article } from '../../core/models/article.model';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-search',
@@ -16,6 +17,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private articleService = inject(ArticleService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  public ts = inject(TranslationService);
 
   searchQuery = signal(''); // Input value
   currentQuery = signal(''); // Query we are showing results for

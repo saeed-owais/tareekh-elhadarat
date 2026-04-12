@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-footer',
@@ -9,5 +10,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
-  currentYear = new Date().getFullYear().toLocaleString('ar-EG', { useGrouping: false });
+  public ts = inject(TranslationService);
+  currentYear = new Date().getFullYear();
 }

@@ -6,15 +6,19 @@
     <div class="absolute inset-0 islamic-pattern"></div>
     <div class="container mx-auto px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
       <div
-        class="order-2 lg:order-1 h-[500px] rounded-xl overflow-hidden shadow-2xl rotate-1 group transition-transform hover:rotate-0 duration-700">
+        class="h-[500px] rounded-xl overflow-hidden shadow-2xl rotate-1 group transition-transform hover:rotate-0 duration-700"
+        [class.order-2]="ts.isRtl()" [class.order-1]="!ts.isRtl()"
+        [class.lg:order-1]="ts.isRtl()" [class.lg:order-2]="!ts.isRtl()">
         <img [alt]="featuredArticle()!.title"
           class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
           [src]="cleanUrl(featuredArticle()!.imageUrl)">
       </div>
-      <div class="order-1 lg:order-2 space-y-6 pr-0 lg:pr-12">
+      <div class="space-y-6"
+        [class.order-1]="ts.isRtl()" [class.order-2]="!ts.isRtl()"
+        [class.lg:order-2]="ts.isRtl()" [class.lg:order-1]="!ts.isRtl()"
+        [class.pr-0]="true" [class.lg:pr-12]="ts.isRtl()" [class.lg:pl-12]="!ts.isRtl()">
         <span
-          class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label text-sm font-bold tracking-widest uppercase">مقال
-          مميز</span>
+          class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label text-sm font-bold tracking-widest uppercase">{{ ts.t('home.featuredArticle') }}</span>
         <h1 class="text-4xl lg:text-6xl font-headline font-bold text-primary leading-[1.4]">
           {{ featuredArticle()!.title }}
         </h1>
@@ -25,13 +29,15 @@
           {{ featuredArticle()!.category }}
           ·
           <span class="material-symbols-outlined text-sm align-middle">schedule</span>
-          {{ featuredArticle()!.readTimeInMiniutes }} دقائق قراءة
+          {{ featuredArticle()!.readTimeInMiniutes }} {{ ts.t('home.readMinutes') }}
         </p>
         <div class="pt-4">
           <a [routerLink]="['/articles', featuredArticle()!.id]"
             class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-on-primary rounded-lg font-headline text-xl hover:bg-primary-container transition-all group">
-            اقرأ المزيد
-            <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            {{ ts.t('home.readMore') }}
+            <span class="material-symbols-outlined transition-transform"
+              [class.group-hover:-translate-x-1]="ts.isRtl()"
+              [class.group-hover:translate-x-1]="!ts.isRtl()">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
           </a>
         </div>
       </div>
@@ -54,7 +60,7 @@
   <!-- Categories Slider -->
   <section class="mb-32">
     <div class="container mx-auto px-8">
-      <h2 class="text-3xl font-headline font-bold text-primary mb-8">تصفح حسب التصنيف</h2>
+      <h2 class="text-3xl font-headline font-bold text-primary mb-8">{{ ts.t('home.browseByCategory') }}</h2>
     </div>
 
     <div class="z-10 bg-surface/80 backdrop-blur-xl border-y border-outline-variant/10 transition-all">
@@ -63,7 +69,7 @@
           <!-- Scroll Arrows -->
           <button (click)="scrollCategories('right')"
             class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
-            <span class="material-symbols-outlined text-lg">chevron_right</span>
+            <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
           </button>
 
           <!-- Slider -->
@@ -82,7 +88,7 @@
                 class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
                 <span class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-lg">grid_view</span>
-                  كل المقالات
+                  {{ ts.t('home.allArticles') }}
                 </span>
               </a>
 
@@ -99,7 +105,7 @@
           <!-- Scroll Arrows -->
           <button (click)="scrollCategories('left')"
             class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
-            <span class="material-symbols-outlined text-lg">chevron_left</span>
+            <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
           </button>
         </div>
       </div>
@@ -111,7 +117,7 @@
     <!-- Latest Articles Grid -->
     <div class="lg:col-span-8">
       <div class="flex items-center justify-between mb-12">
-        <h2 class="text-4xl font-headline font-bold text-primary">أحدث المقالات</h2>
+        <h2 class="text-4xl font-headline font-bold text-primary">{{ ts.t('home.latestArticles') }}</h2>
         <div class="h-px grow mx-8 bg-outline-variant opacity-20"></div>
       </div>
 
@@ -137,18 +143,20 @@
                 [src]="cleanUrl(article.imageUrl)">
 
               <span
-                class="absolute top-4 right-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary">
+                class="absolute top-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary"
+                [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()">
                 {{ article.category }}
               </span>
 
               <!-- Heart Icon for Favorites -->
               @if (isLoggedIn()) {
               <button (click)="toggleHeart(article.id, $event)"
-                class="absolute top-4 left-4 w-10 h-10 rounded-full bg-surface/90 backdrop-blur-sm shadow-sm flex items-center justify-center text-secondary hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 group/heart">
+                class="absolute top-4 w-10 h-10 rounded-full bg-surface/90 backdrop-blur-sm shadow-sm flex items-center justify-center text-secondary hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 group/heart"
+                [class.left-4]="ts.isRtl()" [class.right-4]="!ts.isRtl()">
                 <span class="material-symbols-outlined text-2xl transition-transform"
                   [style.font-variation-settings]="savedArticleIds().includes(article.id) ? '\'FILL\' 1' : ''"
-                  [class.text-secondary]="savedArticleIds().includes(article.id) && !groupHeartHover.matches"
-                  [class.group-hover\/heart:scale-110]="true" #groupHeartHover>
+                  [class.text-secondary]="savedArticleIds().includes(article.id)"
+                  >
                   favorite
                 </span>
               </button>
@@ -166,7 +174,7 @@
             </span>
             <span class="flex items-center gap-1">
               <span class="material-symbols-outlined text-sm">schedule</span>
-              {{ article.readTimeInMiniutes }} دقائق
+              {{ article.readTimeInMiniutes }} {{ ts.t('home.minutes') }}
             </span>
           </div>
         </article>
@@ -175,7 +183,7 @@
 
       @if (latestArticles().length === 0 && !isLoadingArticles()) {
       <div class="text-center py-12">
-        <p class="text-on-surface-variant text-lg">لا توجد مقالات حالياً.</p>
+        <p class="text-on-surface-variant text-lg">{{ ts.t('home.noArticles') }}</p>
       </div>
       }
       }
@@ -185,7 +193,7 @@
     <aside class="lg:col-span-4 bg-surface-container-low/50 p-8 rounded-2xl h-fit">
       <h2 class="text-2xl font-headline font-bold text-primary mb-8 flex items-center gap-2">
         <span class="material-symbols-outlined text-secondary">trending_up</span>
-        الأكثر قراءة
+        {{ ts.t('home.mostRead') }}
       </h2>
       <div class="space-y-8">
         @for (item of popularArticles(); track item.id; let i = $index) {
@@ -201,7 +209,7 @@
             </h4>
             <span class="text-xs font-label text-on-surface-variant whitespace-normal md:truncate"
               [title]="item.authorName">
-              {{ item.authorName }} · {{ item.readTimeInMiniutes }} دقائق
+              {{ item.authorName }} · {{ item.readTimeInMiniutes }} {{ ts.t('home.minutes') }}
             </span>
           </div>
         </a>
@@ -209,9 +217,9 @@
       </div>
       <div class="mt-12 p-6 bg-primary-container rounded-xl text-on-primary">
         <p class="font-headline italic text-lg opacity-90 leading-relaxed mb-4">
-          "القراءة هي المفتاح الوحيد الذي يفتح لنا أبواب الماضي والحاضر والمستقبل في آن واحد."
+          {{ ts.t('home.quoteText') }}
         </p>
-        <span class="text-secondary font-label font-bold">— عباس محمود العقاد</span>
+        <span class="text-secondary font-label font-bold">{{ ts.t('home.quoteAuthor') }}</span>
       </div>
     </aside>
   </section>
@@ -222,12 +230,11 @@
     <div class="container mx-auto px-8 relative z-10 text-center max-w-4xl">
       <span class="material-symbols-outlined text-[#CFAF5B] text-5xl mb-6">auto_awesome</span>
       <h2 class="flex flex-col gap-4 text-3xl lg:text-5xl font-headline font-bold text-[#E6C97A] leading-[1.6] mb-6">
-        <span class="block text-xl lg:text-2xl text-[#CFAF5B]/80 mb-2">رؤيتنا</span>
-        <span class="block">نسعى لبناء وعي حضاري</span>
-        <span class="block">يجمع بين <span class="text-[#CFAF5B]">الأصالة</span> و <span
-            class="text-[#CFAF5B]">المعاصرة</span></span>
-        <span class="block text-lg lg:text-xl text-[#E6C97A]/80 mt-3">ونؤمن أن المعرفة هي جسر التواصل بين الماضي
-          والمستقبل</span>
+        <span class="block text-xl lg:text-2xl text-[#CFAF5B]/80 mb-2">{{ ts.t('home.vision') }}</span>
+        <span class="block">{{ ts.t('home.visionText1') }}</span>
+        <span class="block">{{ ts.t('home.visionText2') }} <span class="text-[#CFAF5B]">{{ ts.t('home.visionText3') }}</span> &amp; <span
+            class="text-[#CFAF5B]">{{ ts.t('home.visionText4') }}</span></span>
+        <span class="block text-lg lg:text-xl text-[#E6C97A]/80 mt-3">{{ ts.t('home.visionText5') }}</span>
       </h2>
       <div class="w-20 h-[2px] bg-linear-to-r from-[#CFAF5B] to-[#E6C97A] mx-auto opacity-70"></div>
     </div>
@@ -236,9 +243,9 @@
   <!-- Books Section -->
   <section class="container mx-auto px-8 mb-32">
     <div class="flex items-center justify-between mb-16">
-      <h2 class="text-4xl font-headline font-bold text-primary">إصداراتنا</h2>
+      <h2 class="text-4xl font-headline font-bold text-primary">{{ ts.t('home.ourPublications') }}</h2>
       <a routerLink="/books" class="text-secondary font-bold font-label flex items-center gap-2 hover:underline">
-        تصفح كل الكتب
+        {{ ts.t('home.browseAllBooks') }}
         <span class="material-symbols-outlined text-sm">open_in_new</span>
       </a>
     </div>
@@ -256,7 +263,7 @@
               <div
                 class="bg-secondary text-on-secondary px-6 py-3 rounded-full font-label text-sm flex items-center gap-2">
                 <span class="material-symbols-outlined text-sm">visibility</span>
-                عرض التفاصيل
+                {{ ts.t('home.viewDetails') }}
               </div>
             </div>
           </div>
@@ -270,7 +277,7 @@
             [title]="book.author">{{ book.author }}</p>
           <a [href]="book.downloadLink" target="_blank"
             class="block w-full py-3 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all rounded font-label text-sm text-center">
-            تحميل النسخة الرقمية (PDF)
+            {{ ts.t('home.downloadPdf') }}
           </a>
         </div>
       </div>
@@ -300,22 +307,24 @@
           <div
             class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-label text-sm uppercase tracking-widest">
             <span class="material-symbols-outlined text-sm">stars</span>
-            كن جزءاً من الحكاية
+            {{ ts.t('home.bePartOfStory') }}
           </div>
 
           <h2 class="text-4xl lg:text-6xl font-headline font-bold text-[#E6C97A] leading-tight">
-            انضم إلى مجتمع <br class="hidden md:block"> القراء والمثقفين
+            {{ ts.t('home.joinCommunity') }}
           </h2>
 
           <p class="text-[#FBFBE2]/70 text-lg lg:text-2xl font-body leading-relaxed max-w-xl mx-auto">
-            احصل على وصول كامل للمقالات المتعمقة، والكتب الحصرية، وانخرط في حوارات فكرية تثري الوعي الحضاري.
+            {{ ts.t('home.joinDesc') }}
           </p>
 
           <div class="pt-6">
             <a routerLink="/auth/login"
               class="inline-flex items-center gap-4 px-12 py-5 bg-secondary text-on-secondary rounded-2xl font-headline text-2xl font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all shadow-[0_8px_32px_rgba(115,92,0,0.3)] hover:shadow-[0_12px_48px_rgba(115,92,0,0.5)] active:scale-95 group/btn">
-              ابدأ رحلتك المعرفية
-              <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
+              {{ ts.t('home.startJourney') }}
+              <span class="material-symbols-outlined transition-transform"
+                [class.group-hover/btn:-translate-x-1]="ts.isRtl()"
+                [class.group-hover/btn:translate-x-1]="!ts.isRtl()">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
             </a>
           </div>
 
@@ -323,11 +332,11 @@
             class="flex items-center justify-center gap-8 pt-8 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
             <div class="flex flex-col items-center gap-1">
               <span class="material-symbols-outlined">library_books</span>
-              <span class="text-[10px] font-label">محتوى حصري</span>
+              <span class="text-[10px] font-label">{{ ts.t('home.exclusiveContent') }}</span>
             </div>
             <div class="flex flex-col items-center gap-1">
               <span class="material-symbols-outlined">forum</span>
-              <span class="text-[10px] font-label">مجتمع فكري</span>
+              <span class="text-[10px] font-label">{{ ts.t('home.intellectualCommunity') }}</span>
             </div>
           </div>
         </div>

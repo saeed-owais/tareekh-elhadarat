@@ -34,17 +34,17 @@
         </span>
         <span class="flex items-center gap-1">
           <span class="material-symbols-outlined text-sm">schedule</span>
-          {{ article()!.readTimeInMiniutes }} دقائق قراءة
+          {{ article()!.readTimeInMiniutes }} {{ ts.t('articleDetail.readMinutes') }}
         </span>
         <div class="h-4 w-px bg-outline-variant/30 hidden sm:block"></div>
         <div class="flex items-center gap-2">
-          <button (click)="share('whatsapp')" title="واتساب"
+          <button (click)="share('whatsapp')" [title]="'WhatsApp'"
             class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-[#25D366] hover:text-white transition-all">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.721 7.454c-2.132 0-4.215-.57-6.037-1.649l-.433-.256-4.483 1.176 1.196-4.366-.281-.447c-1.181-1.879-1.804-4.053-1.804-6.289 0-6.611 5.378-11.989 11.988-11.989 3.203 0 6.213 1.247 8.474 3.509 2.262 2.262 3.508 5.271 3.508 8.474 0 6.612-5.378 11.99-11.99 11.99m8.475-20.464c-2.263-2.262-5.275-3.509-8.475-3.509-6.611 0-11.989 5.378-11.989 11.989 0 2.13.553 4.215 1.603 6.036l-1.706 6.229 6.375-1.673c1.761 1.01 3.755 1.543 5.717 1.543 6.611 0 11.99-5.378 11.99-11.99 0-3.203-1.247-6.212-3.508-8.474z" />
             </svg>
           </button>
-          <button (click)="share('telegram')" title="تلجرام"
+          <button (click)="share('telegram')" [title]="'Telegram'"
             class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-[#0088cc] hover:text-white transition-all">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.303.48-.429-.012-1.253-.245-1.865-.444-.753-.245-1.353-.375-1.3-.79.029-.215.325-.437.888-.667 3.5-1.526 5.833-2.53 7 3.012 2.219-3.418.529-1.4 1.408-1.4 1.48z" />
@@ -62,7 +62,8 @@
     <!-- Article Content Layout with Sidebar -->
     <div class="relative">
       <!-- Vertical Sidebar (Al Sabeel Style) -->
-      <aside class="hidden lg:block absolute -right-20 top-0 h-full">
+      <aside class="hidden lg:block absolute top-0 h-full"
+        [class.-right-20]="ts.isRtl()" [class.-left-20]="!ts.isRtl()">
         <div class="sticky top-32 flex flex-col items-center gap-1 bg-surface-container-low p-1 rounded-full border border-outline-variant/10 shadow-lg overflow-hidden">
           <!-- Share Label -->
           <button (click)="nativeShare()" class="flex flex-col items-center gap-1 p-2 hover:bg-secondary/10 text-on-surface-variant hover:text-secondary transition-all rounded-full group">
@@ -72,38 +73,40 @@
           <div class="w-6 h-px bg-outline-variant/20 mx-auto"></div>
 
           <!-- Socials -->
-          <button (click)="share('facebook')" title="فيسبوك"
+          <button (click)="share('facebook')" title="Facebook"
             class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#1877F2]/10 text-on-surface-variant hover:text-[#1877F2] transition-all">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
           </button>
 
-          <button (click)="share('twitter')" title="تويتر (X)"
+          <button (click)="share('twitter')" title="X (Twitter)"
             class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 text-on-surface-variant hover:text-black transition-all">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
             </svg>
           </button>
 
-          <button (click)="copyLink()" title="نسخ الرابط"
+          <button (click)="copyLink()" [title]="ts.t('articleDetail.copied')"
             class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary/10 text-on-surface-variant hover:text-secondary transition-all relative group/link">
             <span class="material-symbols-outlined text-xl">link</span>
             @if (showCopiedMessage()) {
-              <div class="absolute right-full mr-3 px-3 py-1 bg-primary text-on-primary text-[10px] rounded-lg shadow-lg whitespace-nowrap animate-fade-in">
-                تم النسخ!
+              <div class="absolute mr-3 px-3 py-1 bg-primary text-on-primary text-[10px] rounded-lg shadow-lg whitespace-nowrap animate-fade-in"
+                [class.right-full]="ts.isRtl()" [class.left-full]="!ts.isRtl()"
+                [class.ml-3]="!ts.isRtl()">
+                {{ ts.t('articleDetail.copied') }}
               </div>
             }
           </button>
 
-          <button (click)="printArticle()" title="طباعة"
+          <button (click)="printArticle()" title="Print"
             class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary/10 text-on-surface-variant hover:text-secondary transition-all">
             <span class="material-symbols-outlined text-xl">print</span>
           </button>
 
           <div class="w-6 h-px bg-outline-variant/20 mx-auto"></div>
 
-          <button (click)="nativeShare()" title="المزيد"
+          <button (click)="nativeShare()" title="More"
             class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-secondary/10 text-on-surface-variant hover:text-secondary transition-all">
             <span class="material-symbols-outlined text-xl">more_horiz</span>
           </button>
@@ -120,34 +123,33 @@
     @if (article()!.tags && article()!.tags.length > 0) {
     <div class="flex flex-wrap gap-3 mb-12 border-t border-outline-variant/20 pt-8">
       @for (tag of article()!.tags; track tag) {
-      <span class="px-4 py-2 bg-surface-container-low rounded-full text-sm font-label text-on-surface-variant">{{ tag
-        }}</span>
+      <span class="px-4 py-2 bg-surface-container-low rounded-full text-sm font-label text-on-surface-variant">{{ tag }}</span>
       }
     </div>
     }
 
     <!-- Share & Save -->
     <div class="flex items-center gap-4 mb-16 border-b border-outline-variant/20 pb-8 flex-wrap">
-      <span class="font-label font-bold text-on-surface-variant">شارك المقال:</span>
-      <button (click)="share('facebook')" title="فيسبوك"
+      <span class="font-label font-bold text-on-surface-variant">{{ ts.t('articleDetail.shareArticle') }}</span>
+      <button (click)="share('facebook')" title="Facebook"
         class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-[#1877F2] hover:text-white transition-all group">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
         </svg>
       </button>
-      <button (click)="share('twitter')" title="تويتر (X)"
+      <button (click)="share('twitter')" title="X (Twitter)"
         class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-[#000000] hover:text-white transition-all group">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
         </svg>
       </button>
-      <button (click)="share('whatsapp')" title="واتساب"
+      <button (click)="share('whatsapp')" title="WhatsApp"
         class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-[#25D366] hover:text-white transition-all group">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.721 7.454c-2.132 0-4.215-.57-6.037-1.649l-.433-.256-4.483 1.176 1.196-4.366-.281-.447c-1.181-1.879-1.804-4.053-1.804-6.289 0-6.611 5.378-11.989 11.988-11.989 3.203 0 6.213 1.247 8.474 3.509 2.262 2.262 3.508 5.271 3.508 8.474 0 6.612-5.378 11.99-11.99 11.99m8.475-20.464c-2.263-2.262-5.275-3.509-8.475-3.509-6.611 0-11.989 5.378-11.989 11.989 0 2.13.553 4.215 1.603 6.036l-1.706 6.229 6.375-1.673c1.761 1.01 3.755 1.543 5.717 1.543 6.611 0 11.99-5.378 11.99-11.99 0-3.203-1.247-6.212-3.508-8.474z" />
         </svg>
       </button>
-      <button (click)="share('telegram')" title="تلجرام"
+      <button (click)="share('telegram')" title="Telegram"
         class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-[#0088cc] hover:text-white transition-all group">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.303.48-.429-.012-1.253-.245-1.865-.444-.753-.245-1.353-.375-1.3-.79.029-.215.325-.437.888-.667 3.5-1.526 5.833-2.53 7 3.012 2.219-3.418.529-1.4 1.408-1.4 1.48z" />
@@ -155,14 +157,14 @@
       </button>
 
       <div class="relative">
-        <button (click)="copyLink()" title="نسخ الرابط"
+        <button (click)="copyLink()" [title]="ts.t('articleDetail.copied')"
           class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary transition-all">
           <span class="material-symbols-outlined text-xl">link</span>
         </button>
         @if (showCopiedMessage()) {
         <div
           class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-primary text-on-primary text-xs rounded-lg shadow-lg animate-bounce pointer-events-none whitespace-nowrap">
-          تم النسخ!
+          {{ ts.t('articleDetail.copied') }}
         </div>
         }
       </div>
@@ -172,18 +174,18 @@
       <!-- Save Button -->
       <button (click)="toggleSave()"
         [class]="isSaved() ? 'bg-secondary text-on-secondary' : 'bg-surface-container-low text-on-surface-variant hover:bg-secondary hover:text-on-secondary'"
-        class="flex items-center gap-2 px-6 py-2.5 rounded-full font-bold transition-all shadow-sm">
+        class="flex items-center gap-2 px-6 py-2.5 cursor-pointer rounded-full font-bold transition-all shadow-sm">
         <span class="material-symbols-outlined text-xl" [style.font-variation-settings]="isSaved() ? '\'FILL\' 1' : ''">
           {{ isSaved() ? 'bookmark' : 'bookmark_add' }}
         </span>
-        {{ isSaved() ? 'محفوظ' : 'حفظ في المفضلة' }}
+        {{ isSaved() ? ts.t('articleDetail.saved') : ts.t('articleDetail.saveToFavorites') }}
       </button>
     </div>
   </article>
 
   <!-- Comments Section -->
   <section class="container mx-auto px-8 max-w-4xl mb-16">
-    <h2 class="text-3xl font-headline font-bold text-primary mb-10">التعليقات</h2>
+    <h2 class="text-3xl font-headline font-bold text-primary mb-10">{{ ts.t('articleDetail.comments') }}</h2>
 
     <!-- Existing Comments -->
     <div class="space-y-6 mb-12">
@@ -195,14 +197,14 @@
             {{ (comment.authorName || comment.userName || 'U').charAt(0) }}
           </div>
           <div>
-            <h4 class="font-headline font-bold text-lg">{{ comment.authorName || comment.userName || 'مستخدم' }}</h4>
+            <h4 class="font-headline font-bold text-lg">{{ comment.authorName || comment.userName || ts.t('articleDetail.user') }}</h4>
             <p class="text-sm text-on-surface-variant">{{ comment.createdAt | date:'longDate' }}</p>
           </div>
         </div>
         <p class="font-body leading-relaxed">{{ comment.content }}</p>
       </div>
       } @empty {
-      <p class="text-on-surface-variant italic">لا توجد تعليقات بعد. كن أول من يعلق!</p>
+      <p class="text-on-surface-variant italic">{{ ts.t('articleDetail.noComments') }}</p>
       }
     </div>
 
@@ -212,7 +214,7 @@
       <div class="relative z-10">
         <h3 class="text-2xl lg:text-3xl font-headline font-bold mb-8 text-primary flex items-center gap-3">
           <span class="material-symbols-outlined text-secondary">chat_bubble</span>
-          انضم إلى الحوار
+          {{ ts.t('articleDetail.joinDialog') }}
         </h3>
 
         @if (isLoggedIn()) {
@@ -224,37 +226,39 @@
             <span class="material-symbols-outlined text-4xl"
               style="font-variation-settings: 'FILL' 1;">check_circle</span>
           </div>
-          <h4 class="text-2xl font-headline font-bold text-primary mb-3">تم إرسال تعليقك بنجاح!</h4>
+          <h4 class="text-2xl font-headline font-bold text-primary mb-3">{{ ts.t('articleDetail.commentSentTitle') }}</h4>
           <p class="text-on-surface-variant max-w-md mx-auto leading-relaxed">
-            شكراً لمشاركتك. سيظهر تعليقك للجميع فور مراجعته واعتماده من قبل الإدارة لضمان جودة الحوار.
+            {{ ts.t('articleDetail.commentSentDesc') }}
           </p>
-          <button (click)="commentSubmitted.set(false)" class="mt-8 text-secondary font-bold hover:underline">إضافة
-            تعليق آخر</button>
+          <button (click)="commentSubmitted.set(false)" class="mt-8 text-secondary font-bold hover:underline">{{ ts.t('articleDetail.addAnotherComment') }}</button>
         </div>
         } @else {
         <!-- Form for Logged in Users -->
         <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="space-y-6">
           <div class="flex flex-col gap-3">
-            <label class="font-label font-bold text-on-surface opacity-70">تعليقك</label>
+            <label class="font-label font-bold text-on-surface opacity-70">{{ ts.t('articleDetail.yourComment') }}</label>
             <textarea formControlName="content" rows="4"
               class="px-5 py-4 rounded-2xl border border-outline-variant bg-surface focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all text-on-surface resize-none leading-relaxed"
-              placeholder="شاركنا رأيك أو استفسارك حول هذا الموضوع..."></textarea>
+              [placeholder]="ts.t('articleDetail.commentPlaceholder')"></textarea>
             <div
               class="flex justify-between items-center text-[10px] font-label text-outline uppercase tracking-widest px-2">
-              <span>الحد الأقصى: 500 حرف</span>
+              <span>{{ ts.t('articleDetail.maxChars') }}</span>
               <span [class.text-error]="commentForm.get('content')?.invalid && commentForm.get('content')?.touched">
                 {{ commentForm.get('content')?.value?.length || 0 }} / 500
               </span>
             </div>
           </div>
 
-          <div class="flex justify-start">
+          <div class="flex" [class.justify-start]="ts.isRtl()" [class.justify-end]="!ts.isRtl()">
             <button type="submit" [disabled]="!commentForm.valid"
               class="group relative px-10 py-4 bg-primary text-on-primary rounded-xl font-headline text-lg font-bold hover:bg-primary-container transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed overflow-hidden shadow-lg shadow-primary/10">
               <span class="relative z-10 flex items-center gap-2">
-                إرسال التعليق
+                {{ ts.t('articleDetail.submitComment') }}
                 <span
-                  class="material-symbols-outlined text-sm -scale-x-100 group-hover:translate-x-[-4px] transition-transform">send</span>
+                  class="material-symbols-outlined text-sm transition-transform"
+                  [class.-scale-x-100]="ts.isRtl()"
+                  [class.group-hover:translate-x-[-4px]]="ts.isRtl()"
+                  [class.group-hover:translate-x-[4px]]="!ts.isRtl()">send</span>
               </span>
             </button>
           </div>
@@ -264,13 +268,12 @@
         <!-- Guest CTA -->
         <div class="py-12 text-center bg-surface/50 rounded-2xl border-2 border-dashed border-outline-variant/30">
           <span class="material-symbols-outlined text-5xl text-outline-variant mb-4">account_circle</span>
-          <h4 class="text-xl font-headline font-bold text-primary mb-3">يجب تسجيل الدخول للتعليق</h4>
-          <p class="text-on-surface-variant mb-8 max-w-sm mx-auto">كن جزءاً من مجتمعنا الثقافي وشارك أفكارك مع القراء
-            والباحثين.</p>
+          <h4 class="text-xl font-headline font-bold text-primary mb-3">{{ ts.t('articleDetail.loginToComment') }}</h4>
+          <p class="text-on-surface-variant mb-8 max-w-sm mx-auto">{{ ts.t('articleDetail.loginToCommentDesc') }}</p>
           <a routerLink="/auth/login" [queryParams]="{ returnUrl: '/articles/' + article()?.id }"
             class="inline-flex items-center gap-2 px-8 py-3 bg-secondary text-on-secondary rounded-xl font-bold transition-all hover:scale-105 active:scale-95 shadow-md">
             <span class="material-symbols-outlined text-sm">login</span>
-            تسجيل الدخول الآن
+            {{ ts.t('articleDetail.loginNow') }}
           </a>
         </div>
         }
@@ -284,12 +287,12 @@
 <main class="pt-28 pb-20">
   <div class="container mx-auto px-8 text-center py-20">
     <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6">article</span>
-    <h1 class="text-3xl font-headline font-bold text-primary mb-4">المقال غير موجود</h1>
-    <p class="text-on-surface-variant mb-8">عذراً، لم نتمكن من العثور على المقال المطلوب.</p>
+    <h1 class="text-3xl font-headline font-bold text-primary mb-4">{{ ts.t('articleDetail.articleNotFound') }}</h1>
+    <p class="text-on-surface-variant mb-8">{{ ts.t('articleDetail.articleNotFoundDesc') }}</p>
     <a routerLink="/articles"
       class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-lg font-headline text-lg hover:bg-primary-container transition-all">
-      <span class="material-symbols-outlined">arrow_forward</span>
-      العودة للمقالات
+      <span class="material-symbols-outlined">{{ ts.isRtl() ? 'arrow_forward' : 'arrow_back' }}</span>
+      {{ ts.t('articleDetail.backToArticles') }}
     </a>
   </div>
 </main>

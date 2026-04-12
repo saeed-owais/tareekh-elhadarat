@@ -3,7 +3,7 @@
     
     <!-- Page Header & Search Bar -->
     <div class="text-center mb-12">
-      <h1 class="text-5xl font-headline font-bold text-primary mb-6">نتائج البحث</h1>
+      <h1 class="text-5xl font-headline font-bold text-primary mb-6">{{ ts.t('search.title') }}</h1>
       
       <!-- Local Search Bar -->
       <div class="max-w-3xl mx-auto">
@@ -13,20 +13,24 @@
             [ngModel]="searchQuery()"
             (ngModelChange)="searchQuery.set($event)"
             name="localSearch"
-            class="w-full px-6 py-4 pr-14 rounded-2xl border border-outline-variant bg-surface-container-low focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all text-on-surface font-body text-lg"
-            placeholder="ابحث عن مقال، موضوع، أو كاتب...">
+            class="w-full px-6 py-4 rounded-2xl border border-outline-variant bg-surface-container-low focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all text-on-surface font-body text-lg"
+            [class.pr-14]="ts.isRtl()" [class.pl-14]="!ts.isRtl()"
+            [placeholder]="ts.t('search.placeholder')">
           <button type="submit"
-            class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary hover:bg-primary/90 transition-colors">
+            class="absolute top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary hover:bg-primary/90 transition-colors"
+            [class.left-3]="!ts.isRtl()" [class.right-3]="ts.isRtl()">
             <span class="material-symbols-outlined text-xl">search</span>
           </button>
-          <span class="absolute right-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40 text-2xl">search</span>
+          <span
+            class="absolute top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40 text-2xl"
+            [class.right-5]="!ts.isRtl()" [class.left-5]="ts.isRtl()">search</span>
         </form>
       </div>
 
       <!-- Results Count -->
       @if (currentQuery() && !isLoading()) {
         <p class="text-lg text-on-surface font-body mt-6">
-          تم العثور على <span class="font-bold text-primary">{{ totalItems() }}</span> نتيجة لـ <span class="font-bold text-secondary">"{{ currentQuery() }}"</span>
+          {{ ts.t('search.resultsFound') }} <span class="font-bold text-primary">{{ totalItems() }}</span> {{ ts.t('search.resultsFor') }} <span class="font-bold text-secondary">"{{ currentQuery() }}"</span>
         </p>
       }
     </div>
@@ -53,7 +57,8 @@
                      [alt]="article.title"
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                      [src]="article.imageUrl">
-                <span class="absolute top-4 right-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary">
+                <span class="absolute top-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary"
+                  [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()">
                   {{ article.category }}
                 </span>
               </div>
@@ -68,7 +73,7 @@
               </span>
               <span class="flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">schedule</span>
-                {{ article.readTimeInMiniutes }} دقائق
+                {{ article.readTimeInMiniutes }} {{ ts.t('search.minutes') }}
               </span>
             </div>
             @if (article.tags && article.tags.length > 0) {
@@ -86,11 +91,11 @@
       @if (articles().length === 0 && currentQuery()) {
         <div class="text-center py-20 bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm">
           <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6 block">search_off</span>
-          <h3 class="text-2xl font-headline font-bold text-primary mb-3">لا توجد نتائج مطابقة</h3>
-          <p class="text-lg text-on-surface-variant mb-8 max-w-md mx-auto">لم نتمكن من العثور على أي مقالات تتطابق مع بحثك عن "{{ currentQuery() }}". جرّب استخدام كلمات مفتاحية مختلفة.</p>
+          <h3 class="text-2xl font-headline font-bold text-primary mb-3">{{ ts.t('search.noResults') }}</h3>
+          <p class="text-lg text-on-surface-variant mb-8 max-w-md mx-auto">{{ ts.t('search.noResultsDesc') }} "{{ currentQuery() }}"{{ ts.t('search.noResultsSuffix') }}</p>
           <a routerLink="/articles" class="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-on-primary rounded-xl font-bold font-label hover:bg-primary/90 transition-colors">
-            تصفح كل المقالات
-            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            {{ ts.t('search.browseAll') }}
+            <span class="material-symbols-outlined text-[18px]">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
           </a>
         </div>
       }

@@ -1,40 +1,40 @@
 <main class="pt-36 pb-20">
   <div class="container mx-auto px-8 max-w-6xl">
     <div class="text-center mb-16">
-      <h1 class="text-5xl font-headline font-bold text-primary mb-4">اكتب معنا</h1>
+      <h1 class="text-5xl font-headline font-bold text-primary mb-4">{{ ts.t('writeWithUs.title') }}</h1>
       <p class="text-xl text-on-surface-variant font-body max-w-2xl mx-auto">
-        نرحب بالكتّاب والباحثين الراغبين في المساهمة بمحتوى فكري وثقافي رصين على منصة تاريخ الشعوب.
+        {{ ts.t('writeWithUs.subtitle') }}
       </p>
     </div>
 
     <!-- Guidelines -->
     <section class="mb-16">
       <div class="bg-surface-container-low p-10 rounded-2xl">
-        <h2 class="text-2xl font-headline font-bold text-primary mb-6">شروط ومعايير النشر</h2>
+        <h2 class="text-2xl font-headline font-bold text-primary mb-6">{{ ts.t('writeWithUs.guidelinesTitle') }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-on-surface-variant font-body leading-relaxed">
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>أن يكون المحتوى أصلياً، مملوكاً بالكامل للناشر، ولم يسبق نشره ورقياً أو إلكترونياً.</p>
+            <p>{{ ts.t('writeWithUs.guideline1') }}</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>سلامة اللغة وجودة الصياغة، والخلو التام من الأخطاء الإملائية والنحوية.</p>
+            <p>{{ ts.t('writeWithUs.guideline2') }}</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>أن يتوافق المقال مع رؤية المنصة في بناء الوعي الحضاري والثقافي.</p>
+            <p>{{ ts.t('writeWithUs.guideline3') }}</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>ألا يتجاوز طول المقال ٥٠٠٠ كلمة، مع مراعاة العمق والشمولية في الطرح.</p>
+            <p>{{ ts.t('writeWithUs.guideline4') }}</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>الالتزام بالمعايير الموضوعية والأمانة العلمية في عرض الحقائق.</p>
+            <p>{{ ts.t('writeWithUs.guideline5') }}</p>
           </div>
           <div class="flex gap-3 items-start">
             <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
-            <p>توثيق المصادر والمراجع بشكل دقيق وواضح لضمان مصداقية المحتوى.</p>
+            <p>{{ ts.t('writeWithUs.guideline6') }}</p>
           </div>
         </div>
       </div>
@@ -49,13 +49,13 @@
         <div class="relative z-10 flex flex-col items-center gap-6">
           <span class="material-symbols-outlined text-secondary text-5xl"
             style="font-variation-settings: 'FILL' 1;">lock</span>
-          <h2 class="font-headline text-3xl text-primary font-bold">يجب تسجيل الدخول للمشاركة في الكتابة</h2>
+          <h2 class="font-headline text-3xl text-primary font-bold">{{ ts.t('writeWithUs.loginRequired') }}</h2>
           <p class="text-on-surface-variant max-w-md mx-auto">
-            انضم إلى مجتمعنا الثقافي وشارك أفكارك وبحوثك مع آلاف القراء المهتمين بالتاريخ والفكر الإنساني.
+            {{ ts.t('writeWithUs.loginRequiredDesc') }}
           </p>
           <a routerLink="/auth/login"
             class="bg-linear-to-r from-secondary to-secondary-fixed-dim text-on-secondary-fixed px-10 py-3 rounded-lg font-extrabold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all inline-block">
-            تسجيل الدخول
+            {{ ts.t('writeWithUs.loginBtn') }}
           </a>
         </div>
       </div>
@@ -65,7 +65,7 @@
     <!-- Submission Form (Logged In Only) -->
     @if (isLoggedIn() && !submitted()) {
     <section>
-      <h2 class="text-2xl font-headline font-bold text-primary mb-8">أرسل مقالك</h2>
+      <h2 class="text-2xl font-headline font-bold text-primary mb-8">{{ ts.t('writeWithUs.submitArticle') }}</h2>
       <form class="space-y-8" (submit)="onSubmit($event)">
 
         <!-- Error Message -->
@@ -82,23 +82,23 @@
           <!-- Title -->
           <div>
             <label class="block font-label font-bold text-sm mb-2">
-              عنوان المقال <span class="text-error">*</span>
+              {{ ts.t('writeWithUs.articleTitle') }} <span class="text-error">*</span>
             </label>
             <input type="text" [(ngModel)]="title" name="title" maxlength="250" required
               class="w-full bg-surface-container-high px-4 py-4 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body"
-              placeholder="أدخل عنواناً معبراً وعميقاً..." />
+              [placeholder]="ts.t('writeWithUs.articleTitlePlaceholder')" />
           </div>
 
           <!-- Category -->
           <div class="category-dropdown relative">
             <label class="block font-label font-bold text-sm mb-2">
-              التصنيف <span class="text-error">*</span>
+              {{ ts.t('writeWithUs.category') }} <span class="text-error">*</span>
             </label>
             
             <button type="button" (click)="toggleCategoryDropdown($event)"
-              class="w-full bg-surface-container-high px-4 py-4 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right flex justify-between items-center group">
+              class="w-full bg-surface-container-high px-4 py-4 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body flex justify-between items-center group">
               <span [class.text-on-surface-variant]="!categoryId()" [class.opacity-70]="!categoryId()">
-                {{ getCategoryName(categoryId()) || 'اختر التصنيف' }}
+                {{ getCategoryName(categoryId()) || ts.t('writeWithUs.selectCategory') }}
               </span>
               <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-300"
                     [class.rotate-180]="isCategoryDropdownOpen()">expand_more</span>
@@ -111,7 +111,7 @@
                 @for (category of categories(); track category.id) {
                   <li>
                     <button type="button" (click)="selectCategory(category.id)"
-                      class="w-full cursor-pointer text-right px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex items-center justify-between"
+                      class="w-full cursor-pointer px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex items-center justify-between"
                       [class.bg-secondary-container]="categoryId() === category.id"
                       [class.text-on-secondary-container]="categoryId() === category.id">
                       <span>{{ category.name }}</span>
@@ -133,7 +133,7 @@
         <!-- Tags -->
         <div>
           <label class="block font-label font-bold text-sm mb-2">
-            الوسوم <span class="text-error">*</span>
+            {{ ts.t('writeWithUs.tags') }} <span class="text-error">*</span>
           </label>
           @if (tags().length > 0) {
           <div class="flex flex-wrap gap-3">
@@ -150,17 +150,17 @@
             }
           </div>
           } @else {
-          <p class="text-on-surface-variant text-sm">لا توجد وسوم متاحة حالياً</p>
+          <p class="text-on-surface-variant text-sm">{{ ts.t('writeWithUs.noTags') }}</p>
           }
           @if (selectedTagIds().length > 0) {
-          <p class="text-xs text-on-surface-variant mt-2">تم اختيار {{ selectedTagIds().length }} وسم</p>
+          <p class="text-xs text-on-surface-variant mt-2">{{ ts.t('writeWithUs.selectedTags') }} {{ selectedTagIds().length }} {{ ts.t('writeWithUs.tagUnit') }}</p>
           }
         </div>
 
         <!-- Featured Image Upload -->
         <div>
           <label class="block font-label font-bold text-sm mb-2">
-            الصورة البارزة <span class="text-error">*</span>
+            {{ ts.t('writeWithUs.featuredImage') }} <span class="text-error">*</span>
           </label>
           @if (!imagePreviewUrl()) {
           <label
@@ -170,20 +170,19 @@
             <div class="flex flex-col items-center gap-3">
               <span
                 class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">cloud_upload</span>
-              <p class="text-on-surface-variant font-medium">اسحب الصورة هنا أو اضغط للرفع</p>
-              <span class="text-xs text-on-surface-variant opacity-60">تنسيق JPG أو PNG أو WebP (بحد أقصى 5
-                ميجابايت)</span>
+              <p class="text-on-surface-variant font-medium">{{ ts.t('writeWithUs.dragOrClick') }}</p>
+              <span class="text-xs text-on-surface-variant opacity-60">{{ ts.t('writeWithUs.imageFormat') }}</span>
             </div>
           </label>
           } @else {
           <div class="relative w-full aspect-21/9 rounded-xl overflow-hidden group">
-            <img [src]="imagePreviewUrl()" alt="معاينة الصورة" class="w-full h-full object-cover" />
+            <img [src]="imagePreviewUrl()" alt="Preview" class="w-full h-full object-cover" />
             <div
               class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <button type="button" (click)="removeImage()"
                 class="bg-error text-on-error px-5 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-error/80 transition-colors">
                 <span class="material-symbols-outlined">delete</span>
-                إعادة اختيار الصورة
+                {{ ts.t('writeWithUs.reSelectImage') }}
               </button>
             </div>
           </div>
@@ -193,14 +192,13 @@
         <!-- Rich Text Editor (Quill) -->
         <div>
           <label class="block font-label font-bold text-sm mb-2">
-            محتوى المقال <span class="text-error">*</span>
+            {{ ts.t('writeWithUs.articleContent') }} <span class="text-error">*</span>
           </label>
           <div
             class="quill-wrapper bg-surface-container-lowest rounded-xl ambient-shadow overflow-hidden border border-outline-variant/10">
             <!-- Quill Toolbar -->
             <div id="quill-toolbar">
               <span class="ql-formats">
-                <!-- <button class="ql-blockquote"></button> -->
                 <button class="ql-bold"></button>
                 <button class="ql-italic"></button>
                 <button class="ql-underline"></button>
@@ -240,19 +238,21 @@
 
         <!-- Author Info (From Token) -->
         <div
-          class="bg-surface-container-high p-5 rounded-lg flex flex-row-reverse justify-between items-center text-sm border-r-4 border-secondary">
-          <div class="flex flex-row-reverse items-center gap-4">
+          class="bg-surface-container-high p-5 rounded-lg flex justify-between items-center text-sm"
+          [class.flex-row-reverse]="ts.isRtl()"
+          [class.border-r-4]="ts.isRtl()" [class.border-l-4]="!ts.isRtl()" [class.border-secondary]="true">
+          <div class="flex items-center gap-4" [class.flex-row-reverse]="ts.isRtl()">
             <div
               class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-lg">
-              {{ user()?.firstName?.charAt(0) || 'م' }}
+              {{ user()?.firstName?.charAt(0) || '?' }}
             </div>
             <div>
-              <p class="font-bold text-primary">الكاتب: {{ user()?.name || user()?.firstName + ' ' + user()?.lastName }}
+              <p class="font-bold text-primary">{{ ts.t('writeWithUs.authorLabel') }} {{ user()?.name || user()?.firstName + ' ' + user()?.lastName }}
               </p>
               <p class="text-on-surface-variant">{{ user()?.email }}</p>
             </div>
           </div>
-          <span class="text-secondary-fixed-dim italic text-xs">معلومات الحساب المسجل حالياً</span>
+          <span class="text-secondary-fixed-dim italic text-xs">{{ ts.t('writeWithUs.accountInfo') }}</span>
         </div>
 
         <!-- Submit Button -->
@@ -265,10 +265,10 @@
             <span class="flex items-center justify-center gap-3">
               <span
                 class="inline-block w-5 h-5 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin"></span>
-              جارٍ الإرسال...
+              {{ ts.t('writeWithUs.submitting') }}
             </span>
             } @else {
-            إرسال المقال للمراجعة
+            {{ ts.t('writeWithUs.submitForReview') }}
             }
           </button>
         </div>
@@ -281,13 +281,13 @@
     <div class="bg-surface-container-low p-16 rounded-2xl text-center animate-fade-in">
       <span class="material-symbols-outlined text-6xl text-secondary mb-6 block"
         style="font-variation-settings: 'FILL' 1;">check_circle</span>
-      <h3 class="text-2xl font-headline font-bold text-primary mb-4">تم إرسال مقالك بنجاح!</h3>
+      <h3 class="text-2xl font-headline font-bold text-primary mb-4">{{ ts.t('writeWithUs.successTitle') }}</h3>
       <p class="text-on-surface-variant font-body mb-8">
-        شكراً لمساهمتك. سيقوم فريق التحرير بمراجعة المقال وإعلامك بالنتيجة خلال ٧ أيام عمل.
+        {{ ts.t('writeWithUs.successDesc') }}
       </p>
       <button (click)="resetForm()"
         class="px-8 py-3 bg-primary cursor-pointer text-on-primary rounded-lg font-headline font-bold hover:bg-primary-container transition-all">
-        إرسال مقال جديد
+        {{ ts.t('writeWithUs.submitAnother') }}
       </button>
     </div>
     }

@@ -5,6 +5,7 @@ import { CategoryService } from '../../core/services/category.service';
 import { BookService } from '../../core/services/book.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { TranslationService } from '../../core/services/translation.service';
 import { Article } from '../../core/models/article.model';
 import { Category } from '../../core/models/category.model';
 import { Book } from '../../core/models/book.model';
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
   private bookService = inject(BookService);
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
+  public ts = inject(TranslationService);
 
   @ViewChild('categoriesSlider') categoriesSlider!: ElementRef<HTMLDivElement>;
 

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../../core/services/profile.service';
 import { UserProfile, SavedArticle } from '../../core/models/user-profile.model';
 import { finalize } from 'rxjs';
+import { TranslationService } from '../../core/services/translation.service';
 
 import { RouterModule } from '@angular/router';
 
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
 export class ProfileComponent implements OnInit {
   
   private profileService = inject(ProfileService);
+  public ts = inject(TranslationService);
 
   // Profile Data
   user = signal<UserProfile | null>(null); 
@@ -26,12 +28,12 @@ export class ProfileComponent implements OnInit {
   isLoadingSaved = signal<boolean>(false);
 
   // Tabs Management
-  activeTab = signal<string>('معلوماتي');
+  activeTab = signal<string>('info');
   
   tabs = signal([
-    { id: 'معلوماتي', label: 'معلوماتي', icon: 'person', filled: true },
-    { id: 'المحفوظات', label: 'المقالات المحفوظة', icon: 'bookmark', filled: false },
-    { id: 'الإعدادات', label: 'تعديل الملف', icon: 'settings', filled: false },
+    { id: 'info', label: 'info', icon: 'person', filled: true },
+    { id: 'saved', label: 'saved', icon: 'bookmark', filled: false },
+    { id: 'settings', label: 'settings', icon: 'settings', filled: false },
   ]);
 
   // UI State
@@ -87,7 +89,7 @@ export class ProfileComponent implements OnInit {
 
   setActiveTab(tabId: string) {
     this.activeTab.set(tabId);
-    if (tabId === 'المحفوظات') {
+    if (tabId === 'saved') {
       this.loadSavedArticles();
     }
   }
@@ -126,7 +128,7 @@ export class ProfileComponent implements OnInit {
       .pipe(finalize(() => this.isSaving.set(false)))
       .subscribe({
         next: () => {
-          this.successMessage.set('تم تحديث الملف الشخصي بنجاح');
+          this.successMessage.set(this.ts.t('profile.profileUpdated'));
           this.photoPreview.set(null);
           this.selectedPhoto = null;
           this.loadUserProfile();

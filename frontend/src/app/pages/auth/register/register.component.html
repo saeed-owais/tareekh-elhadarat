@@ -1,48 +1,45 @@
 <div class="min-h-screen flex flex-col lg:flex-row bg-surface font-body">
-  <div class="hidden lg:flex w-1/2 relative flex-col justify-center items-center bg-primary text-white overflow-hidden">
+  <div class="hidden lg:flex w-1/2 relative flex-col justify-center items-center bg-primary text-white overflow-hidden"
+    [class.order-2]="!ts.isRtl()" [class.order-1]="ts.isRtl()">
     <img src="bg-tareekh-alsho3ob.jpg" alt="History Background" class="absolute inset-0 w-full h-full object-cover">
-    <!-- Gradient Overlay -->
     <div class="absolute inset-0 bg-linear-to-b from-primary/40 via-primary/70 to-primary/90"></div>
-
     <div class="relative z-10 p-12 text-center flex flex-col items-center max-w-2xl">
       <div class="space-y-8">
         <h1 class="text-4xl lg:text-5xl font-headline font-bold leading-tight">
-          تاريخ الشعوب<br>
-          <span class="text-secondary text-2xl lg:text-3xl mt-4 block">رحلة عبر الحضارات والثقافات</span>
+          {{ ts.t('auth.heroTitle') }}<br>
+          <span class="text-secondary text-2xl lg:text-3xl mt-4 block">{{ ts.t('auth.heroSubtitle') }}</span>
         </h1>
         <div class="w-24 h-1 bg-secondary mx-auto rounded-full"></div>
         <p class="text-lg lg:text-xl font-body leading-relaxed text-white/90">
-          نستكشف جذور الإنسان وتنوعه عبر العصور، لنبني جسراً من المعرفة يربط الماضي بالمستقبل.
+          {{ ts.t('auth.heroDesc') }}
         </p>
       </div>
     </div>
   </div>
 
-  <div class="w-full lg:w-1/2 flex items-center justify-center mt-24 p-8 bg-surface text-on-surface">
+  <div class="w-full lg:w-1/2 flex items-center justify-center mt-24 p-8 bg-surface text-on-surface"
+    [class.order-1]="!ts.isRtl()" [class.order-2]="ts.isRtl()">
     <div class="w-full max-w-md">
 
       @if (isSuccess()) {
-      <!-- Success State -->
       <div class="text-center bg-surface-container-high rounded-2xl p-8 border border-outline-variant/30">
         <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
           <span class="material-symbols-outlined text-4xl">check_circle</span>
         </div>
-        <h2 class="text-2xl font-headline font-bold text-primary mb-3">تم إنشاء حسابك بنجاح!</h2>
+        <h2 class="text-2xl font-headline font-bold text-primary mb-3">{{ ts.t('auth.registerSuccess') }}</h2>
         <p class="text-on-surface-variant mb-6 leading-relaxed">
-          تم تسجيلك بنجاح. تفقد بريدك الإلكتروني لتأكيد حسابك ثم سجل دخولك.
+          {{ ts.t('auth.registerSuccessDesc') }}
         </p>
         <a routerLink="/auth/login"
           class="w-full block bg-primary text-white py-3 px-4 rounded-xl hover:bg-inverse-surface transition-colors font-medium">
-          تسجيل الدخول
+          {{ ts.t('auth.loginBtn') }}
         </a>
       </div>
       } @else {
-      <!-- Register Form -->
       <div class="text-center mb-6">
-        <h2 class="text-3xl font-headline font-bold text-primary mb-2">إنشاء حساب جديد</h2>
+        <h2 class="text-3xl font-headline font-bold text-primary mb-2">{{ ts.t('auth.createAccount') }}</h2>
       </div>
 
-      <!-- Error Alert -->
       @if (errorMessage()) {
       <div class="bg-error/10 border border-error/30 text-error rounded-xl p-4 mb-6 flex items-center gap-3">
         <span class="material-symbols-outlined text-[20px]">error</span>
@@ -54,130 +51,117 @@
 
         <div class="flex flex-col sm:flex-row gap-4">
           <div class="space-y-1.5 w-full">
-            <label class="block text-sm font-semibold text-primary/80 mr-1" for="first_name">الاسم الأول</label>
-            <div class="relative group">
-              <input formControlName="firstName"
-                [ngClass]="{'ring-2 ring-error/40': f.firstName.invalid && f.firstName.touched}"
-                class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
-                id="first_name" placeholder="أدخل اسمك الأول" type="text" />
-              <span
-                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">person</span>
-            </div>
+            <label class="block text-sm font-semibold text-primary/80" for="first_name">{{ ts.t('auth.firstNameLabel') }}</label>
+            <input formControlName="firstName"
+              [ngClass]="{'ring-2 ring-error/40': f.firstName.invalid && f.firstName.touched}"
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              id="first_name" [placeholder]="ts.t('auth.firstNamePlaceholder')" type="text" />
             @if (f.firstName.invalid && f.firstName.touched) {
-            <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+            <div class="text-error text-xs font-medium mt-1 flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">error</span>
-              @if (f.firstName.errors?.['required']) { <span>الاسم الأول مطلوب.</span> }
-              @if (f.firstName.errors?.['minlength']) { <span>يجب أن يكون الاسم 3 أحرف على الأقل.</span> }
-              @if (f.firstName.errors?.['maxlength']) { <span>لا يمكن أن يتجاوز الاسم 50 حرفاً.</span> }
+              @if (f.firstName.errors?.['required']) { <span>{{ ts.t('auth.firstNameRequired') }}</span> }
+              @if (f.firstName.errors?.['minlength']) { <span>{{ ts.t('auth.nameMinLength') }}</span> }
+              @if (f.firstName.errors?.['maxlength']) { <span>{{ ts.t('auth.nameMaxLength') }}</span> }
             </div>
             }
           </div>
           <div class="space-y-1.5 w-full">
-            <label class="block text-sm font-semibold text-primary/80 mr-1" for="last_name">الاسم الأخير</label>
-            <div class="relative group">
-              <input formControlName="lastName"
-                [ngClass]="{'ring-2 ring-error/40': f.lastName.invalid && f.lastName.touched}"
-                class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
-                id="last_name" placeholder="أدخل اسمك الأخير" type="text" />
-              <span
-                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">badge</span>
-            </div>
+            <label class="block text-sm font-semibold text-primary/80" for="last_name">{{ ts.t('auth.lastNameLabel') }}</label>
+            <input formControlName="lastName"
+              [ngClass]="{'ring-2 ring-error/40': f.lastName.invalid && f.lastName.touched}"
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              id="last_name" [placeholder]="ts.t('auth.lastNamePlaceholder')" type="text" />
             @if (f.lastName.invalid && f.lastName.touched) {
-            <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+            <div class="text-error text-xs font-medium mt-1 flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">error</span>
-              @if (f.lastName.errors?.['required']) { <span>الاسم الأخير مطلوب.</span> }
-              @if (f.lastName.errors?.['minlength']) { <span>يجب أن يكون الاسم 3 أحرف على الأقل.</span> }
-              @if (f.lastName.errors?.['maxlength']) { <span>لا يمكن أن يتجاوز الاسم 50 حرفاً.</span> }
+              @if (f.lastName.errors?.['required']) { <span>{{ ts.t('auth.lastNameRequired') }}</span> }
+              @if (f.lastName.errors?.['minlength']) { <span>{{ ts.t('auth.nameMinLength') }}</span> }
+              @if (f.lastName.errors?.['maxlength']) { <span>{{ ts.t('auth.nameMaxLength') }}</span> }
             </div>
             }
           </div>
         </div>
 
         <div class="space-y-1.5">
-          <label class="block text-sm font-semibold text-primary/80 mr-1" for="username">اسم المستخدم</label>
-          <div class="relative group">
-            <input formControlName="userName"
-              [ngClass]="{'ring-2 ring-error/40': f.userName.invalid && f.userName.touched}"
-              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
-              id="username" placeholder="أدخل اسم المستخدم" type="text" />
-            <span
-              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">alternate_email</span>
-          </div>
+          <label class="block text-sm font-semibold text-primary/80" for="username">{{ ts.t('auth.usernameLabel') }}</label>
+          <input formControlName="userName"
+            [ngClass]="{'ring-2 ring-error/40': f.userName.invalid && f.userName.touched}"
+            class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+            id="username" [placeholder]="ts.t('auth.usernamePlaceholder')" type="text" />
           @if (f.userName.invalid && f.userName.touched) {
-          <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+          <div class="text-error text-xs font-medium mt-1 flex items-center gap-1">
             <span class="material-symbols-outlined text-[14px]">error</span>
-            @if (f.userName.errors?.['required']) { <span>اسم المستخدم مطلوب.</span> }
-            @if (f.userName.errors?.['pattern']) { <span>يجب أن يكون باللغة الإنجليزية (أحرف، أرقام، أو . _ -)</span> }
-            @if (f.userName.errors?.['maxlength']) { <span>لا يمكن أن يتجاوز اسم المستخدم 100 حرفاً.</span> }
+            @if (f.userName.errors?.['required']) { <span>{{ ts.t('auth.usernameRequired') }}</span> }
+            @if (f.userName.errors?.['pattern']) { <span>{{ ts.t('auth.usernamePattern') }}</span> }
+            @if (f.userName.errors?.['maxlength']) { <span>{{ ts.t('auth.usernameMaxLength') }}</span> }
           </div>
           }
-          <p class="text-[10px] text-on-surface-variant/60 mt-1 mr-1">أحرف إنجليزية أو أحرف إنجليزية و أرقام  (مثال: saeed_99)</p>
+          <p class="text-[10px] text-on-surface-variant/60 mt-1">{{ ts.t('auth.usernameHint') }}</p>
         </div>
 
         <div class="space-y-1.5">
-          <label class="block text-sm font-semibold text-primary/80 mr-1" for="reg-email">البريد الإلكتروني</label>
-          <div class="relative group">
-            <input formControlName="email" [ngClass]="{'ring-2 ring-error/40': f.email.invalid && f.email.touched}"
-              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
-              id="reg-email" placeholder="example&#64;gmail.com" type="email" />
-            <span
-              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-secondary transition-colors text-[20px]">mail</span>
-          </div>
+          <label class="block text-sm font-semibold text-primary/80" for="reg-email">{{ ts.t('auth.emailLabel') }}</label>
+          <input formControlName="email" [ngClass]="{'ring-2 ring-error/40': f.email.invalid && f.email.touched}"
+            class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+            id="reg-email" [placeholder]="ts.t('auth.emailPlaceholder')" type="email" />
           @if (f.email.invalid && f.email.touched) {
-          <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+          <div class="text-error text-xs font-medium mt-1 flex items-center gap-1">
             <span class="material-symbols-outlined text-[14px]">error</span>
-            @if (f.email.errors?.['required']) { <span>البريد الإلكتروني مطلوب.</span> }
-            @if (f.email.errors?.['email']) { <span>يرجى إدخال بريد إلكتروني صحيح.</span> }
-            @if (f.email.errors?.['maxlength']) { <span>لا يمكن أن يتجاوز البريد 100 حرفاً.</span> }
+            @if (f.email.errors?.['required']) { <span>{{ ts.t('auth.emailRequired') }}</span> }
+            @if (f.email.errors?.['email']) { <span>{{ ts.t('auth.emailInvalid') }}</span> }
+            @if (f.email.errors?.['maxlength']) { <span>{{ ts.t('auth.emailMaxLength') }}</span> }
           </div>
           }
         </div>
 
         <div class="space-y-1.5">
-          <label class="block text-sm font-semibold text-primary/80 mr-1" for="reg-password">كلمة المرور</label>
+          <label class="block text-sm font-semibold text-primary/80" for="reg-password">{{ ts.t('auth.passwordLabel') }}</label>
           <div class="relative group">
             <input formControlName="password"
               [ngClass]="{'ring-2 ring-error/40': f.password.invalid && f.password.touched}"
-              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 pl-10 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              [class.pl-10]="ts.isRtl()" [class.pr-10]="!ts.isRtl()"
               [type]="showPassword() ? 'text' : 'password'" />
             <span (click)="showPassword.set(!showPassword())" [class.text-secondary]="showPassword()"
-              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
+              class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none"
+              [class.left-4]="ts.isRtl()" [class.right-4]="!ts.isRtl()">
               {{ showPassword() ? 'visibility_off' : 'visibility' }}
             </span>
           </div>
           @if (f.password.invalid && f.password.touched) {
-          <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+          <div class="text-error text-xs font-medium mt-1 flex items-center gap-1">
             <span class="material-symbols-outlined text-[14px]">error</span>
-            @if (f.password.errors?.['required']) { <span>كلمة المرور مطلوبة.</span> }
-            @if (f.password.errors?.['pattern']) { <span>يجب أن تحتوي على 6 أحرف، حرف كبير، حرف صغير، رقم ورمز (مثل #, @, $, %).</span> }
-            @if (f.password.errors?.['maxlength']) { <span>لا يمكن أن تتجاوز 250 حرفاً.</span> }
+            @if (f.password.errors?.['required']) { <span>{{ ts.t('auth.passwordRequired') }}</span> }
+            @if (f.password.errors?.['pattern']) { <span>{{ ts.t('auth.passwordPattern') }}</span> }
+            @if (f.password.errors?.['maxlength']) { <span>{{ ts.t('auth.passwordMaxLength') }}</span> }
           </div>
           }
-          <p class="text-[10px] text-on-surface-variant/60 mt-1 mr-1">مثال: History#2024 (6 أحرف على الأقل)</p>
+          <p class="text-[10px] text-on-surface-variant/60 mt-1">{{ ts.t('auth.passwordHint') }}</p>
         </div>
 
         <div class="space-y-1.5">
-          <label class="block text-sm font-semibold text-primary/80 mr-1" for="confirm_password">تأكيد كلمة
-            المرور</label>
+          <label class="block text-sm font-semibold text-primary/80" for="confirm_password">{{ ts.t('auth.confirmPasswordLabel') }}</label>
           <div class="relative group">
             <input formControlName="confirmPassword"
               [ngClass]="{'ring-2 ring-error/40': f.confirmPassword.invalid && f.confirmPassword.touched}"
-              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 pl-10 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3.5 focus:ring-0 focus:border-b-2 focus:border-secondary transition-all placeholder:text-on-surface-variant/50 text-on-surface"
+              [class.pl-10]="ts.isRtl()" [class.pr-10]="!ts.isRtl()"
               [type]="showConfirmPassword() ? 'text' : 'password'" />
             <span (click)="showConfirmPassword.set(!showConfirmPassword())"
               [class.text-secondary]="showConfirmPassword()"
-              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none">
+              class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors text-[20px] select-none"
+              [class.left-4]="ts.isRtl()" [class.right-4]="!ts.isRtl()">
               {{ showConfirmPassword() ? 'visibility_off' : 'visibility' }}
             </span>
           </div>
           @if (f.confirmPassword.invalid && f.confirmPassword.touched) {
-          <div class="text-error text-xs font-medium mt-1 pr-1 flex items-center gap-1">
+          <div class="text-error text-xs font-medium mt-1 flex items-center gap-1">
             <span class="material-symbols-outlined text-[14px]">error</span>
             @if (f.confirmPassword.errors?.['required']) {
-            <span>تأكيد كلمة المرور مطلوب.</span>
+            <span>{{ ts.t('auth.confirmPasswordRequired') }}</span>
             }
             @if (f.confirmPassword.errors?.['passwordMismatch']) {
-            <span>كلمة المرور غير متطابقة.</span>
+            <span>{{ ts.t('auth.passwordMismatch') }}</span>
             }
           </div>
           }
@@ -188,15 +172,15 @@
             class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20 bg-surface" id="terms"
             type="checkbox" />
           <label class="text-sm text-on-surface-variant cursor-pointer select-none" for="terms">
-            أوافق على
-            <a class="text-secondary font-semibold hover:underline decoration-2" routerLink="/terms">الشروط والأحكام</a>
-            و سياسة الخصوصية
+            {{ ts.t('auth.agreeTerms') }}
+            <a class="text-secondary font-semibold hover:underline decoration-2" routerLink="/terms">{{ ts.t('auth.termsLink') }}</a>
+            {{ ts.t('auth.andPrivacy') }}
           </label>
         </div>
         @if (f.terms.invalid && f.terms.touched) {
-        <div class="text-error text-xs font-medium pr-1 flex items-center gap-1 -mt-3">
+        <div class="text-error text-xs font-medium flex items-center gap-1 -mt-3">
           <span class="material-symbols-outlined text-[14px]">error</span>
-          <span>يجب الموافقة على الشروط والأحكام.</span>
+          <span>{{ ts.t('auth.termsRequired') }}</span>
         </div>
         }
 
@@ -205,15 +189,14 @@
           @if (isLoading()) {
           <span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
           }
-          <span>{{ isLoading() ? 'جاري إنشاء الحساب...' : 'إنشاء حساب' }}</span>
+          <span>{{ isLoading() ? ts.t('auth.creatingAccount') : ts.t('auth.registerBtn') }}</span>
         </button>
 
         <div class="mt-2 text-center">
           <p class="text-on-surface-variant text-sm">
-            لديك حساب بالفعل؟
+            {{ ts.t('auth.haveAccount') }}
             <a routerLink="/auth/login"
-              class="text-secondary font-bold mr-1 hover:underline underline-offset-4 transition-all">سجل
-              الدخول.</a>
+              class="text-secondary font-bold hover:underline underline-offset-4 transition-all">{{ ts.t('auth.loginNow') }}</a>
           </p>
         </div>
       </form>

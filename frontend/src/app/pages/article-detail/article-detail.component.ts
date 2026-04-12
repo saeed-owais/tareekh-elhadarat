@@ -10,6 +10,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { AuthService } from '../../core/services/auth.service';
 import { AddCommentRequest } from '../../core/models/add-comment.model';
 import { ScrollService } from '../../core/services/scroll.service';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -26,6 +27,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private scrollService = inject(ScrollService);
+  public ts = inject(TranslationService);
 
   article = signal<Article | null>(null);
   isLoading = signal(true);

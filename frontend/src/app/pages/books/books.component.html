@@ -9,9 +9,9 @@
     
     <!-- Hero Header -->
     <div class="text-center mb-20 max-w-3xl mx-auto">
-      <span class="text-xs font-bold text-secondary uppercase tracking-[0.3em] mb-4 block animate-in slide-in-from-bottom-2">المكتبة الرقمية</span>
-      <h1 class="text-5xl md:text-6xl font-headline font-bold text-primary mb-6 animate-in slide-in-from-bottom-3">كنوز المعرفة والمراجع</h1>
-      <p class="text-on-surface-variant text-lg leading-relaxed animate-in slide-in-from-bottom-4">مجموعة مختارة من أقيم الكتب والمخطوطات التاريخية التي توثق مسيرات الشعوب وحضارات العالم.</p>
+      <span class="text-xs font-bold text-secondary uppercase tracking-[0.3em] mb-4 block animate-in slide-in-from-bottom-2">{{ ts.t('books.digitalLibrary') }}</span>
+      <h1 class="text-5xl md:text-6xl font-headline font-bold text-primary mb-6 animate-in slide-in-from-bottom-3">{{ ts.t('books.title') }}</h1>
+      <p class="text-on-surface-variant text-lg leading-relaxed animate-in slide-in-from-bottom-4">{{ ts.t('books.subtitle') }}</p>
     </div>
 
     <!-- Grid Container -->
@@ -21,7 +21,7 @@
       @if (isLoading()) {
         <div class="absolute inset-x-0 top-0 pt-20 flex flex-col items-center justify-center gap-6 z-20">
           <div class="w-16 h-16 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
-          <p class="text-on-surface-variant text-sm font-medium italic">جاري جلب الكتب من الأرشيف...</p>
+          <p class="text-on-surface-variant text-sm font-medium italic">{{ ts.t('books.loading') }}</p>
         </div>
       }
 
@@ -29,7 +29,7 @@
         
         @for (book of books(); track book.id) {
           <div class="flex flex-col h-full">
-            <!-- Interative Top: Photo & Title sharing hover state -->
+            <!-- Interactive Top: Photo & Title sharing hover state -->
             <div class="group/book">
               <!-- Book Cover Container -->
               <a [routerLink]="['/books', book.id]" 
@@ -42,14 +42,14 @@
                   <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover/book:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                     <div class="bg-secondary text-on-secondary px-6 py-3 rounded-full font-label text-sm flex items-center gap-2">
                       <span class="material-symbols-outlined text-sm">visibility</span>
-                      عرض التفاصيل
+                      {{ ts.t('books.viewDetails') }}
                     </div>
                   </div>
                 </div>
               </a>
 
               <!-- Book Title -->
-              <div class="text-right">
+              <div>
                 <a [routerLink]="['/books', book.id]" 
                    class="text-xl font-headline font-bold text-primary mb-1 block hover:text-secondary group-hover/book:text-secondary transition-colors line-clamp-1">
                   {{ book.title }}
@@ -58,17 +58,17 @@
             </div>
 
             <!-- Non-interactive Meta & Footer -->
-            <div class="text-right flex flex-col flex-1">
+            <div class="flex flex-col flex-1">
               <p class="text-xs font-bold text-on-surface-variant italic mb-4 truncate" [title]="book.author">
-                تأليف: {{ book.author }}
+                {{ ts.t('books.author') }} {{ book.author }}
               </p>
               
               <!-- Footer CTA -->
-              <div class="mt-auto flex flex-row-reverse items-center justify-between pt-4 border-t border-outline-variant/10">
-                <span class="text-[10px] font-bold text-outline-variant tracking-wider uppercase">{{ book.pageCount }} صفحة</span>
+              <div class="mt-auto flex items-center justify-between pt-4 border-t border-outline-variant/10">
+                <span class="text-[10px] font-bold text-outline-variant tracking-wider uppercase">{{ book.pageCount }} {{ ts.t('books.pages') }}</span>
                 <a [href]="book.downloadLink" target="_blank" 
                    class="text-xs font-bold text-secondary flex items-center gap-1 group/dl hover:opacity-80 transition-opacity">
-                  تحميل PDF
+                  {{ ts.t('books.downloadPdf') }}
                   <span class="material-symbols-outlined text-sm group-hover/dl:animate-bounce">download</span>
                 </a>
               </div>
@@ -85,8 +85,8 @@
             <span class="material-symbols-outlined text-5xl">auto_stories</span>
           </div>
           <div class="text-center">
-            <h3 class="text-2xl font-headline font-bold text-primary mb-2">لا توجد كتب حالياً</h3>
-            <p class="text-on-surface-variant text-sm">لم يتم العثور على أي كتب في القسم المحدد. حاول لاحقاً!</p>
+            <h3 class="text-2xl font-headline font-bold text-primary mb-2">{{ ts.t('books.noBooks') }}</h3>
+            <p class="text-on-surface-variant text-sm">{{ ts.t('books.noBooksDesc') }}</p>
           </div>
         </div>
       }
@@ -94,10 +94,10 @@
 
     <!-- Pagination -->
     @if (totalPages() > 1) {
-      <div class="mt-24 flex flex-row-reverse items-center justify-center gap-2">
-        <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
+      <div class="mt-24 flex items-center justify-center gap-2">
+        <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
           class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant/30 text-primary hover:bg-secondary hover:text-white transition-all disabled:opacity-20 disabled:pointer-events-none">
-          <span class="material-symbols-outlined">chevron_right</span>
+          <span class="material-symbols-outlined">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
         </button>
 
         @for (page of [].constructor(totalPages()); track $index) {
@@ -108,9 +108,9 @@
           </button>
         }
 
-        <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
+        <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
           class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant/30 text-primary hover:bg-secondary hover:text-white transition-all disabled:opacity-20 disabled:pointer-events-none">
-          <span class="material-symbols-outlined">chevron_left</span>
+          <span class="material-symbols-outlined">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
         </button>
       </div>
     }
