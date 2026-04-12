@@ -1,10 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookService } from '../../../core/services/book.service';
 import { SupabaseStorageService } from '../../../core/services/supabase-storage.service';
 import { finalize } from 'rxjs';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-book-add',
@@ -32,6 +33,8 @@ export class BookAddComponent {
   errorMessage = signal('');
   successMessage = signal('');
 
+  public ts: TranslationService = inject(TranslationService);
+
   constructor(
     private bookService: BookService,
     private storageService: SupabaseStorageService,
@@ -57,14 +60,14 @@ export class BookAddComponent {
 
   async onSubmit() {
     if (!this.title() || !this.author() || !this.pageCount() || !this.releaseDate() || !this.about() || !this.posterFile() || !this.bookFile()) {
-      this.errorMessage.set('يرجى ملء كافة الحقول الإجبارية وإرفاق الملفات المطلوبة');
+      this.errorMessage.set(this.ts.t('admin.bookAdd.requiredFieldsMsg'));
       return;
     }
 
     this.isLoading.set(true);
     this.isUploading.set(true);
     this.errorMessage.set('');
-    this.uploadProgress.set('جاري رفع ملف الكتاب إلى التخزين السحابي...');
+    this.uploadProgress.set(this.ts.t('admin.bookAdd.uploadingMsg'));
 
     try {
       // Step 1: Upload the PDF to Supabase Storage
@@ -76,11 +79,11 @@ export class BookAddComponent {
       console.log('Supabase download URL:', publicUrl);
 
       if (!publicUrl) {
-        throw new Error('فشل الحصول على رابط التحميل من التخزين السحابي');
+        throw new Error(this.ts.t('admin.bookAdd.supabaseErrorMsg'));
       }
 
       this.isUploading.set(false);
-      this.uploadProgress.set('تم رفع الملف بنجاح! جاري حفظ البيانات...');
+      this.uploadProgress.set(this.ts.t('admin.bookAdd.uploadSuccessMsg'));
 
       // Step 2: Send book data with the Supabase public URL to backend
       const formData = new FormData();
@@ -97,7 +100,7 @@ export class BookAddComponent {
         .subscribe({
           next: () => {
             this.uploadProgress.set('');
-            this.successMessage.set('تمت إضافة الكتاب بنجاح! سيتم توجيهك الآن...');
+            this.successMessage.set(this.ts.t('admin.bookAdd.successMsg'));
             setTimeout(() => this.router.navigate(['/admin/books']), 2000);
           },
           error: async (err) => {
@@ -109,7 +112,7 @@ export class BookAddComponent {
               console.error('Rollback failed:', deleteErr);
             }
             this.uploadProgress.set('');
-            this.errorMessage.set(err + ' (تم حذف الملف المرفوع تلقائياً)');
+            this.errorMessage.set(err + ' ' + this.ts.t('admin.bookAdd.rollbackMsg'));
           }
         });
 
@@ -117,7 +120,7 @@ export class BookAddComponent {
       this.isLoading.set(false);
       this.isUploading.set(false);
       this.uploadProgress.set('');
-      this.errorMessage.set(error.message || 'فشل رفع الملف. يرجى المحاولة مرة أخرى.');
+      this.errorMessage.set(error.message || this.ts.t('admin.bookAdd.errorMsg'));
     }
   }
 }

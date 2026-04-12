@@ -1,6 +1,7 @@
 import { Component, inject, signal, HostListener, ElementRef } from '@angular/core';
+import { AppLang, TranslationService } from '../../../../core/services/translation.service';
 import { RouterModule } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { AdminLayoutService } from '../../services/admin-layout.service';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { ArticleService } from '../../../../core/services/article.service';
@@ -11,7 +12,7 @@ import { Article } from '../../../../core/models/article.model';
 @Component({
   selector: 'app-admin-header',
   standalone: true,
-  imports: [RouterModule, AsyncPipe],
+  imports: [RouterModule, AsyncPipe, CommonModule],
   templateUrl: './admin-header.component.html',
 })
 export class AdminHeaderComponent {
@@ -19,13 +20,15 @@ export class AdminHeaderComponent {
   profileService = inject(ProfileService);
   articleService = inject(ArticleService);
   elRef = inject(ElementRef);
+  public ts: TranslationService = inject(TranslationService);
   userProfile$ = this.profileService.getUserProfile();
-  
+
   isMobileSearchOpen = signal(false);
   searchQuery = signal('');
   searchResults = signal<Article[]>([]);
   isSearching = signal(false);
   hasSearched = signal(false);
+  langMenuOpen = signal(false);
 
   private searchSubject = new Subject<string>();
 
@@ -72,6 +75,15 @@ export class AdminHeaderComponent {
     if (!this.isMobileSearchOpen()) {
       this.clearSearch();
     }
+  }
+
+  toggleLangMenu() {
+    this.langMenuOpen.update(v => !v);
+  }
+
+  switchLang(lang: AppLang) {
+    this.ts.setLang(lang);
+    this.langMenuOpen.set(false);
   }
 
   @HostListener('document:click', ['$event'])

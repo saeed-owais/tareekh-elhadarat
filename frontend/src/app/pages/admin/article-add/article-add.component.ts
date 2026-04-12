@@ -7,6 +7,7 @@ import { TagService } from '../../../core/services/tag.service';
 import { ArticleService } from '../../../core/services/article.service';
 import { Category } from '../../../core/models/category.model';
 import { Tag } from '../../../core/models/tag.model';
+import { TranslationService } from '../../../core/services/translation.service';
 
 declare const Quill: any;
 
@@ -21,6 +22,7 @@ export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestro
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
   private tagService = inject(TagService);
+  public ts: TranslationService = inject(TranslationService);
 
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
@@ -143,11 +145,11 @@ export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestro
     setTimeout(() => {
       this.quillEditor = new Quill(this.editorContainer.nativeElement, {
         modules: { toolbar: '#quill-toolbar' },
-        placeholder: 'اكتب محتوى المقال...',
+        placeholder: this.ts.t('admin.articleForm.articleContent'),
         theme: 'snow'
       });
-      this.quillEditor.format('direction', 'rtl');
-      this.quillEditor.format('align', 'right');
+      this.quillEditor.format('direction', this.ts.isRtl() ? 'rtl' : 'ltr');
+      this.quillEditor.format('align', this.ts.isRtl() ? 'right' : 'left');
     }, 100);
   }
 
@@ -156,7 +158,7 @@ export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestro
     if (this.isSubmitting()) return;
     
     if (!this.title() || !this.authorName() || !this.getContent() || !this.imageFile()) {
-        this.errorMessage.set('يرجى إكمال جميع الحقول المطلوبة والصورة');
+        this.errorMessage.set(this.ts.t('admin.articleForm.fillRequired'));
         return;
     }
 
@@ -176,7 +178,7 @@ export class AdminArticleAddComponent implements OnInit, AfterViewInit, OnDestro
         console.log("res",res);
         
         this.isSubmitting.set(false);
-        this.successMessage.set('تمت إضافة المقال بنجاح!');
+        this.successMessage.set(this.ts.t('admin.articleForm.successAdd'));
         setTimeout(() => {
             this.router.navigate(['/admin/articles']);
         }, 2000);

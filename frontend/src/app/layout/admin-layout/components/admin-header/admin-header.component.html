@@ -1,30 +1,33 @@
 <header
   class="sticky top-0 z-40 bg-[#FBFBE2] dark:bg-[#061B0E] text-[#061B0E] shadow-[0_8px_32px_rgba(6,27,14,0.06)] px-4 md:px-8 py-3 md:py-4 flex justify-between items-center w-full font-['Newsreader'] antialiased"
-  dir="rtl">
+  [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
   
   @if (isMobileSearchOpen()) {
     <div class="absolute inset-0 z-50 bg-[#FBFBE2] dark:bg-[#061B0E] px-4 flex items-center justify-between gap-3 md:hidden animate-in fade-in duration-200">
       <div class="relative w-full flex-1">
         <input
-          class="w-full bg-surface-container-low border-none rounded-full px-12 py-2 text-sm focus:ring-2 focus:ring-secondary/30 transition-all text-right"
-          placeholder="ابحث في لوحة التحكم..." type="text"
+          class="w-full bg-surface-container-low border-none rounded-full py-2 text-sm focus:ring-2 focus:ring-secondary/30 transition-all"
+          [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()"
+          [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
+          [placeholder]="ts.t('admin.header.searchPlaceholder')" type="text"
           [value]="searchQuery()"
           (input)="onSearchInput($event)" />
-        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50"
+        <span class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface/50"
+          [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()"
           data-icon="search">search</span>
         
         <!-- Mobile Search Results -->
         @if (hasSearched()) {
           <div class="absolute top-full left-0 right-0 mt-4 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200">
             <div class="p-4 border-b border-outline-variant/5 bg-surface-container-low/30">
-              <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">نتائج البحث عن: {{ searchQuery() }}</h4>
+              <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">{{ ts.t('admin.header.searchResultsFor') }} {{ searchQuery() }}</h4>
             </div>
             
             <div class="max-h-[60vh] overflow-y-auto p-2 space-y-1">
               @if (isSearching()) {
                 <div class="py-12 flex flex-col items-center justify-center gap-3">
                   <div class="w-6 h-6 border-2 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
-                  <span class="text-xs text-on-surface/40">جاري البحث عن المقالات...</span>
+                  <span class="text-xs text-on-surface/40">{{ ts.t('admin.header.searching') }}</span>
                 </div>
               } @else if (searchResults().length > 0) {
                 @for (article of searchResults(); track article.id) {
@@ -37,10 +40,10 @@
                       <p class="text-[10px] text-on-surface/40 truncate">{{ article.authorName }}</p>
                     </div>
                     <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <a [routerLink]="['/admin/articles/view', article.id]" (click)="toggleMobileSearch()" class="p-2 hover:bg-secondary/10 rounded-full text-secondary" title="معاينة">
+                      <a [routerLink]="['/admin/articles/view', article.id]" (click)="toggleMobileSearch()" class="p-2 hover:bg-secondary/10 rounded-full text-secondary" [title]="ts.t('admin.header.preview')">
                         <span class="material-symbols-outlined text-lg">visibility</span>
                       </a>
-                      <a [routerLink]="['/admin/articles/edit', article.id]" (click)="toggleMobileSearch()" class="p-2 hover:bg-primary/10 rounded-full text-primary" title="تعديل">
+                      <a [routerLink]="['/admin/articles/edit', article.id]" (click)="toggleMobileSearch()" class="p-2 hover:bg-primary/10 rounded-full text-primary" [title]="ts.t('admin.header.edit')">
                         <span class="material-symbols-outlined text-lg" data-icon="edit_square">edit_square</span>
                       </a>
                     </div>
@@ -49,7 +52,7 @@
               } @else {
                 <div class="py-12 flex flex-col items-center justify-center gap-3">
                   <span class="material-symbols-outlined text-4xl text-on-surface/10">search_off</span>
-                  <span class="text-xs text-on-surface/40">لم يتم العثور على نتائج</span>
+                  <span class="text-xs text-on-surface/40">{{ ts.t('admin.header.noResults') }}</span>
                 </div>
               }
             </div>
@@ -64,12 +67,12 @@
 
   <!-- Left Side: Dashboard Title & Toggle -->
   <div class="flex items-center gap-2 md:gap-4">
-    <button (click)="layoutService.toggleSidebar()" class="lg:hidden p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors flex items-center justify-center shadow-sm" title="القائمة">
+    <button (click)="layoutService.toggleSidebar()" class="lg:hidden p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors flex items-center justify-center shadow-sm" [title]="ts.t('admin.header.menu') || 'Menu'">
       <span class="material-symbols-outlined text-xl md:text-2xl" data-icon="menu">menu</span>
     </button>
     <div class="flex flex-col">
-      <span class="text-[10px] font-black uppercase tracking-widest text-[#061B0E]/40 mb-0.5">النظام الإداري</span>
-      <h1 class="text-xl md:text-2xl font-bold text-[#061B0E] dark:text-[#FBFBE2] whitespace-nowrap">لوحة التحكم</h1>
+      <span class="text-[10px] font-black uppercase tracking-widest text-[#061B0E]/40 mb-0.5">{{ ts.t('admin.header.adminSystem') }}</span>
+      <h1 class="text-xl md:text-2xl font-bold text-[#061B0E] dark:text-[#FBFBE2] whitespace-nowrap">{{ ts.t('admin.header.controlPanel') }}</h1>
     </div>
   </div>
 
@@ -78,18 +81,23 @@
     <!-- Desktop Search -->
     <div class="relative group hidden md:block">
       <input
-        class="bg-surface-container-low border border-outline-variant/10 rounded-2xl px-12 py-2 text-sm w-48 lg:w-64 focus:ring-4 focus:ring-secondary/5 focus:border-secondary/30 transition-all text-right"
-        placeholder="ابحث عن مقالات، كتب..." type="text"
+        class="bg-surface-container-low border border-outline-variant/10 rounded-2xl py-2 text-sm w-48 lg:w-64 focus:ring-4 focus:ring-secondary/5 focus:border-secondary/30 transition-all"
+        [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()"
+        [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
+        [placeholder]="ts.t('admin.header.desktopSearchPlaceholder')" type="text"
         [value]="searchQuery()"
         (input)="onSearchInput($event)" />
-      <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/50 group-focus-within:text-secondary transition-colors"
+      <span class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface/50 group-focus-within:text-secondary transition-colors"
+        [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()"
         data-icon="search">search</span>
 
       <!-- Desktop Search Results -->
       @if (hasSearched()) {
-        <div class="absolute top-[calc(100%+12px)] right-0 left-auto w-80 lg:w-96 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-[100] animate-in slide-in-from-top-2 duration-200">
+        <div class="absolute top-[calc(100%+12px)] w-80 lg:w-96 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-[100] animate-in slide-in-from-top-2 duration-200"
+          [class.right-0]="ts.isRtl()" [class.left-0]="!ts.isRtl()"
+          [class.left-auto]="ts.isRtl()" [class.right-auto]="!ts.isRtl()">
           <div class="p-4 border-b border-outline-variant/5 bg-surface-container-low/30 flex justify-between items-center">
-            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">نتائج البحث</h4>
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">{{ ts.t('admin.header.searchResults') }}</h4>
             @if (isSearching()) {
               <div class="w-3 h-3 border border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
             }
@@ -107,10 +115,10 @@
                     <p class="text-[10px] text-on-surface/40 truncate">{{ article.authorName }}</p>
                   </div>
                   <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <a [routerLink]="['/admin/articles/view', article.id]" (click)="clearSearch()" class="p-2 hover:bg-secondary/10 rounded-full text-secondary" title="معاينة">
+                    <a [routerLink]="['/admin/articles/view', article.id]" (click)="clearSearch()" class="p-2 hover:bg-secondary/10 rounded-full text-secondary" [title]="ts.t('admin.header.preview')">
                       <span class="material-symbols-outlined text-lg">visibility</span>
                     </a>
-                    <a [routerLink]="['/admin/articles/edit', article.id]" (click)="clearSearch()" class="p-2 hover:bg-primary/10 rounded-full text-primary" title="تعديل">
+                    <a [routerLink]="['/admin/articles/edit', article.id]" (click)="clearSearch()" class="p-2 hover:bg-primary/10 rounded-full text-primary" [title]="ts.t('admin.header.edit')">
                       <span class="material-symbols-outlined text-lg" data-icon="edit_square">edit_square</span>
                     </a>
                   </div>
@@ -119,46 +127,93 @@
             } @else if (!isSearching()) {
               <div class="py-12 flex flex-col items-center justify-center gap-3">
                 <span class="material-symbols-outlined text-4xl text-on-surface/10">search_off</span>
-                <span class="text-xs text-on-surface/40">لم يتم العثور على نتائج</span>
+                <span class="text-xs text-on-surface/40">{{ ts.t('admin.header.noResults') }}</span>
               </div>
             }
           </div>
           
           @if (searchResults().length > 0) {
             <div class="p-3 bg-surface-container-low/20 border-t border-outline-variant/5">
-              <a routerLink="/admin/articles" [queryParams]="{search: searchQuery()}" (click)="clearSearch()" class="block text-center text-[10px] font-black uppercase tracking-widest text-secondary hover:underline">عرض جميع النتائج</a>
+              <a routerLink="/admin/articles" [queryParams]="{search: searchQuery()}" (click)="clearSearch()" class="block text-center text-[10px] font-black uppercase tracking-widest text-secondary hover:underline">{{ ts.t('admin.header.viewAllResults') }}</a>
             </div>
           }
         </div>
       }
     </div>
 
-    <div class="flex items-center gap-1 md:gap-4 border-r border-outline-variant/10 pr-4">
-      <button (click)="toggleMobileSearch()" class="md:hidden relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors" title="بحث">
+    <div class="flex items-center gap-1 md:gap-4 border-outline-variant/10"
+      [class.border-r]="ts.isRtl()" [class.border-l]="!ts.isRtl()"
+      [class.pr-4]="ts.isRtl()" [class.pl-4]="!ts.isRtl()">
+      <button (click)="toggleMobileSearch()" class="md:hidden relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors" [title]="ts.t('admin.header.search')">
         <span class="material-symbols-outlined text-xl" data-icon="search">search</span>
       </button>
       
-      <a routerLink="/" class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors group" title="العودة للموقع الرئيسي">
+      <a routerLink="/" class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors group" [title]="ts.t('admin.header.returnMainSite')">
         <span class="material-symbols-outlined text-xl md:text-2xl transition-transform group-hover:scale-110" data-icon="home">home</span>
       </a>
 
+      <!-- Language Switcher -->
+      <div class="relative">
+        <button (click)="toggleLangMenu()"
+          class="p-2 rounded-full hover:bg-secondary/10 transition-all duration-300 text-on-surface-variant flex items-center gap-1 group"
+          [title]="ts.t('nav.language') || 'Language'">
+          <span class="material-symbols-outlined text-xl md:text-2xl transition-transform group-hover:rotate-12">translate</span>
+          <span class="text-[10px] font-black uppercase hidden sm:inline">{{ ts.currentLang() }}</span>
+        </button>
+        @if (langMenuOpen()) {
+          <div class="absolute top-full mt-2 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-[100] min-w-[140px] animate-in slide-in-from-top-2 duration-200"
+            [class.left-0]="ts.isRtl()" [class.right-0]="!ts.isRtl()">
+            <button (click)="switchLang('ar')"
+              class="w-full px-4 py-3 text-xs font-bold hover:bg-secondary/10 transition-all flex items-center justify-between"
+              [class.bg-secondary/5]="ts.currentLang() === 'ar'"
+              [class.text-secondary]="ts.currentLang() === 'ar'">
+              <span class="flex items-center gap-2">عربي</span>
+              <span class="text-[10px] bg-secondary/10 px-1.5 py-0.5 rounded uppercase opacity-60">AR</span>
+            </button>
+            <button (click)="switchLang('en')"
+              class="w-full px-4 py-3 text-xs font-bold hover:bg-secondary/10 transition-all flex items-center justify-between font-sans"
+              [class.bg-secondary/5]="ts.currentLang() === 'en'"
+              [class.text-secondary]="ts.currentLang() === 'en'">
+              <span class="flex items-center gap-2">English</span>
+              <span class="text-[10px] bg-secondary/10 px-1.5 py-0.5 rounded uppercase opacity-60">EN</span>
+            </button>
+            <button (click)="switchLang('de')"
+              class="w-full px-4 py-3 text-xs font-bold hover:bg-secondary/10 transition-all flex items-center justify-between font-sans"
+              [class.bg-secondary/5]="ts.currentLang() === 'de'"
+              [class.text-secondary]="ts.currentLang() === 'de'">
+              <span class="flex items-center gap-2">Deutsch</span>
+              <span class="text-[10px] bg-secondary/10 px-1.5 py-0.5 rounded uppercase opacity-60">DE</span>
+            </button>
+          </div>
+        }
+      </div>
+
       <button class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors group">
         <span class="material-symbols-outlined text-xl md:text-2xl transition-transform group-hover:scale-110" data-icon="notifications">notifications</span>
-        <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-error rounded-full border-2 border-[#FBFBE2] dark:border-[#061B0E]"></span>
+        <span class="absolute top-2.5 w-2 h-2 bg-error rounded-full border-2 border-[#FBFBE2] dark:border-[#061B0E]"
+          [class.right-2.5]="ts.isRtl()" [class.left-2.5]="!ts.isRtl()"></span>
       </button>
 
       <!-- User Profile -->
       @if (userProfile$ | async; as user) {
-        <a routerLink="/profile" class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20 hover:opacity-80 transition-opacity cursor-pointer group/profile">
-          <div class="flex flex-col text-left items-end hidden sm:flex">
+        <a routerLink="/profile" class="flex items-center gap-2 md:gap-3 border-outline-variant/20 hover:opacity-80 transition-opacity cursor-pointer group/profile"
+          [class.border-r]="ts.isRtl()" [class.border-l]="!ts.isRtl()"
+          [class.pr-2]="ts.isRtl()" [class.pl-2]="!ts.isRtl()"
+          [class.md:pr-4]="ts.isRtl()" [class.md:pl-4]="!ts.isRtl()">
+          <div class="flex flex-col hidden sm:flex"
+            [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()"
+            [class.items-end]="ts.isRtl()" [class.items-start]="!ts.isRtl()">
             <span class="text-xs font-bold group-hover/profile:text-secondary transition-colors">{{user.firstName}} {{user.lastName}}</span>
-            <span class="text-[9px] font-black uppercase text-secondary tracking-tighter">مدير النظام</span>
+            <span class="text-[9px] font-black uppercase text-secondary tracking-tighter">{{ ts.t('admin.header.adminRole') }}</span>
           </div>
           <img [alt]="user.firstName + ' ' + user.lastName" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-outline-variant/10 group-hover/profile:ring-2 group-hover/profile:ring-secondary/30 transition-all"
             [src]="user.profilePhoto" />
         </a>
       } @else {
-        <div class="flex items-center gap-2 md:gap-3 border-r pr-2 md:pr-4 border-outline-variant/20">
+        <div class="flex items-center gap-2 md:gap-3 border-outline-variant/20"
+          [class.border-r]="ts.isRtl()" [class.border-l]="!ts.isRtl()"
+          [class.pr-2]="ts.isRtl()" [class.pl-2]="!ts.isRtl()"
+          [class.md:pr-4]="ts.isRtl()" [class.md:pl-4]="!ts.isRtl()">
           <div class="w-9 h-9 rounded-xl bg-outline-variant/20 animate-pulse"></div>
           <div class="h-4 w-20 bg-outline-variant/20 animate-pulse rounded hidden sm:block"></div>
         </div>

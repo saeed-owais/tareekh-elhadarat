@@ -1,5 +1,7 @@
 <!-- Main Content Area -->
-<main class="flex-1 lg:mr-64 min-w-0 pt-20 pb-24 min-h-screen" dir="rtl">
+<main class="min-w-0 pt-20 pb-24 min-h-screen relative" 
+      [class.lg:mr-64]="ts.isRtl()" [class.lg:ml-64]="!ts.isRtl()"
+      [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
 
   <div class="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
     <!-- Summary Bento Cards -->
@@ -10,8 +12,8 @@
         <div class="flex justify-between items-start">
           <span class="material-symbols-outlined text-secondary bg-secondary/10 p-3 rounded-lg group-hover:scale-110 transition-transform"
             data-icon="article">article</span>
-          <div class="text-right">
-            <p class="text-on-surface/60 text-xs sm:text-sm font-bold uppercase tracking-widest">مقالات معلقة</p>
+          <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+            <p class="text-on-surface/60 text-xs sm:text-sm font-bold uppercase tracking-widest">{{ ts.t('admin.approvals.pendingArticles') }}</p>
             <h3 class="text-3xl font-bold mt-1 text-primary">{{ totalItems() }}</h3>
           </div>
         </div>
@@ -23,8 +25,8 @@
         <div class="flex justify-between items-start">
           <span class="material-symbols-outlined text-on-tertiary-container bg-tertiary-fixed/30 p-3 rounded-lg group-hover:scale-110 transition-transform"
             data-icon="forum">forum</span>
-          <div class="text-right">
-            <p class="text-on-surface/60 text-xs sm:text-sm font-bold uppercase tracking-widest">تعليقات بانتظار الرد</p>
+          <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+            <p class="text-on-surface/60 text-xs sm:text-sm font-bold uppercase tracking-widest">{{ ts.t('admin.approvals.awaitingComments') }}</p>
             <h3 class="text-3xl font-bold mt-1 text-primary">{{ comments().length }}</h3>
           </div>
         </div>
@@ -41,7 +43,7 @@
           [class.text-on-surface/60]="activeTab() !== 'articles'"
           [class.border-transparent]="activeTab() !== 'articles'">
           <span class="material-symbols-outlined" data-icon="article">article</span>
-          المقالات المعلقة
+          {{ ts.t('admin.approvals.pendingArticles') }}
         </button>
         <button (click)="activeTab.set('comments')" 
           class="pb-4 font-bold flex items-center gap-2 transition-all border-b-2"
@@ -50,7 +52,7 @@
           [class.text-on-surface/60]="activeTab() !== 'comments'"
           [class.border-transparent]="activeTab() !== 'comments'">
           <span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
-          التعليقات المعلقة
+          {{ ts.t('admin.approvals.awaitingComments') }}
         </button>
       </div>
     </div>
@@ -59,22 +61,22 @@
     @if (activeTab() === 'articles') {
       <div class="bg-surface-container-low rounded-2xl border border-outline-variant/10 shadow-sm relative animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden">
         <div class="p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-surface-container">
-          <h3 class="text-lg font-bold">طلبات نشر المقالات</h3>
+          <h3 class="text-lg font-bold">{{ ts.t('admin.approvals.publicationRequests') }}</h3>
           <div class="flex gap-2 w-full sm:w-auto">
-            <button class="flex-1 sm:flex-none text-xs bg-surface-container-lowest px-4 py-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-bright transition-colors font-bold">تصدير PDF</button>
-            <button class="flex-1 sm:flex-none text-xs bg-surface-container-lowest px-4 py-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-bright transition-colors font-bold">فلترة</button>
+            <button class="flex-1 sm:flex-none text-xs bg-surface-container-lowest px-4 py-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-bright transition-colors font-bold">{{ ts.t('admin.approvals.exportPdf') }}</button>
+            <button class="flex-1 sm:flex-none text-xs bg-surface-container-lowest px-4 py-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-bright transition-colors font-bold">{{ ts.t('admin.approvals.filter') }}</button>
           </div>
         </div>
         
         <div class="overflow-x-auto">
-          <table class="w-full text-right border-collapse min-w-[900px]">
+          <table class="w-full text-right border-collapse min-w-[900px]" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
             <thead>
               <tr class="text-on-surface/60 text-[10px] font-black uppercase tracking-widest border-b border-outline-variant/10 bg-surface-container/30">
-                <th class="px-6 py-4">عنوان المقال</th>
-                <th class="px-6 py-4">الكاتب</th>
-                <th class="px-6 py-4">التاريخ</th>
-                <th class="px-6 py-4">التصنيف</th>
-                <th class="px-6 py-4 text-center">الإجراءات</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.articleTitle') }}</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.author') }}</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.date') }}</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.category') }}</th>
+                <th class="px-6 py-4 text-center">{{ ts.t('admin.approvals.actions') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-outline-variant/10">
@@ -99,13 +101,13 @@
                 <td class="px-6 py-5">
                   <div class="flex justify-center gap-3">
                     <a [routerLink]="['/admin/articles/view', article.id]"
-                      class="p-2.5 hover:bg-primary/10 rounded-full text-primary transition-all shadow-sm active:scale-90" title="عرض">
+                      class="p-2.5 hover:bg-primary/10 rounded-full text-primary transition-all shadow-sm active:scale-90" [title]="ts.t('admin.approvals.viewDetails')">
                       <span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
                     </a>
-                    <button (click)="acceptArticle(article.id)" class="p-2.5 hover:bg-green-100 rounded-full text-green-700 transition-all border border-transparent hover:border-green-200 shadow-sm active:scale-90" title="موافقة">
+                    <button (click)="acceptArticle(article.id)" class="p-2.5 hover:bg-green-100 rounded-full text-green-700 transition-all border border-transparent hover:border-green-200 shadow-sm active:scale-90" [title]="ts.t('admin.approvals.approve')">
                       <span class="material-symbols-outlined text-xl" data-icon="check_circle">check_circle</span>
                     </button>
-                    <button class="p-2.5 hover:bg-error/10 rounded-full text-error transition-all border border-transparent hover:border-error/20 shadow-sm active:scale-90" title="رفض">
+                    <button class="p-2.5 hover:bg-error/10 rounded-full text-error transition-all border border-transparent hover:border-error/20 shadow-sm active:scale-90" [title]="ts.t('admin.approvals.reject')">
                       <span class="material-symbols-outlined text-xl" data-icon="cancel">cancel</span>
                     </button>
                   </div>
@@ -115,7 +117,7 @@
               <tr>
                 <td colspan="5" class="px-6 py-24 text-center text-on-surface/40">
                   <span class="material-symbols-outlined text-6xl mb-4 block opacity-10" data-icon="fact_check">fact_check</span>
-                  <p class="text-xl font-bold">لا توجد طلبات معلقة حالياً</p>
+                  <p class="text-xl font-bold">{{ ts.t('admin.approvals.noPendingRequests') }}</p>
                 </td>
               </tr>
               }
@@ -125,16 +127,18 @@
 
         <!-- Article Pagination -->
         <div class="p-5 sm:p-6 bg-surface-container text-xs flex flex-col sm:flex-row justify-between items-center gap-4">
-          <span class="text-on-surface/60 font-medium">عرض {{articles().length}} من أصل {{totalItems()}} طلب</span>
+          <span class="text-on-surface/60 font-medium">
+            {{ ts.t('admin.approvals.showingRange').replace('{{current}}', articles().length.toString()).replace('{{total}}', totalItems().toString()) }}
+          </span>
           <div class="flex items-center gap-3">
-            <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
-              class="w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container-lowest border border-outline-variant/20 hover:bg-primary hover:text-on-primary transition-all disabled:opacity-20 shadow-sm">
-              <span class="material-symbols-outlined text-lg">chevron_right</span>
-            </button>
-            <div class="px-4 py-2 bg-primary text-on-primary rounded-xl font-black shadow-lg text-[10px]">{{ pageNumber() }}</div>
             <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
               class="w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container-lowest border border-outline-variant/20 hover:bg-primary hover:text-on-primary transition-all disabled:opacity-20 shadow-sm">
-              <span class="material-symbols-outlined text-lg">chevron_left</span>
+              <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
+            </button>
+            <div class="px-4 py-2 bg-primary text-on-primary rounded-xl font-black shadow-lg text-[10px]">{{ pageNumber() }}</div>
+            <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
+              class="w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container-lowest border border-outline-variant/20 hover:bg-primary hover:text-on-primary transition-all disabled:opacity-20 shadow-sm">
+              <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
             </button>
           </div>
         </div>
@@ -145,19 +149,21 @@
     @if (activeTab() === 'comments') {
       <div class="bg-surface-container-low rounded-2xl border border-outline-variant/10 shadow-sm relative animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden">
         <div class="p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-surface-container">
-          <h3 class="text-lg font-bold">التعليقات بانتظار المراجعة</h3>
-          <div class="text-[10px] bg-tertiary-fixed/20 text-on-tertiary-container px-3 py-1.5 rounded-lg border border-tertiary-fixed/10 font-black uppercase tracking-widest">إجمالي الانتظار: {{ comments().length }} تعليق</div>
+          <h3 class="text-lg font-bold">{{ ts.t('admin.approvals.commentsAwaitingReview') }}</h3>
+          <div class="text-[10px] bg-tertiary-fixed/20 text-on-tertiary-container px-3 py-1.5 rounded-lg border border-tertiary-fixed/10 font-black uppercase tracking-widest">
+            {{ ts.t('admin.approvals.totalWaiting').replace('{{count}}', comments().length.toString()) }}
+          </div>
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-right border-collapse min-w-[900px]">
+          <table class="w-full text-right border-collapse min-w-[900px]" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
             <thead>
               <tr class="text-on-surface/60 text-[10px] font-black uppercase tracking-widest border-b border-outline-variant/10 bg-surface-container/30">
-                <th class="px-6 py-4">التعليق</th>
-                <th class="px-6 py-4">المستخدم</th>
-                <th class="px-6 py-4">المقال المرتبط</th>
-                <th class="px-6 py-4 text-center">التاريخ</th>
-                <th class="px-6 py-4 text-center">الإجراءات</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.comment') }}</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.user') }}</th>
+                <th class="px-6 py-4">{{ ts.t('admin.approvals.linkedArticle') }}</th>
+                <th class="px-6 py-4 text-center">{{ ts.t('admin.approvals.date') }}</th>
+                <th class="px-6 py-4 text-center">{{ ts.t('admin.approvals.actions') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-outline-variant/10">
@@ -205,14 +211,14 @@
                             <div class="w-16 h-16 rounded-full bg-error/10 text-error flex items-center justify-center mb-2">
                               <span class="material-symbols-outlined text-4xl">warning</span>
                             </div>
-                            <h3 class="text-xl font-headline font-bold text-primary">تأكيد حذف التعليق</h3>
+                            <h3 class="text-xl font-headline font-bold text-primary">{{ ts.t('admin.approvals.confirmDeleteComment') }}</h3>
                             <p class="text-on-surface-variant leading-relaxed text-sm">
-                              هل أنت متأكد من حذف هذا التعليق نهائياً؟ <br>
+                              {{ ts.t('admin.approvals.deleteConfirmDesc') }} <br>
                               <span class="text-xs italic opacity-70 mt-2 block">"{{ comment.text | slice:0:50 }}..."</span>
                             </p>
                             <div class="flex flex-col sm:flex-row gap-3 w-full mt-4">
-                              <button (click)="confirmDeleteComment(comment.id, $event)" class="flex-1 bg-error text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-error/90 transition-all active:scale-95">نعم، احذف</button>
-                              <button (click)="toggleDeleteComment(comment.id, $event)" class="flex-1 bg-surface-container-high text-on-surface font-bold py-3.5 rounded-2xl hover:bg-surface-variant transition-all">إلغاء</button>
+                              <button (click)="confirmDeleteComment(comment.id, $event)" class="flex-1 bg-error text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-error/90 transition-all active:scale-95">{{ ts.t('admin.approvals.yesDelete') }}</button>
+                              <button (click)="toggleDeleteComment(comment.id, $event)" class="flex-1 bg-surface-container-high text-on-surface font-bold py-3.5 rounded-2xl hover:bg-surface-variant transition-all">{{ ts.t('admin.approvals.cancel') }}</button>
                             </div>
                           </div>
                         </div>
@@ -225,7 +231,7 @@
               <tr>
                 <td colspan="5" class="px-6 py-24 text-center text-on-surface/40">
                   <span class="material-symbols-outlined text-6xl mb-4 block opacity-10" data-icon="forum">forum</span>
-                  <p class="text-xl font-bold">لا يوجد تعليقات معلقة</p>
+                  <p class="text-xl font-bold">{{ ts.t('admin.approvals.noPendingComments') }}</p>
                 </td>
               </tr>
               }
@@ -243,13 +249,13 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 relative z-10 font-arabic">
           <h4 class="font-bold flex items-center gap-2 text-primary">
             <span class="material-symbols-outlined text-secondary" data-icon="forum">forum</span>
-            نظرة سريعة على التفاعل
+            {{ ts.t('admin.approvals.quickInsights') }}
           </h4>
-          <button (click)="activeTab.set('comments')" class="text-secondary text-sm font-black underline underline-offset-4 decoration-secondary/30 hover:text-primary transition-colors">الذهاب لمراجعة الكل</button>
+          <button (click)="activeTab.set('comments')" class="text-secondary text-sm font-black underline underline-offset-4 decoration-secondary/30 hover:text-primary transition-colors">{{ ts.t('admin.approvals.viewAll') }}</button>
         </div>
         <div class="flex items-center gap-4 text-right p-5 rounded-2xl bg-surface-container-low/50 border border-outline-variant/5 transition-all">
            <p class="text-sm text-on-surface/70 leading-relaxed italic">
-             لديك حالياً <span class="font-black text-secondary text-lg underline underline-offset-2 decoration-secondary/20">{{ comments().length }}</span> تعليق بانتظار المراجعة. التحكم في جودة الحوار يبدأ من هنا.
+             {{ ts.t('admin.approvals.moderationTip').replace('{{count}}', comments().length.toString()) }}
            </p>
         </div>
       </div>
@@ -268,8 +274,8 @@
           <span class="material-symbols-outlined text-xl">forum</span>
         </div>
         <div>
-          <h3 class="text-lg sm:text-xl font-headline font-bold text-primary">مراجعة المحتوى</h3>
-          <p class="text-[9px] sm:text-[10px] text-on-surface/50 mt-1 font-black uppercase tracking-widest">Moderation Center</p>
+          <h3 class="text-lg sm:text-xl font-headline font-bold text-primary">{{ ts.t('admin.approvals.contentReview') }}</h3>
+          <p class="text-[9px] sm:text-[10px] text-on-surface/50 mt-1 font-black uppercase tracking-widest">{{ ts.t('admin.approvals.moderationCenter') }}</p>
         </div>
       </div>
       <button (click)="closeCommentModal()" class="w-10 h-10 rounded-full hover:bg-surface-container-highest flex items-center justify-center transition-colors">
@@ -283,7 +289,7 @@
       <div class="space-y-3">
         <div class="flex items-center gap-2 text-on-surface/40 text-[10px] font-bold uppercase tracking-widest">
           <span class="material-symbols-outlined text-sm">sticky_note_2</span>
-          نص التعليق
+          {{ ts.t('admin.approvals.commentText') }}
         </div>
         <div class="bg-surface-container-low p-5 sm:p-6 rounded-2xl border border-outline-variant/5 shadow-inner">
           <p class="text-on-surface leading-loose text-base sm:text-leg font-medium whitespace-pre-wrap">
@@ -295,7 +301,7 @@
       <!-- Info Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div class="space-y-1">
-          <p class="text-[10px] text-on-surface/40 font-bold uppercase">الكاتب</p>
+          <p class="text-[10px] text-on-surface/40 font-bold uppercase">{{ ts.t('admin.approvals.user') }}</p>
           <div class="flex items-center gap-2">
             <div class="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[10px] uppercase font-black shadow-sm">
               {{ detailedComment()?.userName?.charAt(0) }}
@@ -304,14 +310,14 @@
           </div>
         </div>
         <div class="space-y-1">
-          <p class="text-[10px] text-on-surface/40 font-bold uppercase">على مقال</p>
+          <p class="text-[10px] text-on-surface/40 font-bold uppercase">{{ ts.t('admin.approvals.onArticle') }}</p>
           <a [routerLink]="['/articles', detailedComment()?.articleId]" 
              class="text-sm font-bold text-secondary hover:underline underline-offset-4 decoration-secondary/30 transition-all block line-clamp-1">
             {{ detailedComment()?.articleTitle }}
           </a>
         </div>
         <div class="space-y-1">
-          <p class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">التاريخ والوقت</p>
+          <p class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest">{{ ts.t('admin.approvals.dateTime') }}</p>
           <p class="text-sm font-medium text-on-surface/60 font-mono">
             {{ detailedComment()?.createdAt | date:'HH:mm - dd MMMM yyyy' }}
           </p>
@@ -324,12 +330,12 @@
       <button (click)="acceptComment(detailedComment()!.id); closeCommentModal()" 
         class="flex-1 bg-green-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center gap-2">
         <span class="material-symbols-outlined text-xl">check_circle</span>
-        موافقة ونشر
+        {{ ts.t('admin.approvals.approveAndPublish') }}
       </button>
       <button (click)="toggleDeleteComment(detailedComment()!.id, $event); closeCommentModal()" 
         class="flex-1 bg-error/10 text-error font-black py-4 rounded-2xl hover:bg-error/20 transition-all flex items-center justify-center gap-2">
         <span class="material-symbols-outlined text-xl">delete_sweep</span>
-        رفض نهائي
+        {{ ts.t('admin.approvals.finalReject') }}
       </button>
     </div>
   </div>
@@ -344,7 +350,7 @@
   </div>
   <div>
     <div class="text-sm font-black">{{ successMessage() }}</div>
-    <div class="text-[10px] opacity-60">تم تحديث النظام بنجاح</div>
+    <div class="text-[10px] opacity-60">{{ ts.t('admin.approvals.systemUpdated') }}</div>
   </div>
   <button (click)="successMessage.set('')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
     <span class="material-symbols-outlined text-white/40 text-lg">close</span>
@@ -353,9 +359,9 @@
 }
 
 <!-- Floating Action Button (Mobile Only) -->
-<div class="fixed bottom-24 left-6 z-50 md:hidden animate-in fade-in zoom-in duration-500">
+<!-- <div class="fixed bottom-24 left-6 z-50 md:hidden animate-in fade-in zoom-in duration-500">
   <a routerLink="/admin/articles/add"
     class="w-14 h-14 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all">
     <span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
   </a>
-</div>
+</div> -->

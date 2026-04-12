@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CommentService } from '../../../core/services/comment.service';
 import { SubmittedComment } from '../../../core/models/comment.model';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-admin-comments-manage',
@@ -13,6 +14,7 @@ import { SubmittedComment } from '../../../core/models/comment.model';
 })
 export class CommentsManageComponent implements OnInit {
   private commentService = inject(CommentService);
+  public ts: TranslationService = inject(TranslationService);
 
   comments = signal<SubmittedComment[]>([]);
   isLoading = signal(false);
@@ -94,7 +96,7 @@ export class CommentsManageComponent implements OnInit {
     this.commentService.acceptComment(id).subscribe({
       next: () => {
         this.comments.update(list => list.filter(c => c.id !== id));
-        this.successMessage.set('تم قبول التعليق بنجاح');
+        this.successMessage.set(this.ts.t('admin.approvals.systemUpdated'));
         this.isLoading.set(false);
         setTimeout(() => this.successMessage.set(''), 3000);
       },
@@ -116,7 +118,7 @@ export class CommentsManageComponent implements OnInit {
     this.commentService.deleteComment(id).subscribe({
       next: () => {
         this.comments.update(list => list.filter(c => c.id !== id));
-        this.successMessage.set('تم حذف التعليق بنجاح');
+        this.successMessage.set(this.ts.t('admin.approvals.systemUpdated'));
         this.confirmDeleteCommentId.set(null);
         this.isLoading.set(false);
         setTimeout(() => this.successMessage.set(''), 3000);

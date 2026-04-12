@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ArticleService } from '../../../core/services/article.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { AdminArticle, Category } from '../../../core/models';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-admin-articles-manage',
@@ -15,6 +16,7 @@ import { AdminArticle, Category } from '../../../core/models';
 export class ArticlesManageComponent implements OnInit {
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
+  public ts: TranslationService = inject(TranslationService);
 
   confirmDeleteId = signal<number | null>(null);
   articles = signal<AdminArticle[]>([]);
@@ -169,7 +171,7 @@ export class ArticlesManageComponent implements OnInit {
             articles.map(a => a.id === id ? { ...a, isDeleted: !a.isDeleted } : a)
           );
           
-          this.successMessage.set(isRestoring ? 'تم استعادة المقال بنجاح' : 'تم حذف المقال بنجاح');
+          this.successMessage.set(isRestoring ? this.ts.t('admin.articleForm.successUpdate') : this.ts.t('admin.approvals.systemUpdated'));
           setTimeout(() => this.successMessage.set(''), 3000);
         }
         this.confirmDeleteId.set(null);

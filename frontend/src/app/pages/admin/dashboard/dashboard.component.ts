@@ -1,10 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArticleService } from '../../../core/services/article.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
 import { Article } from '../../../core/models/article.model';
 import { finalize, forkJoin, of, catchError } from 'rxjs';
 import { RouterModule } from '@angular/router';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -13,23 +14,25 @@ import { RouterModule } from '@angular/router';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
+  public ts: TranslationService = inject(TranslationService);
+  
   // Stats Signals
   usersCount = signal(0);
   articlesCount = signal(0);
   booksCount = signal(0);
   commentsCount = signal(0);
   viewsCount = signal(0);
-  
+
   // Lists Signals
   mostViewedArticles = signal<Article[]>([]);
   newestArticles = signal<Article[]>([]);
-  
+
   isLoading = signal(false);
 
   constructor(
     private statsService: StatisticsService,
     private articleService: ArticleService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadAllData();
@@ -37,7 +40,7 @@ export class DashboardComponent implements OnInit {
 
   loadAllData() {
     this.isLoading.set(true);
-    
+
     // Fetch all counts in parallel with individual error resilience
     forkJoin({
       users: this.statsService.getUsersCount().pipe(catchError(() => of(0))),

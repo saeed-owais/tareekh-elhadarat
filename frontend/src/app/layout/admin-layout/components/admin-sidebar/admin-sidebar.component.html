@@ -2,21 +2,24 @@
   <div class="fixed inset-0 bg-[#061B0E]/50 z-40 lg:hidden backdrop-blur-sm transition-opacity" (click)="layoutService.closeSidebar()"></div>
 }
 
-<aside class="h-screen fixed right-0 top-0 w-64 border-l border-outline-variant/10 z-50 bg-[#F5F5DC] dark:bg-[#1B3022] transition-transform duration-300 transform lg:translate-x-0 overflow-y-auto shadow-xl"
+<aside class="h-screen fixed top-0 w-64 border-x border-outline-variant/10 z-50 bg-[#F5F5DC] dark:bg-[#1B3022] transition-transform duration-300 transform lg:translate-x-0 overflow-y-auto shadow-xl"
+       [class.right-0]="ts.isRtl()"
+       [class.left-0]="!ts.isRtl()"
        [class.translate-x-0]="layoutService.isMobileSidebarOpen()"
-       [class.translate-x-full]="!layoutService.isMobileSidebarOpen()"
-       dir="rtl">
+       [class.translate-x-full]="!layoutService.isMobileSidebarOpen() && ts.isRtl()"
+       [class.-translate-x-full]="!layoutService.isMobileSidebarOpen() && !ts.isRtl()"
+       [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
   
-  <div class="flex flex-col h-full pt-6 font-['Newsreader'] text-right">
+  <div class="flex flex-col h-full pt-6 font-['Newsreader']" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
     <!-- Brand Logo -->
     <div class="px-6 mb-10">
-      <a routerLink="/" class="flex items-center gap-3 mb-2 cursor-pointer hover:opacity-80 transition-opacity" title="العودة للموقع الرئيسي">
+      <a routerLink="/" class="flex items-center gap-3 mb-2 cursor-pointer hover:opacity-80 transition-opacity" title="{{ ts.t('admin.sidebar.returnMain') }}">
         <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center shadow-sm">
           <span class="material-symbols-outlined text-surface text-2xl" data-icon="menu_book">menu_book</span>
         </div>
         <div>
-          <div class="text-xl font-bold text-[#061B0E] dark:text-[#FBFBE2] tracking-tight">تاريخ الشعوب</div>
-          <div class="text-[10px] text-[#061B0E]/60 dark:text-[#FBFBE2]/60 font-bold uppercase tracking-widest">لوحة التحكم</div>
+          <div class="text-xl font-bold text-[#061B0E] dark:text-[#FBFBE2] tracking-tight">{{ ts.t('admin.sidebar.brand') }}</div>
+          <div class="text-[10px] text-[#061B0E]/60 dark:text-[#FBFBE2]/60 font-bold uppercase tracking-widest">{{ ts.t('admin.sidebar.controlPanel') }}</div>
         </div>
       </a>
     </div>
@@ -26,37 +29,37 @@
       <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
         routerLink="/admin/dashboard" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="dashboard">dashboard</span>
-        <span class="text-sm">نظرة عامة</span>
+        <span class="text-sm">{{ ts.t('admin.sidebar.overview') }}</span>
       </a>
 
       <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
         routerLink="/admin/approvals" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="fact_check">fact_check</span>
-        <span class="text-sm">مركز الموافقات</span>
+        <span class="text-sm">{{ ts.t('admin.sidebar.approvals') }}</span>
       </a>
 
       <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
         routerLink="/admin/articles" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="article">article</span>
-        <span class="text-sm">إدارة المقالات</span>
+        <span class="text-sm">{{ ts.t('admin.sidebar.manageArticles') }}</span>
       </a>
 
       <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
         routerLink="/admin/books" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="menu_book">menu_book</span>
-        <span class="text-sm">المكتبة الرقمية</span>
+        <span class="text-sm">{{ ts.t('admin.sidebar.digitalLibrary') }}</span>
       </a>
 
       <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
         routerLink="/admin/comments" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="forum">forum</span>
-        <span class="text-sm">إدارة التعليقات</span>
+        <span class="text-sm">{{ ts.t('admin.sidebar.manageComments') }}</span>
       </a>
 
       <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
         routerLink="/admin/categories-tags" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="category">category</span>
-        <span class="text-sm">الفئات والوسوم</span>
+        <span class="text-sm">{{ ts.t('admin.sidebar.categoriesTags') }}</span>
       </a>
     </nav>
 
@@ -65,7 +68,7 @@
       <button routerLink="/admin/articles/add"
         class="w-full bg-primary text-on-primary py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95 group">
         <span class="material-symbols-outlined group-hover:rotate-90 transition-transform" data-icon="add">add</span>
-        <span class="text-xs font-black uppercase tracking-widest">إضافة محتوى</span>
+        <span class="text-xs font-black uppercase tracking-widest">{{ ts.t('admin.sidebar.addContent') }}</span>
       </button>
     </div>
   </div>

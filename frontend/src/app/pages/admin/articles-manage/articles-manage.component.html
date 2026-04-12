@@ -1,38 +1,43 @@
 <!-- Main Content Canvas -->
-<main class="min-w-0 lg:mr-64 pt-20 pb-24 min-h-screen" dir="rtl">
+<main class="min-w-0 pt-20 pb-24 min-h-screen relative" 
+      [class.lg:mr-64]="ts.isRtl()" [class.lg:ml-64]="!ts.isRtl()"
+      [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
 
   <div class="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
     <!-- Page Header & Actions -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
-      <div class="text-right">
-        <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">إدارة المقالات</h2>
-        <p class="text-on-surface/60 text-xs md:text-sm max-w-md leading-relaxed">قم بمراجعة وتحرير المقالات
-          التاريخية المضافة حديثاً أو تعيين المقالات المتميزة للواجهة الرئيسية.</p>
+      <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+        <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">{{ ts.t('admin.articlesManage.title') }}</h2>
+        <p class="text-on-surface/60 text-xs md:text-sm max-w-md leading-relaxed">{{ ts.t('admin.articlesManage.subtitle') }}</p>
       </div>
       <a routerLink="/admin/articles/add"
         class="w-full sm:w-auto bg-primary text-on-primary px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg active:scale-95">
         <span class="material-symbols-outlined" data-icon="post_add">post_add</span>
-        <span class="font-bold">إضافة مقال جديد</span>
+        <span class="font-bold">{{ ts.t('admin.articlesManage.addNew') }}</span>
       </a>
     </div>
 
     <!-- Search & Filters -->
     <div class="bg-surface-container-low p-4 md:p-6 rounded-2xl mb-8 flex flex-col xl:flex-row gap-6 items-stretch xl:items-center justify-between border border-outline-variant/10 shadow-sm">
       <div class="flex flex-col md:flex-row gap-4 flex-1">
-        <div class="relative flex-1 group">
-          <span
-            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/30 group-focus-within:text-primary transition-colors"
-            data-icon="search">search</span>
           <input
-            class="w-full pr-12 py-3.5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none placeholder:text-on-surface/30 transition-all font-arabic"
-            placeholder="ابحث عن عنوان المقال أو الكاتب..." type="text" [ngModel]="searchQuery()"
+            class="w-full py-3.5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none placeholder:text-on-surface/30 transition-all font-arabic"
+            [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
+            [placeholder]="ts.t('admin.articlesManage.searchPlaceholder')" type="text" [ngModel]="searchQuery()"
             (ngModelChange)="searchQuery.set($event)" />
+          <span
+            class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface/30 group-focus-within:text-primary transition-colors"
+            [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()"
+            data-icon="search">search</span>
         </div>
         <div class="relative min-w-[180px]">
           <select
-            class="w-full bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm py-3.5 px-4 pr-10 focus:ring-4 focus:ring-primary/5 focus:border-primary/30 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%20fill%3D%22none%22%20stroke%3D%22%232c3c1e%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:1.2em] bg-[right_0.75rem_center] bg-no-repeat outline-none font-bold text-on-surface/80"
+            class="w-full bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm py-3.5 px-4 focus:ring-4 focus:ring-primary/5 focus:border-primary/30 appearance-none bg-[length:1.2em] bg-no-repeat outline-none font-bold text-on-surface/80"
+            [class.bg-[right_0.75rem_center]]="ts.isRtl()" [class.bg-[left_0.75rem_center]]="!ts.isRtl()"
+            [class.pr-10]="ts.isRtl()" [class.pl-10]="!ts.isRtl()"
+            [style.background-image]="'url(\'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232c3c1e%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E\')'"
             [ngModel]="selectedCategoryId()" (ngModelChange)="selectedCategoryId.set($event)">
-            <option [ngValue]="null">كل الفئات</option>
+            <option [ngValue]="null">{{ ts.t('admin.articlesManage.allCategories') }}</option>
             @for (cat of categoryList(); track cat.id) {
             <option [ngValue]="cat.id">{{ cat.name }}</option>
             }
@@ -41,21 +46,20 @@
       </div>
       
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <span class="text-[10px] font-bold text-on-surface/40 uppercase tracking-widest px-2">التصفية حسب:</span>
+        <span class="text-[10px] font-bold text-on-surface/40 uppercase tracking-widest px-2">{{ ts.t('admin.articlesManage.filterBy') }}</span>
         <div class="grid grid-cols-2 sm:flex bg-surface-container-lowest rounded-xl p-1 border border-outline-variant/10 w-full sm:w-auto">
           <button (click)="selectedStatus.set('all')" class="px-4 py-2 text-xs font-bold rounded-lg transition-all"
-            [ngClass]="selectedStatus() === 'all' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">الكل</button>
+            [ngClass]="selectedStatus() === 'all' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">{{ ts.t('admin.articlesManage.all') }}</button>
           <button (click)="selectedStatus.set('published')"
             class="px-4 py-2 text-xs font-bold rounded-lg transition-all"
-            [ngClass]="selectedStatus() === 'published' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">منشور</button>
+            [ngClass]="selectedStatus() === 'published' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">{{ ts.t('admin.articlesManage.published') }}</button>
           <button (click)="selectedStatus.set('draft')" class="px-4 py-2 text-xs font-bold rounded-lg transition-all"
-            [ngClass]="selectedStatus() === 'draft' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">مسودة</button>
+            [ngClass]="selectedStatus() === 'draft' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">{{ ts.t('admin.articlesManage.draft') }}</button>
           <button (click)="selectedStatus.set('deleted')"
             class="px-4 py-2 text-xs font-bold rounded-lg transition-all"
-            [ngClass]="selectedStatus() === 'deleted' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">محذوف</button>
+            [ngClass]="selectedStatus() === 'deleted' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface/60 hover:bg-surface-container-high'">{{ ts.t('admin.articlesManage.deleted') }}</button>
         </div>
       </div>
-    </div>
 
     <!-- Table Section -->
     <div class="bg-surface-container-low rounded-2xl border border-outline-variant/10 shadow-sm relative overflow-hidden">
@@ -67,13 +71,13 @@
 
       <!-- Horizontal Scroll Wrapper -->
       <div class="overflow-x-auto">
-        <table class="w-full text-right border-collapse min-w-[950px]">
+        <table class="w-full text-right border-collapse min-w-[950px]" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
           <thead>
             <tr class="bg-surface-container/50 border-b border-outline-variant/10">
               <th (click)="toggleSort('title')"
                 class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider cursor-pointer hover:bg-surface-container transition-colors group">
                 <div class="flex items-center gap-2">
-                  المقال
+                  {{ ts.t('admin.articlesManage.article') }}
                   <span class="material-symbols-outlined text-sm transition-all" 
                         [class.opacity-0]="sortKey() !== 'title'"
                         [class.rotate-180]="sortKey() === 'title' && sortDirection() === 'desc'">
@@ -81,11 +85,11 @@
                   </span>
                 </div>
               </th>
-              <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">الفئة</th>
-              <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">الكاتب</th>
-              <th class="px-6 py-4 font-medium text-center">المشاهدات</th>
-              <th class="px-6 py-4 font-medium text-center">الحالة</th>
-              <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">إجراءات</th>
+              <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">{{ ts.t('admin.articlesManage.category') }}</th>
+              <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">{{ ts.t('admin.articlesManage.author') }}</th>
+              <th class="px-6 py-4 font-medium text-center">{{ ts.t('admin.articlesManage.views') }}</th>
+              <th class="px-6 py-4 font-medium text-center">{{ ts.t('admin.articlesManage.status') }}</th>
+              <th class="px-6 py-5 text-xs font-bold text-on-surface/60 uppercase tracking-wider text-center">{{ ts.t('admin.articlesManage.actions') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-outline-variant/5">
@@ -99,13 +103,13 @@
                   </div>
                   <div>
                     <div class="font-headline font-bold text-primary mb-1 line-clamp-1 max-w-[300px]">{{ article.title }}</div>
-                    <div class="text-[10px] text-on-surface/40 font-medium tracking-tight">تاريخ النشر: {{ article.createdAt | date:'HH:mm - dd/MM/yyyy' }}</div>
+                    <div class="text-[10px] text-on-surface/40 font-medium tracking-tight">{{ ts.t('admin.articlesManage.publishDate') }} {{ article.createdAt | date:'HH:mm - dd/MM/yyyy' }}</div>
                   </div>
                 </a>
               </td>
               <td class="px-6 py-5 text-center">
                 <span class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-surface-container-highest/50 text-secondary border border-outline-variant/5">
-                  {{ article.category || 'عام' }}
+                  {{ article.category || ts.t('admin.articlesManage.general') }}
                 </span>
               </td>
               <td class="px-6 py-5 text-sm font-bold text-on-surface/80 text-center">{{ article.authorName }}</td>
@@ -119,27 +123,27 @@
                 @if (article.isDeleted) {
                 <span class="inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full text-error bg-error/10 border border-error/5">
                   <span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
-                  محذوف
+                  {{ ts.t('admin.articlesManage.deleted') }}
                 </span>
                 } @else {
                 <span class="inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full"
                   [ngClass]="article.isPublished ? 'text-green-700 bg-green-100 border border-green-200' : 'text-on-surface/40 bg-surface-container-high border border-outline-variant/10'">
                   <span class="w-1.5 h-1.5 rounded-full"
                     [ngClass]="article.isPublished ? 'bg-green-600' : 'bg-on-surface/20'"></span>
-                  {{ article.isPublished ? 'منشور' : 'مسودة' }}
+                  {{ article.isPublished ? ts.t('admin.articlesManage.published') : ts.t('admin.articlesManage.draft') }}
                 </span>
                 }
               </td>
               <td class="px-6 py-5 text-center">
                 <div class="flex items-center gap-3 justify-center relative">
                   <a [routerLink]="['/admin/articles/edit', article.id]"
-                    class="p-2 hover:bg-primary/10 rounded-full text-primary/60 hover:text-primary transition-all" title="تعديل">
+                    class="p-2 hover:bg-primary/10 rounded-full text-primary/60 hover:text-primary transition-all" [title]="ts.t('admin.articlesManage.edit')">
                     <span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
                   </a>
                   <button (click)="toggleDelete(article.id, $event)"
                     class="p-2 rounded-full transition-all"
                     [class]="article.isDeleted ? 'hover:bg-green-100 text-green-600' : 'hover:bg-error/10 text-error/60 hover:text-error'"
-                    [title]="article.isDeleted ? 'استعادة المقال' : 'حذف المقال'">
+                    [title]="article.isDeleted ? ts.t('admin.articlesManage.restore') : ts.t('admin.articlesManage.delete')">
                     <span class="material-symbols-outlined text-xl">{{ article.isDeleted ? 'history' : 'delete' }}</span>
                   </button>
                   
@@ -153,20 +157,20 @@
                           <span class="material-symbols-outlined text-4xl">{{ article.isDeleted ? 'history' : 'warning' }}</span>
                         </div>
                         <h3 class="text-xl font-headline font-bold text-primary">
-                          {{ article.isDeleted ? 'استعادة المقال' : 'تأكيد عملية الحذف' }}
+                          {{ article.isDeleted ? ts.t('admin.articlesManage.confirmRestoreTitle') : ts.t('admin.articlesManage.confirmDeleteTitle') }}
                         </h3>
                         <p class="text-on-surface/60 leading-relaxed text-sm">
-                          {{ article.isDeleted ? 'هل تود حقاً استعادة هذا المحتوى إلى القائمة النشطة؟' : 'سيتم نقل هذا المقال إلى قائمة المحذوفات. هل تود الاستمرار؟' }} <br>
+                          {{ article.isDeleted ? ts.t('admin.articlesManage.restoreDesc') : ts.t('admin.articlesManage.deleteDesc') }} <br>
                           <span class="font-black mt-2 block" [ngClass]="article.isDeleted ? 'text-secondary' : 'text-error'">"{{ article.title }}"</span>
                         </p>
                         <div class="flex gap-3 w-full mt-4">
                           <button (click)="confirmDelete(article.id, $event)"
                             class="flex-1 text-white font-bold py-3.5 rounded-2xl shadow-lg transition-all active:scale-95"
                             [ngClass]="article.isDeleted ? 'bg-secondary hover:bg-secondary/90' : 'bg-error hover:bg-error/90'">
-                            {{ article.isDeleted ? 'استعادة الآن' : 'نعم، احذف' }}
+                            {{ article.isDeleted ? ts.t('admin.articlesManage.restoreNow') : ts.t('admin.articlesManage.yesDelete') }}
                           </button>
                           <button (click)="toggleDelete(article.id, $event)"
-                            class="flex-1 bg-surface-container-high text-on-surface/60 font-bold py-3.5 rounded-2xl hover:bg-surface-variant hover:text-on-surface transition-all">إلغاء</button>
+                            class="flex-1 bg-surface-container-high text-on-surface/60 font-bold py-3.5 rounded-2xl hover:bg-surface-variant hover:text-on-surface transition-all">{{ ts.t('admin.articlesManage.cancel') }}</button>
                         </div>
                       </div>
                     </div>
@@ -183,9 +187,9 @@
       <!-- Pagination Section -->
       <div class="px-4 sm:px-8 py-6 bg-surface-container/30 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-outline-variant/10">
         <div class="flex items-center gap-3">
-          <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
+          <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
             class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 bg-surface-container-lowest text-on-surface/60 hover:bg-primary hover:text-on-primary hover:border-primary disabled:opacity-20 transition-all shadow-sm">
-            <span class="material-symbols-outlined text-lg">chevron_right</span>
+            <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
           </button>
           <div class="flex flex-wrap items-center justify-center gap-2 mx-2">
             @for (page of [].constructor(totalPages()); track $index) {
@@ -196,13 +200,13 @@
               </button>
             }
           </div>
-          <button (click)="onPageChange(pageNumber() - 1)" [disabled]="pageNumber() <= 1"
+          <button (click)="onPageChange(pageNumber() + 1)" [disabled]="pageNumber() >= totalPages()"
             class="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 bg-surface-container-lowest text-on-surface/60 hover:bg-primary hover:text-on-primary hover:border-primary disabled:opacity-20 transition-all shadow-sm">
-            <span class="material-symbols-outlined text-lg">chevron_left</span>
+            <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
           </button>
         </div>
         <span class="text-[10px] text-on-surface/40 font-bold uppercase tracking-widest text-center">
-          عرض {{(pageNumber()-1)*pageSize()+1}} - {{pageNumber()*pageSize() > totalItems() ? totalItems() : pageNumber()*pageSize()}} من أصل {{totalItems()}} مقال
+          {{ ts.t('admin.articlesManage.showingRange').replace('{{start}}', ((pageNumber()-1)*pageSize()+1).toString()).replace('{{end}}', (pageNumber()*pageSize() > totalItems() ? totalItems() : pageNumber()*pageSize()).toString()).replace('{{total}}', totalItems().toString()) }}
         </span>
       </div>
     </div>
@@ -217,7 +221,7 @@
   </div>
   <div>
     <div class="text-sm font-black">{{ successMessage() }}</div>
-    <div class="text-[10px] opacity-60">تم تحديث النظام بنجاح</div>
+    <div class="text-[10px] opacity-60">{{ ts.t('admin.approvals.systemUpdated') }}</div>
   </div>
   <button (click)="successMessage.set('')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
     <span class="material-symbols-outlined text-white/40 text-lg" data-icon="close">close</span>

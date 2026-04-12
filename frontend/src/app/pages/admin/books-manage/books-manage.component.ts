@@ -1,8 +1,9 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { BookService } from '../../../core/services/book.service';
 import { Book } from '../../../core/models/book.model';
+import { TranslationService } from '../../../core/services/translation.service';
 import { finalize } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -70,6 +71,8 @@ export class BooksManageComponent implements OnInit {
   confirmDeleteId = signal<number | null>(null);
   successMessage = signal('');
   errorMessage = signal('');
+
+  public ts: TranslationService = inject(TranslationService);
 
   constructor(private bookService: BookService) {}
 

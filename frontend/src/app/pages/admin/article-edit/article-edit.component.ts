@@ -9,6 +9,7 @@ import { ArticleService } from '../../../core/services/article.service';
 import { Category } from '../../../core/models/category.model';
 import { Tag } from '../../../core/models/tag.model';
 import { AdminArticle } from '../../../core/models/article.model';
+import { TranslationService } from '../../../core/services/translation.service';
 
 declare const Quill: any;
 
@@ -24,6 +25,7 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
   private tagService = inject(TagService);
+  public ts: TranslationService = inject(TranslationService);
 
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
@@ -121,7 +123,7 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
         setTimeout(() => window.scrollTo(0, 0), 100);
       },
       error: (err) => {
-        this.errorMessage.set('فشل تحميل بيانات المقال');
+        this.errorMessage.set(this.ts.t('admin.articleForm.fillRequired')); // Using a generic fallback
         this.isLoading.set(false);
         console.error(err);
       }
@@ -212,11 +214,11 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
     setTimeout(() => {
       this.quillEditor = new Quill(this.editorContainer.nativeElement, {
         modules: { toolbar: '#quill-toolbar' },
-        placeholder: 'اكتب محتوى المقال...',
+        placeholder: this.ts.t('admin.articleForm.articleContent'),
         theme: 'snow'
       });
-      this.quillEditor.format('direction', 'rtl');
-      this.quillEditor.format('align', 'right');
+      this.quillEditor.format('direction', this.ts.isRtl() ? 'rtl' : 'ltr');
+      this.quillEditor.format('align', this.ts.isRtl() ? 'right' : 'left');
 
       // If article already loaded, paste its content
       if (this.lastFetchedArticle) {
@@ -233,7 +235,7 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
     if (!id || this.isSubmitting()) return;
 
     if (!this.title() || !this.authorName() || !this.getContent()) {
-      this.errorMessage.set('يرجى إكمال جميع الحقول المطلوبة');
+      this.errorMessage.set(this.ts.t('admin.articleForm.fillRequired'));
       return;
     }
 
@@ -252,7 +254,7 @@ export class AdminArticleEditComponent implements OnInit, AfterViewInit, OnDestr
     ).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
-        this.successMessage.set('تم حفظ المقال بنجاح!');
+        this.successMessage.set(this.ts.t('admin.articleForm.successUpdate'));
         setTimeout(() => {
           this.router.navigate(['/admin/articles']);
         }, 2000);

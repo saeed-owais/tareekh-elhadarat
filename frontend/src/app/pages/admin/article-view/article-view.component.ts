@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../core/services/article.service';
 import { AdminArticle } from '../../../core/models/article.model';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-admin-article-view',
@@ -13,6 +14,7 @@ import { AdminArticle } from '../../../core/models/article.model';
 export class AdminArticleViewComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private articleService = inject(ArticleService);
+  public ts: TranslationService = inject(TranslationService);
 
   article = signal<AdminArticle | null>(null);
   isLoading = signal(true);

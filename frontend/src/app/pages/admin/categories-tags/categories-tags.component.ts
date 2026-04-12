@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../../core/services/category.service';
@@ -6,6 +6,7 @@ import { TagService } from '../../../core/services/tag.service';
 import { Category } from '../../../core/models/category.model';
 import { Tag } from '../../../core/models/tag.model';
 import { Observable, finalize } from 'rxjs';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-categories-tags',
@@ -69,6 +70,8 @@ export class CategoriesTagsComponent implements OnInit {
   successMessage = signal('');
   errorMessage = signal('');
   confirmDeleteId = signal<number | null>(null);
+
+  public ts: TranslationService = inject(TranslationService);
 
   constructor(
     private categoryService: CategoryService,
@@ -143,7 +146,7 @@ export class CategoriesTagsComponent implements OnInit {
     action.pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: () => {
-          this.successMessage.set(this.isEditing() ? 'تم التحديث بنجاح' : 'تمت الإضافة بنجاح');
+          this.successMessage.set(this.isEditing() ? this.ts.t('admin.categoriesTags.operationSuccess') : this.ts.t('admin.categoriesTags.operationSuccess'));
           this.resetForm();
           this.loadData();
           setTimeout(() => this.successMessage.set(''), 3000);
@@ -170,7 +173,7 @@ export class CategoriesTagsComponent implements OnInit {
     action.pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: () => {
-          this.successMessage.set('تم الحذف بنجاح');
+          this.successMessage.set(this.ts.t('admin.approvals.systemUpdated'));
           this.confirmDeleteId.set(null);
           this.loadData();
           setTimeout(() => this.successMessage.set(''), 3000);

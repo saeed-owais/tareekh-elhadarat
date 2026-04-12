@@ -4,6 +4,7 @@ import { ArticleService } from '../../../core/services/article.service';
 import { CommentService } from '../../../core/services/comment.service';
 import { AdminArticle, SubmittedComment } from '../../../core/models';
 import { RouterLink } from '@angular/router';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-admin-approvals',
@@ -14,6 +15,7 @@ import { RouterLink } from '@angular/router';
 export class ApprovalsComponent implements OnInit {
   private articleService = inject(ArticleService);
   private commentService = inject(CommentService);
+  public ts: TranslationService = inject(TranslationService);
 
   // State Management
   activeTab = signal<'articles' | 'comments'>('articles');
@@ -82,7 +84,7 @@ export class ApprovalsComponent implements OnInit {
       next: (success) => {
         if (success) {
           this.articles.update(list => list.filter(a => a.id !== id));
-          this.successMessage.set('تم قبول ونشر المقال بنجاح!');
+          this.successMessage.set(this.ts.t('admin.articleForm.successAdd')); // Reusing similar success key
           setTimeout(() => this.successMessage.set(''), 3000);
         }
         this.isLoading.set(false);
@@ -100,7 +102,7 @@ export class ApprovalsComponent implements OnInit {
     this.commentService.acceptComment(id).subscribe({
       next: () => {
         this.comments.update(list => list.filter(c => c.id !== id));
-        this.successMessage.set('تم قبول التعليق بنجاح');
+        this.successMessage.set(this.ts.t('admin.approvals.systemUpdated'));
         this.isLoading.set(false);
         setTimeout(() => this.successMessage.set(''), 3000);
       },
@@ -122,7 +124,7 @@ export class ApprovalsComponent implements OnInit {
     this.commentService.deleteComment(id).subscribe({
       next: () => {
         this.comments.update(list => list.filter(c => c.id !== id));
-        this.successMessage.set('تم حذف التعليق بنجاح');
+        this.successMessage.set(this.ts.t('admin.approvals.systemUpdated'));
         this.confirmDeleteCommentId.set(null);
         this.isLoading.set(false);
         setTimeout(() => this.successMessage.set(''), 3000);

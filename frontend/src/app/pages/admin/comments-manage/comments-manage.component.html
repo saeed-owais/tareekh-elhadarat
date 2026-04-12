@@ -1,17 +1,19 @@
 <!-- Main Admin Comments Management Area -->
-<main class="min-w-0 lg:mr-64 pt-20 pb-24 min-h-screen" dir="rtl">
+<main class="min-w-0 pt-20 pb-24 min-h-screen relative" 
+      [class.lg:mr-64]="ts.isRtl()" [class.lg:ml-64]="!ts.isRtl()"
+      [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
   <div class="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
-      <div class="text-right">
-        <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">إدارة التعليقات</h2>
+      <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+        <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">{{ ts.t('admin.commentsManage.title') }}</h2>
         <p class="text-on-surface/60 text-xs md:text-sm max-w-md leading-relaxed">
-          نظام المراجعة المركزي للتعليقات. قم بمتابعة تفاعلات القراء والحفاظ على جودة المحتوى.
+          {{ ts.t('admin.commentsManage.subtitle') }}
         </p>
       </div>
       <div class="flex gap-2 w-full sm:w-auto">
         <div class="bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant/10 text-xs font-bold text-on-surface/60 w-full sm:w-auto text-center">
-          إجمالي الانتظار: <span class="text-primary text-sm font-black">{{ comments().length }}</span>
+          {{ ts.t('admin.commentsManage.totalWaiting').replace('{{count}}', comments().length.toString()) }}
         </div>
       </div>
     </div>
@@ -20,9 +22,12 @@
     <div class="bg-surface-container-low p-4 sm:p-5 rounded-2xl mb-8 border border-outline-variant/5">
       <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
         <div class="relative flex-1 group">
-          <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface/30 group-focus-within:text-primary transition-colors" data-icon="search">search</span>
-          <input class="w-full pr-12 py-3.5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 placeholder:text-on-surface/30 transition-all outline-none"
-            placeholder="ابحث عن اسم المستخدم، محتوى التعليق، أو عنوان المقال المرتبط..." type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+          <input class="w-full py-3.5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/30 placeholder:text-on-surface/30 transition-all outline-none"
+            [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
+            [placeholder]="ts.t('admin.commentsManage.searchPlaceholder')" type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+          <span class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface/30 group-focus-within:text-primary transition-colors"
+             [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()"
+             data-icon="search">search</span>
         </div>
         <div class="flex gap-2 justify-end">
           <button class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all text-on-surface/60">
@@ -42,12 +47,12 @@
 
       <!-- Horizontal Scroll Wrapper -->
       <div class="overflow-x-auto">
-        <table class="w-full text-right border-collapse min-w-[850px]">
+        <table class="w-full text-right border-collapse min-w-[850px]" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
           <thead>
             <tr class="text-on-surface/60 text-[10px] font-black uppercase tracking-widest border-b border-outline-variant/10 bg-surface-container/50">
-              <th class="px-6 py-5 text-right cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('text')">
+              <th class="px-6 py-5 cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('text')" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
                 <div class="flex items-center gap-2">
-                  التعليق
+                  {{ ts.t('admin.commentsManage.comment') }}
                   <span class="material-symbols-outlined text-sm transition-all" 
                         [class.opacity-0]="sortKey() !== 'text'"
                         [class.rotate-180]="sortKey() === 'text' && sortDirection() === 'desc'">
@@ -55,9 +60,9 @@
                   </span>
                 </div>
               </th>
-              <th class="px-6 py-5 text-right cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('userName')">
+              <th class="px-6 py-5 cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('userName')" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
                 <div class="flex items-center gap-2">
-                  المستخدم
+                  {{ ts.t('admin.commentsManage.user') }}
                   <span class="material-symbols-outlined text-sm transition-all" 
                         [class.opacity-0]="sortKey() !== 'userName'"
                         [class.rotate-180]="sortKey() === 'userName' && sortDirection() === 'desc'">
@@ -65,9 +70,9 @@
                   </span>
                 </div>
               </th>
-              <th class="px-6 py-5 text-right cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('articleTitle')">
+              <th class="px-6 py-5 cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('articleTitle')" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
                 <div class="flex items-center gap-2">
-                  المقال المرتبط
+                   {{ ts.t('admin.commentsManage.linkedArticle') }}
                   <span class="material-symbols-outlined text-sm transition-all" 
                         [class.opacity-0]="sortKey() !== 'articleTitle'"
                         [class.rotate-180]="sortKey() === 'articleTitle' && sortDirection() === 'desc'">
@@ -77,7 +82,7 @@
               </th>
               <th class="px-6 py-5 text-center cursor-pointer hover:text-primary transition-colors group/th" (click)="toggleSort('createdAt')">
                 <div class="flex items-center justify-center gap-2">
-                  التاريخ
+                  {{ ts.t('admin.commentsManage.date') }}
                   <span class="material-symbols-outlined text-sm transition-all" 
                         [class.opacity-0]="sortKey() !== 'createdAt'"
                         [class.rotate-180]="sortKey() === 'createdAt' && sortDirection() === 'desc'">
@@ -85,7 +90,7 @@
                   </span>
                 </div>
               </th>
-              <th class="px-6 py-5 text-center">إجراءات</th>
+              <th class="px-6 py-5 text-center">{{ ts.t('admin.commentsManage.actions') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-outline-variant/5">
@@ -115,13 +120,13 @@
               </td>
               <td class="px-6 py-5">
                 <div class="flex justify-center gap-3">
-                  <button (click)="viewCommentDetails(comment.id)" class="p-2.5 hover:bg-primary-container/10 rounded-full text-primary-container transition-all" title="عرض التفاصيل">
+                  <button (click)="viewCommentDetails(comment.id)" class="p-2.5 hover:bg-primary-container/10 rounded-full text-primary-container transition-all" [title]="ts.t('admin.commentsManage.viewDetails')">
                     <span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
                   </button>
-                  <button (click)="acceptComment(comment.id)" class="p-2.5 hover:bg-green-100 rounded-full text-green-700 transition-all border border-transparent hover:border-green-200" title="موافقة">
+                  <button (click)="acceptComment(comment.id)" class="p-2.5 hover:bg-green-100 rounded-full text-green-700 transition-all border border-transparent hover:border-green-200" [title]="ts.t('admin.commentsManage.approve')">
                     <span class="material-symbols-outlined text-xl" data-icon="check_circle">check_circle</span>
                   </button>
-                  <button (click)="toggleDelete(comment.id, $event)" class="p-2.5 hover:bg-error/10 rounded-full text-error transition-all border border-transparent hover:border-error/20" title="حذف">
+                  <button (click)="toggleDelete(comment.id, $event)" class="p-2.5 hover:bg-error/10 rounded-full text-error transition-all border border-transparent hover:border-error/20" [title]="ts.t('admin.commentsManage.delete')">
                     <span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
                   </button>
   
@@ -133,14 +138,14 @@
                         <div class="w-16 h-16 rounded-full bg-error/10 text-error flex items-center justify-center mb-2">
                           <span class="material-symbols-outlined text-4xl">warning</span>
                         </div>
-                        <h3 class="text-xl font-headline font-bold text-primary">تأكيد حذف التعليق</h3>
+                        <h3 class="text-xl font-headline font-bold text-primary">{{ ts.t('admin.commentsManage.confirmDeleteTitle') }}</h3>
                         <p class="text-on-surface-variant leading-relaxed text-sm">
-                          هل أنت متأكد من حذف هذا التعليق نهائياً؟ <br>
+                          {{ ts.t('admin.commentsManage.deleteDesc') }} <br>
                           <span class="text-[10px] opacity-70 italic mt-2 block">"{{ comment.text | slice:0:50 }}..."</span>
                         </p>
                         <div class="flex gap-3 w-full mt-4">
-                          <button (click)="confirmDelete(comment.id, $event)" class="flex-1 bg-error text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-error/90 transition-all active:scale-95">نعم، احذف</button>
-                          <button (click)="toggleDelete(comment.id, $event)" class="flex-1 bg-surface-container-high text-on-surface font-bold py-3.5 rounded-2xl hover:bg-surface-variant transition-all">إلغاء</button>
+                          <button (click)="confirmDelete(comment.id, $event)" class="flex-1 bg-error text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-error/90 transition-all active:scale-95">{{ ts.t('admin.commentsManage.yesDelete') }}</button>
+                          <button (click)="toggleDelete(comment.id, $event)" class="flex-1 bg-surface-container-high text-on-surface font-bold py-3.5 rounded-2xl hover:bg-surface-variant transition-all">{{ ts.t('admin.commentsManage.cancel') }}</button>
                         </div>
                       </div>
                     </div>
@@ -153,7 +158,7 @@
             <tr>
               <td colspan="5" class="px-6 py-24 text-center text-on-surface/40">
                 <span class="material-symbols-outlined text-6xl mb-4 block opacity-20" data-icon="forum">forum</span>
-                <p class="text-xl font-bold">لا يوجد تعليقات تتطلب إجراءات حالياً</p>
+                <p class="text-xl font-bold">{{ ts.t('admin.commentsManage.noComments') }}</p>
               </td>
             </tr>
             }
@@ -174,9 +179,9 @@
         <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary font-bold">
           <span class="material-symbols-outlined">forum</span>
         </div>
-        <div>
-          <h3 class="text-lg sm:text-xl font-headline font-bold text-primary">تفاصيل المراجعة</h3>
-          <p class="text-[9px] sm:text-[10px] text-on-surface/50 mt-1 uppercase tracking-wider">Moderation Intelligence Center</p>
+        <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+          <h3 class="text-lg sm:text-xl font-headline font-bold text-primary">{{ ts.t('admin.commentsManage.reviewDetails') }}</h3>
+          <p class="text-[9px] sm:text-[10px] text-on-surface/50 mt-1 uppercase tracking-wider">{{ ts.t('admin.commentsManage.moderationIntelligence') }}</p>
         </div>
       </div>
       <button (click)="closeCommentModal()" class="w-10 h-10 rounded-full hover:bg-surface-container-highest flex items-center justify-center transition-colors">
@@ -189,7 +194,7 @@
       <div class="space-y-3">
         <div class="flex items-center gap-2 text-on-surface/40 text-[10px] font-bold uppercase tracking-widest">
           <span class="material-symbols-outlined text-sm">sticky_note_2</span>
-          محتوى التعليق
+          {{ ts.t('admin.commentsManage.comment') }}
         </div>
         <div class="bg-surface-container-low p-5 sm:p-6 rounded-2xl border border-outline-variant/5 shadow-inner">
           <p class="text-on-surface leading-loose text-base sm:text-lg font-medium whitespace-pre-wrap">
@@ -198,10 +203,10 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
         <div class="space-y-1">
-          <p class="text-[10px] text-on-surface/40 font-bold uppercase">الكاتب</p>
-          <div class="flex items-center gap-2">
+          <p class="text-[10px] text-on-surface/40 font-bold uppercase">{{ ts.t('admin.commentsManage.user') }}</p>
+          <div class="flex items-center gap-2" [class.flex-row-reverse]="!ts.isRtl()">
             <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[10px] uppercase font-bold">
               {{ detailedComment()?.userName?.charAt(0) }}
             </div>
@@ -209,14 +214,14 @@
           </div>
         </div>
         <div class="space-y-1">
-          <p class="text-[10px] text-on-surface/40 font-bold uppercase">المقال المرتبط</p>
+          <p class="text-[10px] text-on-surface/40 font-bold uppercase">{{ ts.t('admin.commentsManage.linkedArticle') }}</p>
           <a [routerLink]="['/articles', detailedComment()?.articleId]" (click)="closeCommentModal()"
              class="text-sm font-bold text-primary hover:underline underline-offset-4 decoration-primary/30 transition-all block line-clamp-1">
             {{ detailedComment()?.articleTitle }}
           </a>
         </div>
         <div class="space-y-1">
-          <p class="text-[10px] text-on-surface/40 font-bold uppercase">تاريخ الإرسال</p>
+          <p class="text-[10px] text-on-surface/40 font-bold uppercase">{{ ts.t('admin.commentsManage.date') }}</p>
           <p class="text-sm font-medium text-on-surface/60">
             {{ detailedComment()?.createdAt | date:'HH:mm - dd MMMM yyyy' }}
           </p>
@@ -229,12 +234,12 @@
       <button (click)="acceptComment(detailedComment()!.id); closeCommentModal()" 
         class="flex-1 bg-green-600 text-white font-bold py-3.5 sm:py-4 rounded-2xl shadow-lg hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center gap-2">
         <span class="material-symbols-outlined">check_circle</span>
-        نشر التعليق Now
+        {{ ts.t('admin.commentsManage.publishNow') }}
       </button>
       <button (click)="toggleDelete(detailedComment()!.id, $event); closeCommentModal()" 
         class="flex-1 bg-error/10 text-error font-bold py-3.5 sm:py-4 rounded-2xl hover:bg-error/20 transition-all flex items-center justify-center gap-2">
         <span class="material-symbols-outlined">delete_sweep</span>
-        حذف نهائي
+        {{ ts.t('admin.commentsManage.finalDelete') }}
       </button>
     </div>
   </div>
@@ -249,7 +254,7 @@
   </div>
   <div>
     <div class="text-sm font-black">{{ successMessage() }}</div>
-    <div class="text-[10px] opacity-60">تم تحديث النظام بنجاح</div>
+    <div class="text-[10px] opacity-60">{{ ts.t('admin.approvals.systemUpdated') }}</div>
   </div>
   <button (click)="successMessage.set('')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
     <span class="material-symbols-outlined text-white/40 text-lg">close</span>

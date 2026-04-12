@@ -7,21 +7,22 @@
 
 <!-- Global Mobile Navigation Shell -->
 <nav
-    class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/10 shadow-[0_-8px_32px_rgba(6,27,14,0.08)] z-50 flex flex-row-reverse justify-around items-center py-3 px-6 rounded-t-[2.5rem]" 
-    dir="rtl">
+    class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/10 shadow-[0_-8px_32px_rgba(6,27,14,0.08)] z-50 flex justify-around items-center py-3 px-6 rounded-t-[2.5rem]" 
+    [class.flex-row-reverse]="ts.isRtl()"
+    [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
     
     <a class="flex flex-col items-center gap-1 group" routerLink="/admin/dashboard" routerLinkActive="text-primary font-bold">
         <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
             <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
         </div>
-        <span class="text-[10px] font-bold">الرئيسية</span>
+        <span class="text-[10px] font-bold">{{ ts.t('admin.sidebar.overview') }}</span>
     </a>
 
     <a class="flex flex-col items-center gap-1 group" routerLink="/admin/articles" routerLinkActive="text-primary font-bold">
         <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
             <span class="material-symbols-outlined" data-icon="article">article</span>
         </div>
-        <span class="text-[10px] font-bold">المقالات</span>
+        <span class="text-[10px] font-bold">{{ ts.t('admin.sidebar.manageArticles') }}</span>
     </a>
 
     <div class="relative -top-8">
@@ -34,13 +35,13 @@
         <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
             <span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
         </div>
-        <span class="text-[10px] font-bold">المكتبة</span>
+        <span class="text-[10px] font-bold">{{ ts.t('admin.sidebar.digitalLibrary') }}</span>
     </a>
 
     <a class="flex flex-col items-center gap-1 group" routerLink="/admin/categories-tags" routerLinkActive="text-primary font-bold">
         <div class="p-2 rounded-2xl group-hover:bg-primary/5 transition-colors">
             <span class="material-symbols-outlined" data-icon="category">category</span>
         </div>
-        <span class="text-[10px] font-bold">الفئات</span>
+        <span class="text-[10px] font-bold">{{ ts.t('admin.sidebar.categoriesTags') }}</span>
     </a>
 </nav>

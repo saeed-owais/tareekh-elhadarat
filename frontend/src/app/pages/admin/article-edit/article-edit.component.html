@@ -1,4 +1,6 @@
-<main class="min-w-0 lg:mr-64 pt-20 pb-24 min-h-screen relative">
+<main class="min-w-0 pt-20 pb-24 min-h-screen relative" 
+      [class.lg:mr-64]="ts.isRtl()" [class.lg:ml-64]="!ts.isRtl()"
+      [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
   @if (isLoading()) {
   <div class="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center p-12">
     <div class="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
@@ -9,12 +11,14 @@
     <div class="flex items-center gap-4 mb-8">
       <a routerLink="/admin/articles"
         class="w-10 h-10 rounded-xl flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-all text-primary"
-        title="العودة للإدارة">
+        [title]="ts.t('admin.articleForm.backToAdmin')">
         <span class="material-symbols-outlined text-xl">arrow_back</span>
       </a>
-      <div>
-        <h2 class="text-3xl font-headline font-bold text-primary mb-1">تعديل المقال</h2>
-        <p class="text-on-surface-variant text-sm">قم بتعديل بيانات ومحتوى المقال أو تغيير حالته.</p>
+      <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+        <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">{{ ts.t('admin.articleForm.editArticle') }}</h2>
+        <p class="text-on-surface/60 text-xs md:text-sm max-w-md leading-relaxed">
+          {{ ts.t('admin.articleForm.editSubtitle') }}
+        </p>
       </div>
     </div>
 
@@ -39,127 +43,132 @@
     <!-- Form -->
     <form class="space-y-8" (submit)="onSubmit($event)">
       <!-- Settings Panel (Admin specific) -->
-      <div class="bg-primary/5 p-6 rounded-2xl border border-primary/20 space-y-6">
-        <h3 class="font-headline font-bold text-primary flex items-center gap-2">
-          <span class="material-symbols-outlined text-xl">settings</span>إعدادات إدارية
+      <div class="p-6 sm:p-8 border-b border-outline-variant/10 bg-primary/5 rounded-2xl">
+        <h3 class="text-lg font-headline font-bold text-primary mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary">admin_panel_settings</span>
+          {{ ts.t('admin.articleForm.adminSettings') }}
         </h3>
-        <div>
-          <label class="block font-label font-bold text-sm mb-2 text-primary">حالة المقال <span
-              class="text-error">*</span></label>
+
+        <div class="space-y-4">
+          <label class="block text-sm font-bold text-on-surface/70">{{ ts.t('admin.articleForm.articleStatus') }}</label>
           <div class="flex flex-wrap gap-4">
-            <label
-              class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
-              <input type="radio" name="status" [checked]="status() === 'published'" (change)="status.set('published')"
-                value="published" class="text-secondary w-4 h-4" />
-              <span class="font-medium text-sm">منشور</span>
+            <label class="flex items-center gap-3 bg-surface-container/50 px-5 py-3 rounded-2xl border border-outline-variant/5 cursor-pointer hover:bg-surface-container transition-colors group">
+              <input type="radio" name="status" [(ngModel)]="status" value="published" class="w-5 h-5 text-primary border-outline-variant/20 focus:ring-primary/20">
+              <span class="text-sm font-bold text-on-surface/60 group-hover:text-primary transition-colors">{{ ts.t('admin.articleForm.published') }}</span>
             </label>
-            <label
-              class="flex items-center gap-2 bg-surface-container-high px-4 py-3 rounded-lg cursor-pointer border border-transparent has-checked:border-secondary has-checked:bg-secondary/5 transition-all">
-              <input type="radio" name="status" [checked]="status() === 'pending'" (change)="status.set('pending')"
-                value="pending" class="text-secondary w-4 h-4" />
-              <span class="font-medium text-sm">معلق للمراجعة</span>
+            <label class="flex items-center gap-3 bg-surface-container/50 px-5 py-3 rounded-2xl border border-outline-variant/5 cursor-pointer hover:bg-surface-container transition-colors group">
+              <input type="radio" name="status" [(ngModel)]="status" value="pending" class="w-5 h-5 text-primary border-outline-variant/20 focus:ring-primary/20">
+              <span class="text-sm font-bold text-on-surface/60 group-hover:text-primary transition-colors">{{ ts.t('admin.articleForm.pendingReview') }}</span>
             </label>
           </div>
         </div>
       </div>
 
-      <!-- Article Info Row -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <label class="block font-label font-bold text-sm mb-2">عنوان المقال <span class="text-error">*</span></label>
-          <input type="text" [(ngModel)]="title" name="title" required
-            class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right"
-            placeholder="العنوان..." />
+      <!-- Title & Author -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label class="text-xs font-black text-on-surface/40 uppercase tracking-widest">{{ ts.t('admin.articleForm.articleTitle') }}</label>
+          <input type="text" [(ngModel)]="title" name="title"
+            class="w-full px-5 py-4 bg-surface-container-lowest border border-outline-variant/10 rounded-2xl focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none transition-all placeholder:text-on-surface/20 font-bold"
+            [placeholder]="ts.t('admin.articleForm.articleTitlePlaceholder')">
         </div>
-        <div>
-          <label class="block font-label font-bold text-sm mb-2">اسم المؤلف <span class="text-error">*</span></label>
-          <input type="text" [(ngModel)]="authorName" name="authorName" required
-            class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right"
-            placeholder="اسم الكاتب..." />
-        </div>
-      </div>
-
-      <!-- Category & Image Row (Adjusted) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="category-dropdown relative">
-          <label class="block font-label font-bold text-sm mb-2">التصنيف <span class="text-error">*</span></label>
-          <button type="button" (click)="toggleCategoryDropdown($event)"
-            class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-secondary transition-all font-body text-right flex justify-between items-center">
-            <span [class.opacity-70]="categoryId() === null">{{ getCategoryName(categoryId()) || 'اختر التصنيف'
-              }}</span>
-            <span class="material-symbols-outlined transition-transform duration-300"
-              [class.rotate-180]="isCategoryDropdownOpen()">expand_more</span>
-          </button>
-
-          @if (isCategoryDropdownOpen()) {
-          <div
-            class="absolute w-full mt-2 bg-surface-container-lowest border border-outline-variant/20 rounded-xl shadow-lg z-50 overflow-hidden"
-            (click)="$event.stopPropagation()">
-            <ul class="max-h-50 overflow-y-auto">
-              @for (category of categories(); track category.id) {
-              <li>
-                <button type="button" (click)="selectCategory(category.id)"
-                  class="w-full text-right px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex justify-between"
-                  [class.bg-secondary-container]="categoryId() === category.id"
-                  [class.text-on-secondary-container]="categoryId() === category.id">
-                  <span>{{ category.name }}</span>
-                  @if (categoryId() === category.id) { <span class="material-symbols-outlined text-sm">check</span> }
-                </button>
-              </li>
-              }
-            </ul>
-          </div>
-          }
+        <div class="space-y-2">
+          <label class="text-xs font-black text-on-surface/40 uppercase tracking-widest">{{ ts.t('admin.articleForm.authorName') }}</label>
+          <input type="text" [(ngModel)]="authorName" name="authorName"
+            class="w-full px-5 py-4 bg-surface-container-lowest border border-outline-variant/10 rounded-2xl focus:ring-4 focus:ring-primary/5 focus:border-primary/30 outline-none transition-all placeholder:text-on-surface/20 font-bold"
+            [placeholder]="ts.t('admin.articleForm.authorNamePlaceholder')">
         </div>
       </div>
 
-      <!-- Tags -->
-      <div>
-        <label class="block font-label font-bold text-sm mb-2">الوسوم <span class="text-error">*</span></label>
-        <div class="flex flex-wrap gap-3">
-          @for (tag of tags(); track tag.id) {
-          <button type="button" (click)="toggleTag(tag.id)"
-            [class]="isTagSelected(tag.id) ? 'bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full text-sm font-medium transition-all hover:opacity-80 ring-2 ring-secondary' : 'bg-surface-container-highest text-on-surface-variant px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-surface-variant'">
-            @if (isTagSelected(tag.id)) { <span class="material-symbols-outlined text-xs align-middle mr-1">check</span>
+      <!-- Category & Tags -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-2">
+          <label class="text-xs font-black text-on-surface/40 uppercase tracking-widest">{{ ts.t('admin.articleForm.category') }}</label>
+          <div class="relative">
+            <button type="button" (click)="toggleCategoryDropdown($event)"
+              class="w-full px-5 py-4 bg-surface-container-lowest border border-outline-variant/10 rounded-2xl flex items-center justify-between hover:bg-surface-bright transition-all group">
+              <span class="font-bold" [class.text-on-surface/30]="!categoryId()">{{ getCategoryName(categoryId()) || ts.t('admin.articleForm.selectCategory') }}</span>
+              <span class="material-symbols-outlined text-on-surface/30 group-hover:text-primary transition-colors" [class.rotate-180]="isCategoryDropdownOpen()">expand_more</span>
+            </button>
+
+            @if (isCategoryDropdownOpen()) {
+            <div
+              class="absolute w-full mt-2 bg-surface-container-lowest border border-outline-variant/20 rounded-xl shadow-lg z-50 overflow-hidden"
+              (click)="$event.stopPropagation()">
+              <ul class="max-h-50 overflow-y-auto">
+                @for (category of categories(); track category.id) {
+                <li>
+                  <button type="button" (click)="selectCategory(category.id)"
+                    class="w-full text-right px-4 py-3 hover:bg-surface-container-high transition-colors font-body flex justify-between"
+                    [class.bg-secondary-container]="categoryId() === category.id"
+                    [class.text-on-secondary-container]="categoryId() === category.id">
+                    <span>{{ category.name }}</span>
+                    @if (categoryId() === category.id) { <span class="material-symbols-outlined text-sm">check</span> }
+                  </button>
+                </li>
+                }
+              </ul>
+            </div>
             }
-            {{ tag.name }}
-          </button>
-          }
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <label class="text-xs font-black text-on-surface/40 uppercase tracking-widest">{{ ts.t('admin.articleForm.tags') }}</label>
+          <div class="flex flex-wrap gap-2">
+            @for (tag of tags(); track tag.id) {
+              <button type="button" (click)="toggleTag(tag.id)" 
+                class="px-4 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-2"
+                [class]="isTagSelected(tag.id) ? 'bg-secondary text-on-secondary border-secondary shadow-md' : 'bg-surface-container-lowest text-on-surface/60 border-outline-variant/10 hover:bg-surface-bright'">
+                <span class="opacity-40">#</span>
+                {{ tag.name }}
+              </button>
+            }
+          </div>
         </div>
       </div>
 
       <!-- Featured Image -->
-      <div>
-        <label class="block font-label font-bold text-sm mb-2">الصورة البارزة <span class="text-error">*</span></label>
-        @if (!imagePreviewUrl()) {
-        <label
-          class="relative w-full aspect-21/9 bg-surface-container-highest rounded-xl border-2 border-dashed border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer hover:bg-surface-variant transition-colors group">
-          <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onImageSelected($event)"
-            class="absolute inset-0 opacity-0 cursor-pointer" />
-          <span
-            class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">cloud_upload</span>
-          <p class="mt-3 text-on-surface-variant font-medium">تغيير الصورة</p>
-        </label>
-        } @else {
-        <div class="relative w-full aspect-21/9 rounded-xl overflow-hidden group">
-          <img [src]="imagePreviewUrl()" class="w-full h-full object-cover" />
-          <div
-            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <button type="button" (click)="removeImage()"
-              class="bg-error text-on-error px-6 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-error/80 transition-colors">
-              <span class="material-symbols-outlined">delete</span> تغيير الصورة
-            </button>
-          </div>
+      <div class="space-y-4">
+        <label class="text-xs font-black text-on-surface/40 uppercase tracking-widest">{{ ts.t('admin.articleForm.featuredImage') }}</label>
+        
+        <div class="relative group">
+          @if (!imagePreviewUrl()) {
+            <label class="flex flex-col items-center justify-center w-full h-80 bg-surface-container-lowest border-2 border-dashed border-outline-variant/20 rounded-3xl cursor-pointer hover:border-primary/30 hover:bg-primary/5 transition-all">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined text-3xl">add_photo_alternate</span>
+                </div>
+                <p class="mb-2 text-sm font-bold text-on-surface/70">{{ ts.t('admin.articleForm.chooseCover') }}</p>
+              </div>
+              <input type="file" class="hidden" (change)="onImageSelected($event)" accept="image/*">
+            </label>
+          } @else {
+            <div class="relative h-[25rem] rounded-3xl overflow-hidden shadow-2xl group">
+              <img [src]="imagePreviewUrl()" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                <label class="bg-white text-primary p-4 rounded-full shadow-xl cursor-pointer hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined">edit</span>
+                  <input type="file" class="hidden" (change)="onImageSelected($event)" accept="image/*">
+                </label>
+                <button type="button" (click)="removeImage()" class="bg-error text-white p-4 rounded-full shadow-xl hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+              <div class="absolute bottom-6 right-6 left-6 p-4 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-between">
+                  <span class="text-white font-bold text-sm">{{ ts.t('admin.articleForm.changeImage') }}</span>
+                  <span class="text-white/40 text-[10px] uppercase font-black">Image Active</span>
+              </div>
+            </div>
+          }
         </div>
-        }
       </div>
 
       <!-- Content (Quill) -->
-      <div>
-        <label class="block font-label font-bold text-sm mb-2">محتوى المقال <span class="text-error">*</span></label>
-        <div
-          class="quill-wrapper bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden">
-          <div id="quill-toolbar">
+      <div class="space-y-4">
+        <label class="text-xs font-black text-on-surface/40 uppercase tracking-widest">{{ ts.t('admin.articleForm.articleContent') }}</label>
+        <div class="flex flex-col rounded-3xl overflow-hidden border border-outline-variant/10 bg-surface-container-lowest shadow-sm h-[600px]">
+          <div id="quill-toolbar" class="border-b border-outline-variant/10">
             <span class="ql-formats">
               <button class="ql-bold"></button>
               <button class="ql-italic"></button>
@@ -191,18 +200,21 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex gap-4 pt-6 border-t border-outline-variant/20">
+      <div class="flex flex-col sm:flex-row gap-4">
         <button type="submit" [disabled]="isSubmitting()"
-          class="flex-1 max-w-[200px] py-3.5 bg-primary text-on-primary rounded-lg font-bold shadow-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-          @if (isSubmitting()) {
-          <span class="w-5 h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin"></span> جاري
-          الحفظ
+          class="flex-[2] bg-primary text-on-primary font-black py-5 rounded-2xl shadow-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50">
+          @if (isSubmitting()) { 
+             <div class="w-6 h-6 border-4 border-on-primary/20 border-t-on-primary rounded-full animate-spin"></div> 
+             <span>{{ ts.t('admin.articleForm.saving') }}</span>
           } @else {
-          <span class="material-symbols-outlined">save</span> حفظ التعديلات
+            <span class="material-symbols-outlined">save</span>
+            <span>{{ ts.t('admin.articleForm.updateArticle') }}</span>
           }
         </button>
         <a routerLink="/admin/articles"
-          class="py-3.5 px-8 rounded-lg font-bold text-on-surface-variant hover:bg-surface-container-high transition-colors">إلغاء</a>
+          class="flex-1 bg-surface-container-high text-on-surface font-bold py-5 rounded-2xl flex items-center justify-center hover:bg-surface-variant transition-all active:scale-[0.98]">
+          {{ ts.t('admin.articleForm.cancel') }}
+        </a>
       </div>
     </form>
   </div>
