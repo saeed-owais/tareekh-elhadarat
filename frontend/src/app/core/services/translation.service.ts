@@ -27,7 +27,7 @@ export class TranslationService {
     this.loadTranslations(lang);
   }
 
-  t(key: string): string {
+  t(key: string, params?: Record<string, string>): string {
     const parts = key.split('.');
     let value: any = this.translations();
     for (const part of parts) {
@@ -37,7 +37,16 @@ export class TranslationService {
         return key; // fallback to key
       }
     }
-    return typeof value === 'string' ? value : key;
+    
+    let result = typeof value === 'string' ? value : key;
+
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        result = result.replace(`{{${k}}}`, v);
+      });
+    }
+
+    return result;
   }
 
   private applyDirToDocument(lang: AppLang): void {

@@ -7,6 +7,7 @@ export interface UserProfile {
     authorName: string | null;
     profilePhoto: string | null;
     bio: string | null;
+    createdAt?: string;
 }
 
 export interface SavedArticle {

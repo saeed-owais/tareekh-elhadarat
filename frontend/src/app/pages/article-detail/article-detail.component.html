@@ -201,7 +201,7 @@
             <p class="text-sm text-on-surface-variant">{{ comment.createdAt | date:'longDate' }}</p>
           </div>
         </div>
-        <p class="font-body leading-relaxed">{{ comment.content }}</p>
+        <p class="font-body leading-relaxed">{{ comment.content || comment.text }}</p>
       </div>
       } @empty {
       <p class="text-on-surface-variant italic">{{ ts.t('articleDetail.noComments') }}</p>

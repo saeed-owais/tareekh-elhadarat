@@ -3,7 +3,7 @@ export interface Comment {
   authorName: string;
   userName?: string; // Opt-in for compatibility with other models
   email: string;
-  content: string;
+  content?: string;
   text?: string;    // Opt-in for compatibility with other models
   isApproved: boolean;
   createdAt: Date;

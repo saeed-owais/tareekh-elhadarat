@@ -21,7 +21,7 @@
   "home": {
     "featuredArticle": "Featured Article",
     "readMore": "Read More",
-    "browseByCategory": "Browse by Category",
+    "browseByCategory": "You are here because you are special and seeking the truth.\nWhat you read here will change your perspective on history, as we shed light on the dark chapters that have been hidden for many years.",
     "allArticles": "All Articles",
     "latestArticles": "Latest Articles",
     "mostRead": "Most Read",
@@ -29,11 +29,11 @@
     "readMinutes": "min read",
     "noArticles": "No articles available at the moment.",
     "vision": "Our Vision",
-    "visionText1": "We strive to build civilizational awareness",
-    "visionText2": "that combines",
-    "visionText3": "Authenticity",
-    "visionText4": "Modernity",
-    "visionText5": "We believe that knowledge is the bridge connecting the past to the future",
+    "visionText1": "Striving to build cultural awareness",
+    "visionText2": "that connects",
+    "visionText3": "Ancient Civilizations",
+    "visionText4": "Contemporary Peoples",
+    "visionText5": "To redirect the compass to its correct direction.",
     "ourPublications": "Our Publications",
     "browseAllBooks": "Browse All Books",
     "viewDetails": "View Details",
@@ -45,7 +45,8 @@
     "exclusiveContent": "Exclusive Content",
     "intellectualCommunity": "Intellectual Community",
     "quoteText": "\"Reading is the only key that opens the doors of the past, present, and future all at once.\"",
-    "quoteAuthor": "— Abbas Mahmoud Al-Aqqad"
+    "quoteAuthor": "— Abbas Mahmoud Al-Aqqad",
+    "and": "and"
   },
   "articles": {
     "title": "Articles",
@@ -82,7 +83,7 @@
   "books": {
     "digitalLibrary": "Digital Library",
     "title": "Treasures of Knowledge & References",
-    "subtitle": "A curated collection of the most valuable books and historical manuscripts documenting the journeys of nations and world civilizations.",
+    "subtitle": "A curated collection of the most valuable books and historical manuscripts documenting the journeys of nations and Tareekh Alshoop.",
     "loading": "Fetching books from the archive...",
     "viewDetails": "View Details",
     "author": "By:",
@@ -94,8 +95,8 @@
   "about": {
     "title": "About Us",
     "visionTitle": "Our Vision",
-    "visionText1": "At \"World Civilizations\", we strive to build civilizational awareness that combines authenticity and modernity. We believe that knowledge is the bridge connecting the past to the future, and that rereading our intellectual heritage through contemporary eyes is the way to understand our present and envision our future.",
-    "visionText2": "\"World Civilizations\" is not just a blog — it is an intellectual community that brings together researchers, intellectuals, and readers around one table, where we exchange ideas and engage in discussions about issues that shape our collective consciousness.",
+    "visionText1": "At \"Tareekh Alshoop\", we strive to build civilizational awareness that combines authenticity and modernity. We believe that knowledge is the bridge connecting the past to the future, and that rereading our intellectual heritage through contemporary eyes is the way to understand our present and envision our future.",
+    "visionText2": "\"Tareekh Alshoop\" is not just a blog — it is an intellectual community that brings together researchers, intellectuals, and readers around one table, where we exchange ideas and engage in discussions about issues that shape our collective consciousness.",
     "missionTitle": "Our Mission",
     "spreadKnowledge": "Spread Knowledge",
     "spreadKnowledgeDesc": "Delivering rich intellectual and cultural content that enriches awareness.",
@@ -159,7 +160,7 @@
     "passwordMismatch": "Passwords do not match.",
     "agreeTerms": "I agree to the",
     "termsLink": "Terms & Conditions",
-    "heroTitle": "World Civilizations",
+    "heroTitle": "Tareekh Alshoop",
     "heroSubtitle": "A Journey Through Civilizations & Cultures",
     "heroDesc": "We explore the roots of humanity and its diversity throughout the ages, building a bridge of knowledge that connects the past to the future.",
     "registerBtn": "Create Account",
@@ -225,9 +226,9 @@
     "contributions": "Contributions & Activity",
     "savedArticles": "Saved Articles",
     "publishedArticles": "Published Articles",
-    "memberSince": "Member of \"World Civilizations\" since 2024",
+    "memberSince": "Member of \"Tareekh Alshoop\" since {{year}}",
     "newsForYou": "News for You",
-    "newsDesc": "Be part of the \"World Civilizations\" story and share your historical research to be enshrined in our digital library.",
+    "newsDesc": "Be part of the \"Tareekh Alshoop\" story and share your historical research to be enshrined in our digital library.",
     "writeWithUsNow": "Write With Us Now",
     "profileUpdated": "Profile updated successfully"
   },
@@ -236,7 +237,7 @@
     "terms": "Publishing Terms",
     "privacy": "Privacy Policy",
     "contact": "Contact Us",
-    "rights": "World Civilizations. All rights reserved."
+    "rights": "Tareekh Alshoop. All rights reserved."
   },
   "writeWithUs": {
     "title": "Write With Us",
@@ -294,9 +295,9 @@
   },
   "terms": {
     "title": "Terms & Conditions and Privacy Policy",
-    "intro": "Welcome to <strong>World Civilizations</strong>. By using this website, you agree to comply with these terms and conditions. If you do not agree, please stop using the website.",
+    "intro": "Welcome to <strong>Tareekh Alshoop</strong>. By using this website, you agree to comply with these terms and conditions. If you do not agree, please stop using the website.",
     "section1Title": "Platform Nature & Usage",
-    "section1P1": "World Civilizations provides a digital space for publishing, reading, and sharing books, articles, and text content by both the administration and registered users.",
+    "section1P1": "Tareekh Alshoop provides a digital space for publishing, reading, and sharing books, articles, and text content by both the administration and registered users.",
     "section1P2": "All users must use the website legally and in accordance with EU laws, and must not publish any offensive, illegal, or infringing content, or use the site for spam or fraudulent content.",
     "section1P3": "The site administration reserves the right to delete any violating content or suspend or terminate user accounts at any time without prior notice.",
     "section2Title": "Accounts & Responsibility",
@@ -376,7 +377,7 @@
       "edit": "Edit"
     },
     "sidebar": {
-      "brand": "World Civilizations",
+      "brand": "Tareekh Alshoop",
       "controlPanel": "Control Panel",
       "returnMain": "Return to main site",
       "overview": "Overview",

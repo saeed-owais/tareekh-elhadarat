@@ -12,23 +12,23 @@
   </div>
 
   <!-- Sticky Category Tabs -->
-  <div class="sticky top-[72px] z-30 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 mb-16 transition-all">
-    <div class="container mx-auto px-8">
-      <div class="flex items-center gap-3">
+  <div class="sticky top-[72px] z-30 bg-surface/80 backdrop-blur-xl border-y border-outline-variant/10 mb-16 transition-all">
+    <div class="container mx-auto px-4 md:px-8">
+      <div class="flex items-center gap-2 md:gap-3">
         <!-- Scroll Arrows -->
-        <button (click)="scrollCategories('right')"
-                class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+        <button (click)="scrollCategories('left')"
+                class="hidden md:flex shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary items-center justify-center transition-all duration-300">
           <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
         </button>
         <!-- Slider -->
         <div class="relative flex-1 min-w-0">
-          <div class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none"></div>
-          <div class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none"></div>
+          <div class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none md:hidden"></div>
+          <div class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none md:hidden"></div>
           <div #categorySlider
-               class="flex gap-2 overflow-x-auto py-3 scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+               class="flex gap-1 md:gap-2 overflow-x-auto py-3 scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
             <button
               (click)="filterByCategory(null)"
-              class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold transition-all duration-300 rounded-lg"
+              class="shrink-0 relative px-4 md:px-8 py-3 font-label text-base font-bold transition-all duration-300 rounded-lg"
               [class]="selectedCategoryId() === null
                 ? 'text-primary bg-primary/8'
                 : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'">
@@ -43,7 +43,7 @@
             @for (category of categories(); track category.id) {
               <button
                 (click)="filterByCategory(category.id)"
-                class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold transition-all duration-300 rounded-lg"
+                class="shrink-0 relative px-4 md:px-8 py-3 font-label text-base font-bold transition-all duration-300 rounded-lg"
                 [class]="selectedCategoryId() === category.id
                   ? 'text-primary bg-primary/8'
                   : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'">
@@ -56,8 +56,8 @@
           </div>
         </div>
         <!-- Scroll Arrows -->
-        <button (click)="scrollCategories('left')"
-                class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+        <button (click)="scrollCategories('right')"
+                class="hidden md:flex shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary items-center justify-center transition-all duration-300">
           <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
         </button>
       </div>

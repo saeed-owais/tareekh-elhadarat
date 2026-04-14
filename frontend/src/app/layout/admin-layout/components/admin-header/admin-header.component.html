@@ -207,7 +207,7 @@
             <span class="text-[9px] font-black uppercase text-secondary tracking-tighter">{{ ts.t('admin.header.adminRole') }}</span>
           </div>
           <img [alt]="user.firstName + ' ' + user.lastName" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-outline-variant/10 group-hover/profile:ring-2 group-hover/profile:ring-secondary/30 transition-all"
-            [src]="user.profilePhoto" />
+            [src]="cleanUrl(user.profilePhoto)" />
         </a>
       } @else {
         <div class="flex items-center gap-2 md:gap-3 border-outline-variant/20"

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../../core/services/profile.service';
@@ -23,6 +23,19 @@ export class ProfileComponent implements OnInit {
   user = signal<UserProfile | null>(null); 
   isLoadingProfile = signal<boolean>(true); 
   
+  // Computed Join Year
+  joinYear = computed(() => {
+    const userData = this.user();
+    console.log(userData);
+    if (userData?.createdAt) {
+      try {
+        return new Date(userData.createdAt).getFullYear().toString();
+      } catch (e) {
+        return '2026';
+      }
+    }
+    return '2026';
+  });  
   // Saved Articles
   savedArticles = signal<SavedArticle[]>([]);
   isLoadingSaved = signal<boolean>(false);

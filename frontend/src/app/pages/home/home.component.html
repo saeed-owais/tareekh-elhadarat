@@ -1,24 +1,24 @@
 <main class="lg:pt-0">
   <!-- Hero Section -->
   @if (featuredArticle()) {
-  <section class="relative min-h-[819px] flex items-center overflow-hidden mb-20 pt-28 lg:pt-0">
+  <section class="relative min-h-[810px] flex items-center overflow-hidden pb-20 pt-28   md:pt-36">
     <div class="absolute inset-0 paper-texture opacity-40"></div>
     <div class="absolute inset-0 islamic-pattern"></div>
-    <div class="container mx-auto px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+    <div class="container mx-auto py-4 px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
       <div
         class="h-[500px] rounded-xl overflow-hidden shadow-2xl rotate-1 group transition-transform hover:rotate-0 duration-700"
-        [class.order-2]="ts.isRtl()" [class.order-1]="!ts.isRtl()"
-        [class.lg:order-1]="ts.isRtl()" [class.lg:order-2]="!ts.isRtl()">
+        [class.order-2]="ts.isRtl()" [class.order-1]="!ts.isRtl()" [class.lg:order-1]="ts.isRtl()"
+        [class.lg:order-2]="!ts.isRtl()">
         <img [alt]="featuredArticle()!.title"
           class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
           [src]="cleanUrl(featuredArticle()!.imageUrl)">
       </div>
-      <div class="space-y-6"
-        [class.order-1]="ts.isRtl()" [class.order-2]="!ts.isRtl()"
-        [class.lg:order-2]="ts.isRtl()" [class.lg:order-1]="!ts.isRtl()"
-        [class.pr-0]="true" [class.lg:pr-12]="ts.isRtl()" [class.lg:pl-12]="!ts.isRtl()">
+      <div class="space-y-6" [class.order-1]="ts.isRtl()" [class.order-2]="!ts.isRtl()" [class.lg:order-2]="ts.isRtl()"
+        [class.lg:order-1]="!ts.isRtl()" [class.pr-0]="true" [class.lg:pr-12]="ts.isRtl()"
+        [class.lg:pl-12]="!ts.isRtl()">
         <span
-          class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label text-sm font-bold tracking-widest uppercase">{{ ts.t('home.featuredArticle') }}</span>
+          class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label text-sm font-bold tracking-widest uppercase">{{
+          ts.t('home.featuredArticle') }}</span>
         <h1 class="text-4xl lg:text-6xl font-headline font-bold text-primary leading-[1.4]">
           {{ featuredArticle()!.title }}
         </h1>
@@ -35,8 +35,7 @@
           <a [routerLink]="['/articles', featuredArticle()!.id]"
             class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-on-primary rounded-lg font-headline text-xl hover:bg-primary-container transition-all group">
             {{ ts.t('home.readMore') }}
-            <span class="material-symbols-outlined transition-transform"
-              [class.group-hover:-translate-x-1]="ts.isRtl()"
+            <span class="material-symbols-outlined transition-transform" [class.group-hover:-translate-x-1]="ts.isRtl()"
               [class.group-hover:translate-x-1]="!ts.isRtl()">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
           </a>
         </div>
@@ -57,35 +56,62 @@
   </section>
   }
 
-  <!-- Categories Slider -->
-  <section class="mb-32">
-    <div class="container mx-auto px-8">
-      <h2 class="text-3xl font-headline font-bold text-primary mb-8">{{ ts.t('home.browseByCategory') }}</h2>
-    </div>
+  <!-- Dark Epic Vision Statement Section -->
+  <section class="vision-background-section py-24 mb-0 relative overflow-hidden border-y border-secondary/20">
+    <!-- Decoration: Patterns and Glows -->
+    <div class="absolute inset-0 islamic-pattern opacity-10 scale-125"></div>
+    <div class="absolute inset-0 bg-radial-to-c from-secondary/5 to-transparent h-full w-full"></div>
+    <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-secondary/10 rounded-full blur-3xl"></div>
 
+    <div class="container mx-auto px-8 relative z-10 text-center max-w-5xl">
+      <div
+        class="inline-flex items-center justify-center p-3 rounded-full bg-secondary/10 border border-secondary/20 mb-8">
+        <span class="material-symbols-outlined text-[#CFAF5B] text-4xl">history_edu</span>
+      </div>
+
+      <h2 class="font-headline font-bold leading-[1.8]">
+        <span class="block text-2xl lg:text-3xl text-surface/80 mb-10 drop-shadow-sm font-medium">
+          {{ ts.t('home.browseByCategory').split('\n')[0] }}
+        </span>
+        <span
+          class="block text-4xl lg:text-6xl text-[#E6C97A] drop-shadow-[0_2px_10px_rgba(230,201,122,0.3)] leading-14 lg:leading-28">
+          {{ ts.t('home.browseByCategory').split('\n')[1] }}
+        </span>
+      </h2>
+
+      <div class="flex items-center justify-center gap-4 mt-12 opacity-60 text-[#CFAF5B]">
+        <div class="h-px w-16 bg-linear-to-r from-transparent to-current"></div>
+        <div class="w-2 h-2 rounded-full bg-current rotate-45"></div>
+        <div class="h-px w-16 bg-linear-to-l from-transparent to-current"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Slider -->
+  <section class="my-8">
     <div class="z-10 bg-surface/80 backdrop-blur-xl border-y border-outline-variant/10 transition-all">
-      <div class="container mx-auto px-8">
-        <div class="flex items-center gap-3">
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="flex items-center gap-2 md:gap-3">
           <!-- Scroll Arrows -->
-          <button (click)="scrollCategories('right')"
-            class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+          <button (click)="scrollCategories('left')"
+            class="hidden md:flex shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary items-center justify-center transition-all duration-300">
             <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_right' : 'chevron_left' }}</span>
           </button>
 
           <!-- Slider -->
           <div class="relative flex-1 min-w-0">
             <div
-              class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none">
+              class="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-surface/80 to-transparent z-10 pointer-events-none md:hidden">
             </div>
             <div
-              class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none">
+              class="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-surface/80 to-transparent z-10 pointer-events-none md:hidden">
             </div>
-            <div #categoriesSlider class="flex gap-2 overflow-x-auto py-3 scroll-smooth"
+            <div #categoriesSlider class="flex gap-1 md:gap-2 overflow-x-auto py-3 scroll-smooth"
               style="scrollbar-width: none; -ms-overflow-style: none;">
 
               <!-- All Articles Tab -->
               <a routerLink="/articles"
-                class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
+                class="shrink-0 relative px-4 md:px-8 py-3 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
                 <span class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-lg">grid_view</span>
                   {{ ts.t('home.allArticles') }}
@@ -95,7 +121,7 @@
               <!-- Category Tabs -->
               @for (category of categories(); track category.id) {
               <a [routerLink]="['/articles']" [queryParams]="{ category: category.id }"
-                class="shrink-0 relative px-8 py-3.5 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
+                class="shrink-0 relative px-4 md:px-8 py-3 font-label text-base font-bold text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-all duration-300 rounded-lg">
                 {{ category.name }}
               </a>
               }
@@ -103,8 +129,8 @@
           </div>
 
           <!-- Scroll Arrows -->
-          <button (click)="scrollCategories('left')"
-            class="shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-all duration-300">
+          <button (click)="scrollCategories('right')"
+            class="hidden md:flex shrink-0 w-8 h-8 rounded-full bg-surface-container-low hover:bg-secondary hover:text-on-secondary items-center justify-center transition-all duration-300">
             <span class="material-symbols-outlined text-lg">{{ ts.isRtl() ? 'chevron_left' : 'chevron_right' }}</span>
           </button>
         </div>
@@ -155,8 +181,7 @@
                 [class.left-4]="ts.isRtl()" [class.right-4]="!ts.isRtl()">
                 <span class="material-symbols-outlined text-2xl transition-transform"
                   [style.font-variation-settings]="savedArticleIds().includes(article.id) ? '\'FILL\' 1' : ''"
-                  [class.text-secondary]="savedArticleIds().includes(article.id)"
-                  >
+                  [class.text-secondary]="savedArticleIds().includes(article.id)">
                   favorite
                 </span>
               </button>
@@ -225,18 +250,50 @@
   </section>
 
   <!-- Vision Section -->
-  <section class="bg-linear-to-r from-[#0F2A1D] to-[#1F3D2B] py-28 mb-32 relative overflow-hidden">
-    <div class="absolute inset-0 islamic-pattern opacity-5"></div>
-    <div class="container mx-auto px-8 relative z-10 text-center max-w-4xl">
-      <span class="material-symbols-outlined text-[#CFAF5B] text-5xl mb-6">auto_awesome</span>
-      <h2 class="flex flex-col gap-4 text-3xl lg:text-5xl font-headline font-bold text-[#E6C97A] leading-[1.6] mb-6">
-        <span class="block text-xl lg:text-2xl text-[#CFAF5B]/80 mb-2">{{ ts.t('home.vision') }}</span>
-        <span class="block">{{ ts.t('home.visionText1') }}</span>
-        <span class="block">{{ ts.t('home.visionText2') }} <span class="text-[#CFAF5B]">{{ ts.t('home.visionText3') }}</span> &amp; <span
-            class="text-[#CFAF5B]">{{ ts.t('home.visionText4') }}</span></span>
-        <span class="block text-lg lg:text-xl text-[#E6C97A]/80 mt-3">{{ ts.t('home.visionText5') }}</span>
-      </h2>
-      <div class="w-20 h-[2px] bg-linear-to-r from-[#CFAF5B] to-[#E6C97A] mx-auto opacity-70"></div>
+  <section class="vision-statement-section py-28 mb-32 relative overflow-hidden">
+    <div class="absolute inset-0 islamic-pattern opacity-10"></div>
+    <!-- Bottom transition overlay -->
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-surface to-transparent z-10"></div>
+
+    <div class="container mx-auto px-8 relative z-20 flex justify-center">
+      <div class="glass-container p-6 md:p-10 lg:p-20 rounded-[2rem] lg:rounded-[3rem] text-center max-w-5xl w-full break-words hyphens-auto">
+        <div class="relative inline-block mb-10">
+          <span class="material-symbols-outlined text-[#E6C97A] text-7xl icon-glow animate-pulse">auto_awesome</span>
+          <div class="absolute -inset-10 bg-[#E6C97A]/10 blur-3xl rounded-full -z-10"></div>
+        </div>
+
+        <div class="space-y-8">
+          <div class="flex items-center justify-center gap-6 mb-2">
+            <div class="h-px w-10 bg-linear-to-r from-transparent to-[#CFAF5B]/50"></div>
+            <span class="text-sm lg:text-base text-[#CFAF5B] font-black uppercase tracking-[0.4em]">{{
+              ts.t('home.vision') }}</span>
+            <div class="h-px w-10 bg-linear-to-l from-transparent to-[#CFAF5B]/50"></div>
+          </div>
+
+          <h2 class="flex flex-col gap-6 text-3xl md:text-5xl lg:text-6xl font-headline font-bold text-white leading-tight lg:leading-[1.3]">
+            <span class="block text-glow tracking-tight">{{ ts.t('home.visionText1') }}</span>
+
+            <span class="block   text-[#E6C97A] drop-shadow-[0_0_15px_rgba(230,201,122,0.2)]">
+              {{ ts.t('home.visionText2') }}
+              <span class="text-white">{{ ts.t('home.visionText3') }}</span>
+              <span class=" lg:text-3xl mx-4 opacity-50 align-middle">{{ ts.t('home.and') }}</span>
+              <span class="text-white">{{ ts.t('home.visionText4') }}</span>
+            </span>
+          </h2>
+
+          <div class="max-w-2xl mx-auto pt-6">
+            <p class="text-lg lg:text-2xl text-white/80 font-headline italic leading-relaxed">
+              "{{ ts.t('home.visionText5') }}"
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-16 flex items-center justify-center gap-3">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#E6C97A] rotate-45 shadow-[0_0_8px_rgba(230,201,122,1)]"></div>
+          <div class="w-24 h-px bg-linear-to-r from-transparent via-[#CFAF5B] to-transparent"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-[#E6C97A] rotate-45 shadow-[0_0_8px_rgba(230,201,122,1)]"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -324,7 +381,8 @@
               {{ ts.t('home.startJourney') }}
               <span class="material-symbols-outlined transition-transform"
                 [class.group-hover/btn:-translate-x-1]="ts.isRtl()"
-                [class.group-hover/btn:translate-x-1]="!ts.isRtl()">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
+                [class.group-hover/btn:translate-x-1]="!ts.isRtl()">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward'
+                }}</span>
             </a>
           </div>
 

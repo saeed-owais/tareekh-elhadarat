@@ -136,9 +136,19 @@ export class HomeComponent implements OnInit {
   scrollCategories(direction: 'left' | 'right'): void {
     const el = this.categoriesSlider?.nativeElement;
     if (!el) return;
+    const isRtl = this.ts.isRtl();
     const scrollAmount = 200;
+    
+    // Start with physical direction
+    let amount = direction === 'left' ? -scrollAmount : scrollAmount;
+    
+    // Explicitly reverse for Arabic as requested
+    if (isRtl) {
+      amount = -amount;
+    }
+
     el.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      left: amount,
       behavior: 'smooth'
     });
   }

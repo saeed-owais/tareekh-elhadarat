@@ -148,8 +148,19 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   scrollCategories(direction: 'left' | 'right'): void {
     const el = this.categorySlider?.nativeElement;
     if (!el) return;
+    const isRtl = this.ts.isRtl();
+    const scrollAmount = 200;
+    
+    // Start with physical direction
+    let amount = direction === 'left' ? -scrollAmount : scrollAmount;
+    
+    // Explicitly reverse for Arabic as requested
+    if (isRtl) {
+      amount = -amount;
+    }
+
     el.scrollBy({
-      left: direction === 'left' ? -200 : 200,
+      left: amount,
       behavior: 'smooth'
     });
   }

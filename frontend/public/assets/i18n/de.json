@@ -21,7 +21,7 @@
   "home": {
     "featuredArticle": "Empfohlener Artikel",
     "readMore": "Weiterlesen",
-    "browseByCategory": "Nach Kategorie durchsuchen",
+    "browseByCategory": "Sie sind hier, weil Sie etwas Besonderes sind und nach der Wahrheit suchen.\nWas Sie hier lesen, wird Ihre Sicht auf die Geschichte verändern, da wir Licht auf die dunklen Kapitel geworfen haben, die manche jahrelang verborgen hielten.",
     "allArticles": "Alle Artikel",
     "latestArticles": "Neueste Artikel",
     "mostRead": "Meistgelesen",
@@ -29,11 +29,11 @@
     "readMinutes": "Min. Lesezeit",
     "noArticles": "Keine Artikel gefunden",
     "vision": "Unsere Vision",
-    "visionText1": "Bei „Weltzivilisationen",
-    "visionText2": "„Weltzivilisationen",
-    "visionText3": "Authentizität",
-    "visionText4": "Modernität",
-    "visionText5": "Wir glauben, dass Wissen die Brücke ist, die Vergangenheit und Zukunft verbindet",
+    "visionText1": "Wir streben danach, kulturelles Bewusstsein zu schaffen",
+    "visionText2": "das verbindet",
+    "visionText3": "Antike Zivilisationen",
+    "visionText4": "Zeitgenössische Völker",
+    "visionText5": "Um den Kompass wieder in die richtige Richtung zu lenken.",
     "ourPublications": "Unsere Publikationen",
     "browseAllBooks": "Alle Bücher durchsuchen",
     "viewDetails": "Details anzeigen",
@@ -44,8 +44,9 @@
     "startJourney": "Starten Sie Ihre Wissensreise",
     "exclusiveContent": "Exklusive Inhalte",
     "intellectualCommunity": "Intellektuelle Gemeinschaft",
-    "quoteText": "\"Lesen ist der einzige Schlüssel, der uns die Türen der Vergangenheit, Gegenwart und Zukunft zugleich öffnet.\"",
-    "quoteAuthor": "— Abbas Mahmoud Al-Aqqad"
+    "quoteText": "\"Lesen ist der einzige Schlüssel, der die Türen der Vergangenheit, Gegenwart und Zukunft gleichzeitig öffnet.\"",
+    "quoteAuthor": "— Abbas Mahmoud Al-Aqqad",
+    "and": "und"
   },
   "articles": {
     "title": "Geschäftsbedingungen und Datenschutzrichtlinie",
@@ -94,8 +95,8 @@
   "about": {
     "title": "Geschäftsbedingungen und Datenschutzrichtlinie",
     "visionTitle": "Unsere Vision",
-    "visionText1": "Bei „Weltzivilisationen“ streben wir danach, ein zivilisatorisches Bewusstsein aufzubauen, das Authentizität und Modernität verbindet. Wir glauben, dass Wissen die Brücke ist, die Vergangenheit und Zukunft verbindet.",
-    "visionText2": "„Weltzivilisationen“ ist nicht nur ein Blog — es ist eine intellektuelle Gemeinschaft, die Forscher, Intellektuelle und Leser an einem Tisch zusammenbringt.",
+    "visionText1": "Bei „Tareekh Alshoop“ streben wir danach, ein zivilisatorisches Bewusstsein aufzubauen, das Authentizität und Modernität verbindet. Wir glauben, dass Wissen die Brücke ist, die Vergangenheit und Zukunft verbindet.",
+    "visionText2": "„Tareekh Alshoop“ ist nicht nur ein Blog — es ist eine intellektuelle Gemeinschaft, die Forscher, Intellektuelle und Leser an einem Tisch zusammenbringt.",
     "missionTitle": "Unsere Mission",
     "spreadKnowledge": "Wissen verbreiten",
     "spreadKnowledgeDesc": "Bereitstellung reichhaltiger intellektueller und kultureller Inhalte.",
@@ -159,7 +160,7 @@
     "passwordMismatch": "Passwörter stimmen nicht überein.",
     "agreeTerms": "Ich stimme den",
     "termsLink": "Geschäftsbedingungen",
-    "heroTitle": "Weltzivilisationen",
+    "heroTitle": "Tareekh Alshoop",
     "heroSubtitle": "Eine Reise durch Zivilisationen und Kulturen",
     "heroDesc": "Wir erforschen die Wurzeln der Menschheit und ihre Vielfalt durch die Zeitalter.",
     "registerBtn": "Konto erstellen",
@@ -225,9 +226,9 @@
     "contributions": "Beiträge & Aktivität",
     "savedArticles": "Gespeicherte Artikel",
     "publishedArticles": "Veröffentlichte Artikel",
-    "memberSince": "Mitglied bei „Weltzivilisationen“ seit 2024",
+    "memberSince": "Mitglied bei „Tareekh Alshoop“ seit {{year}}",
     "newsForYou": "Neuigkeiten für Sie",
-    "newsDesc": "Werden Sie Teil der Geschichte von „Weltzivilisationen“ und teilen Sie Ihre historische Forschung.",
+    "newsDesc": "Werden Sie Teil der Geschichte von „Tareekh Alshoop“ und teilen Sie Ihre historische Forschung.",
     "writeWithUsNow": "Jetzt mit uns schreiben",
     "profileUpdated": "Profil erfolgreich aktualisiert"
   },
@@ -236,7 +237,7 @@
     "terms": "Veröffentlichungsbedingungen",
     "privacy": "Datenschutzrichtlinie",
     "contact": "Kontakt",
-    "rights": "Weltzivilisationen. Alle Rechte vorbehalten."
+    "rights": "Tareekh Alshoop. Alle Rechte vorbehalten."
   },
   "writeWithUs": {
     "title": "Schreiben Sie mit uns",
@@ -294,9 +295,9 @@
   },
   "terms": {
     "title": "Geschäftsbedingungen und Datenschutzrichtlinie",
-    "intro": "Willkommen bei <strong>Weltzivilisationen</strong>. Durch die Nutzung dieser Website stimmen Sie diesen Geschäftsbedingungen zu. Wenn Sie nicht einverstanden sind, beenden Sie bitte die Nutzung der Website.",
+    "intro": "Willkommen bei <strong>Tareekh Alshoop</strong>. Durch die Nutzung dieser Website stimmen Sie diesen Geschäftsbedingungen zu. Wenn Sie nicht einverstanden sind, beenden Sie bitte die Nutzung der Website.",
     "section1Title": "Plattform & Nutzung",
-    "section1P1": "Weltzivilisationen bietet einen digitalen Raum zum Veröffentlichen, Lesen und Teilen von Büchern, Artikeln und Textinhalten durch die Verwaltung und registrierte Benutzer.",
+    "section1P1": "Tareekh Alshoop bietet einen digitalen Raum zum Veröffentlichen, Lesen und Teilen von Büchern, Artikeln und Textinhalten durch die Verwaltung und registrierte Benutzer.",
     "section1P2": "Alle Benutzer müssen die Website rechtmäßig und in Übereinstimmung mit EU-Gesetzen nutzen und dürfen keine beleidigenden, illegalen oder rechtsverletzenden Inhalte veröffentlichen.",
     "section1P3": "Die Seitenverwaltung behält sich das Recht vor, violierende Inhalte zu löschen oder Benutzerkonten jederzeit ohne vorherige Ankündigung zu sperren.",
     "section2Title": "Konten & Verantwortung",
@@ -376,7 +377,7 @@
       "edit": "Bearbeiten"
     },
     "sidebar": {
-      "brand": "Weltzivilisationen",
+      "brand": "Tareekh Alshoop",
       "controlPanel": "Kontrollzentrum",
       "returnMain": "Zurück zur Hauptseite",
       "overview": "Übersicht",

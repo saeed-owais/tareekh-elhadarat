@@ -1,3 +1,54 @@
 :host {
   display: block;
 }
+
+.vision-background-section {
+  position: relative;
+  background-image: linear-gradient(rgba(6, 27, 14, 0.5), rgba(6, 27, 14, 0.2)), url('/assets/images/vision-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+@media (max-width: 1024px) {
+  .vision-background-section {
+    background-attachment: scroll;
+  }
+}
+
+.vision-statement-section {
+  position: relative;
+  /* Cinematic radial gradient to darken corners and focus on center */
+  background-image:
+    radial-gradient(circle at center, rgba(15, 42, 29, 0.4) 0%, rgba(15, 42, 29, 0.8) 100%),
+    url('/assets/images/vision-bg1.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.glass-container {
+  background: rgba(15, 42, 29, 0.2);
+  backdrop-blur: 8px;
+  -webkit-backdrop-blur: 8px;
+  border: 1px solid rgba(230, 201, 122, 0.15);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.text-glow {
+  text-shadow: 0 0 30px rgba(230, 201, 122, 0.4);
+}
+
+.icon-glow {
+  filter: drop-shadow(0 0 15px rgba(230, 201, 122, 0.5));
+}
+
+@media (max-width: 1024px) {
+  .vision-statement-section {
+    background-attachment: scroll;
+    min-height: auto;
+  }
+}

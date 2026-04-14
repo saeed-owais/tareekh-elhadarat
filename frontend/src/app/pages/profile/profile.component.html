@@ -231,7 +231,7 @@
           </div>
           
           <div class="mt-10 pt-8 border-t border-outline-variant/30 text-center">
-            <p class="text-on-surface-variant text-xs mb-4">{{ ts.t('profile.memberSince') }}</p>
+            <p class="text-on-surface-variant text-xs mb-4">{{ ts.t('profile.memberSince', { year: joinYear() }) }}</p>
             <div class="flex justify-center gap-4">
               <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
