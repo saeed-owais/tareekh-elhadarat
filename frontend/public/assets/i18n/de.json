@@ -619,7 +619,8 @@
       "errorMsg": "Datei-Upload fehlgeschlagen. Bitte versuchen Sie es erneut.",
       "requiredFieldsMsg": "Bitte füllen Sie alle erforderlichen Felder aus und fügen Sie die erforderlichen Dateien bei",
       "supabaseErrorMsg": "Fehler beim Abrufen des Download-Links vom Cloud-Speicher",
-      "rollbackMsg": "(Hochgeladene Datei wurde automatisch gelöscht)"
+      "rollbackMsg": "(Hochgeladene Datei wurde automatisch gelöscht)",
+      "backToList": "Zurück zur Bücherliste"
     }
   }
 }

@@ -104,7 +104,7 @@
                             <td class="px-6 py-5 text-xs text-on-surface/60 font-medium whitespace-nowrap">{{ book.releaseDate | date: 'dd MMMM yyyy' }}</td>
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-3">
-                                    <a [href]="book.downloadLink" target="_blank" class="p-2 hover:bg-secondary/10 rounded-full text-secondary/60 hover:text-secondary transition-all" [title]="ts.t('admin.booksManage.downloadFile')">
+                                    <a [href]="book.book" target="_blank" class="p-2 hover:bg-secondary/10 rounded-full text-secondary/60 hover:text-secondary transition-all" [title]="ts.t('admin.booksManage.downloadFile')">
                                         <span class="material-symbols-outlined text-xl" data-icon="download">download</span>
                                     </a>
                                     <button (click)="toggleDelete(book.id, $event)" class="p-2 hover:bg-error/10 rounded-full text-error/60 hover:text-error transition-all" [title]="ts.t('admin.booksManage.delete')">

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookService } from '../../../core/services/book.service';
-import { SupabaseStorageService } from '../../../core/services/supabase-storage.service';
 import { finalize } from 'rxjs';
 import { TranslationService } from '../../../core/services/translation.service';
 
@@ -37,7 +36,6 @@ export class BookAddComponent {
 
   constructor(
     private bookService: BookService,
-    private storageService: SupabaseStorageService,
     public router: Router
   ) {}
 
@@ -70,22 +68,9 @@ export class BookAddComponent {
     this.uploadProgress.set(this.ts.t('admin.bookAdd.uploadingMsg'));
 
     try {
-      // Step 1: Upload the PDF to Supabase Storage
-      const { publicUrl, filePath } = await this.storageService.uploadFile(
-        'books',
-        this.bookFile()!
-      );
+      this.uploadProgress.set(this.ts.t('admin.bookAdd.uploadingMsg'));
 
-      console.log('Supabase download URL:', publicUrl);
-
-      if (!publicUrl) {
-        throw new Error(this.ts.t('admin.bookAdd.supabaseErrorMsg'));
-      }
-
-      this.isUploading.set(false);
-      this.uploadProgress.set(this.ts.t('admin.bookAdd.uploadSuccessMsg'));
-
-      // Step 2: Send book data with the Supabase public URL to backend
+      // Send book data with the PDF file directly to backend
       const formData = new FormData();
       formData.append('Title', this.title());
       formData.append('Author', this.author());
@@ -93,26 +78,21 @@ export class BookAddComponent {
       formData.append('ReleaseDate', this.releaseDate());
       formData.append('About', this.about());
       formData.append('Poster', this.posterFile()!, this.posterFile()!.name);
-      formData.append('BookDownloadUrl', publicUrl);
+      formData.append('book', this.bookFile()!, this.bookFile()!.name);
 
       this.bookService.addBookAdmin(formData)
         .pipe(finalize(() => this.isLoading.set(false)))
         .subscribe({
           next: () => {
+            this.isUploading.set(false);
             this.uploadProgress.set('');
             this.successMessage.set(this.ts.t('admin.bookAdd.successMsg'));
             setTimeout(() => this.router.navigate(['/admin/books']), 2000);
           },
           error: async (err) => {
-            // Rollback: delete the uploaded file from Supabase since backend failed
-            try {
-              await this.storageService.deleteFile('books', filePath);
-              console.log('Rollback: deleted orphaned file from Supabase');
-            } catch (deleteErr) {
-              console.error('Rollback failed:', deleteErr);
-            }
+            this.isUploading.set(false);
             this.uploadProgress.set('');
-            this.errorMessage.set(err + ' ' + this.ts.t('admin.bookAdd.rollbackMsg'));
+            this.errorMessage.set(err);
           }
         });
 

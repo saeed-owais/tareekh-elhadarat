@@ -550,7 +550,8 @@
       "errorMsg": "File upload failed. Please try again.",
       "requiredFieldsMsg": "Please fill all required fields and attach required files",
       "supabaseErrorMsg": "Failed to get download link from cloud storage",
-      "rollbackMsg": "(Uploaded file was automatically deleted)"
+      "rollbackMsg": "(Uploaded file was automatically deleted)",
+      "backToList": "Back to Book List"
     },
     "articleView": {
       "articlePreview": "Article Preview",

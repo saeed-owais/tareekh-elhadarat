@@ -3,16 +3,18 @@
       [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
   <div class="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
     <!-- Header -->
-    <div class="flex items-center gap-4 mb-8 flex-row-reverse justify-end">
-      <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+    <div class="flex items-center gap-4 mb-8">
+        <a routerLink="/admin/articles" 
+         class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors text-on-surface-variant shrink-0">
+        <span class="material-symbols-outlined" [class.rotate-180]="!ts.isRtl()">arrow_forward</span>
+      </a>
+      <div [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()" class="flex-1">
         <h2 class="text-2xl md:text-3xl font-headline font-bold text-primary mb-2">{{ ts.t('admin.articleForm.addNew') }}</h2>
         <p class="text-on-surface/60 text-xs md:text-sm max-w-md leading-relaxed">
           {{ ts.t('admin.articleForm.subtitle') }}
         </p>
       </div>
-      <a routerLink="/admin/articles" class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors text-on-surface-variant mr-auto">
-        <span class="material-symbols-outlined" [class.rotate-180]="!ts.isRtl()">arrow_forward</span>
-      </a>
+    
     </div>
 
     <!-- Success Message -->
