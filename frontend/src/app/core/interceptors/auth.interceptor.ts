@@ -1,19 +1,25 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TokenService } from '../services/token.service';
+import { TranslationService } from '../services/translation.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
+  const translationService = inject(TranslationService);
   const token = tokenService.getToken();
+  const lang = translationService.currentLang();
+
+  const headers: any = {
+    'Accept-Language': lang
+  };
 
   if (token) {
-    const cloned = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return next(cloned);
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
-  return next(req);
+  const cloned = req.clone({
+    setHeaders: headers
+  });
+
+  return next(cloned);
 };

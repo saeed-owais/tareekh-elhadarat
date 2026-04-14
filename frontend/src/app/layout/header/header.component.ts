@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 import { ScrollService } from '../../core/services/scroll.service';
 import { TranslationService, AppLang } from '../../core/services/translation.service';
 
+import { ThemeService } from '../../core/services/theme.service';
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -34,6 +36,7 @@ export class HeaderComponent implements OnDestroy {
   private articleService = inject(ArticleService);
   public scrollService = inject(ScrollService);
   public ts = inject(TranslationService);
+  public themeService = inject(ThemeService);
 
   private searchSubject = new Subject<string>();
   private searchSub: Subscription;

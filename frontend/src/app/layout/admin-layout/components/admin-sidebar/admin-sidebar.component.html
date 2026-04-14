@@ -1,8 +1,8 @@
 @if (layoutService.isMobileSidebarOpen()) {
-  <div class="fixed inset-0 bg-[#061B0E]/50 z-40 lg:hidden backdrop-blur-sm transition-opacity" (click)="layoutService.closeSidebar()"></div>
+  <div class="fixed inset-0 bg-on-surface/50 z-40 lg:hidden backdrop-blur-sm transition-opacity" (click)="layoutService.closeSidebar()"></div>
 }
 
-<aside class="h-screen fixed top-0 w-64 border-x border-outline-variant/10 z-50 bg-[#F5F5DC] dark:bg-[#1B3022] transition-transform duration-300 transform lg:translate-x-0 overflow-y-auto shadow-xl"
+<aside class="h-screen fixed top-0 w-64 border-x border-outline-variant/10 z-50 bg-surface-container-low transition-transform duration-300 transform lg:translate-x-0 overflow-y-auto shadow-xl"
        [class.right-0]="ts.isRtl()"
        [class.left-0]="!ts.isRtl()"
        [class.translate-x-0]="layoutService.isMobileSidebarOpen()"
@@ -18,46 +18,46 @@
           <span class="material-symbols-outlined text-surface text-2xl" data-icon="menu_book">menu_book</span>
         </div>
         <div>
-          <div class="text-xl font-bold text-[#061B0E] dark:text-[#FBFBE2] tracking-tight">{{ ts.t('admin.sidebar.brand') }}</div>
-          <div class="text-[10px] text-[#061B0E]/60 dark:text-[#FBFBE2]/60 font-bold uppercase tracking-widest">{{ ts.t('admin.sidebar.controlPanel') }}</div>
+          <div class="text-xl font-bold text-on-surface tracking-tight">{{ ts.t('admin.sidebar.brand') }}</div>
+          <div class="text-[10px] text-on-surface/60 font-bold uppercase tracking-widest">{{ ts.t('admin.sidebar.controlPanel') }}</div>
         </div>
       </a>
     </div>
 
     <!-- Navigation Menu -->
     <nav class="flex-1 px-4 space-y-1">
-      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
-        routerLink="/admin/dashboard" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+      <a class="flex items-center gap-3 text-on-surface/80 px-4 py-3.5 rounded-2xl hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/dashboard" routerLinkActive="bg-surface text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="dashboard">dashboard</span>
         <span class="text-sm">{{ ts.t('admin.sidebar.overview') }}</span>
       </a>
 
-      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
-        routerLink="/admin/approvals" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+      <a class="flex items-center gap-3 text-on-surface/80 px-4 py-3.5 rounded-2xl hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/approvals" routerLinkActive="bg-surface text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="fact_check">fact_check</span>
         <span class="text-sm">{{ ts.t('admin.sidebar.approvals') }}</span>
       </a>
 
-      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
-        routerLink="/admin/articles" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+      <a class="flex items-center gap-3 text-on-surface/80 px-4 py-3.5 rounded-2xl hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/articles" routerLinkActive="bg-surface text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="article">article</span>
         <span class="text-sm">{{ ts.t('admin.sidebar.manageArticles') }}</span>
       </a>
 
-      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
-        routerLink="/admin/books" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+      <a class="flex items-center gap-3 text-on-surface/80 px-4 py-3.5 rounded-2xl hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/books" routerLinkActive="bg-surface text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="menu_book">menu_book</span>
         <span class="text-sm">{{ ts.t('admin.sidebar.digitalLibrary') }}</span>
       </a>
 
-      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
-        routerLink="/admin/comments" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+      <a class="flex items-center gap-3 text-on-surface/80 px-4 py-3.5 rounded-2xl hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/comments" routerLinkActive="bg-surface text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="forum">forum</span>
         <span class="text-sm">{{ ts.t('admin.sidebar.manageComments') }}</span>
       </a>
 
-      <a class="flex items-center gap-3 text-[#061B0E]/80 dark:text-[#FBFBE2]/80 px-4 py-3.5 rounded-2xl hover:bg-[#FBFBE2]/50 hover:text-primary transition-all duration-300 group"
-        routerLink="/admin/categories-tags" routerLinkActive="bg-[#FBFBE2] dark:bg-[#061B0E] text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
+      <a class="flex items-center gap-3 text-on-surface/80 px-4 py-3.5 rounded-2xl hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group"
+        routerLink="/admin/categories-tags" routerLinkActive="bg-surface text-primary font-bold shadow-sm" (click)="layoutService.closeSidebar()">
         <span class="material-symbols-outlined transition-transform group-hover:scale-110" data-icon="category">category</span>
         <span class="text-sm">{{ ts.t('admin.sidebar.categoriesTags') }}</span>
       </a>

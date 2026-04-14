@@ -240,11 +240,21 @@
         </a>
         }
       </div>
-      <div class="mt-12 p-6 bg-primary-container rounded-xl text-on-primary">
-        <p class="font-headline italic text-lg opacity-90 leading-relaxed mb-4">
+      <div class="mt-12 p-8 bg-surface-container-low/50 dark:bg-primary/5 rounded-2xl border-l-4 border-secondary relative overflow-hidden group"
+        [class.border-l-4]="!ts.isRtl()" [class.border-r-4]="ts.isRtl()" [class.border-l-0]="ts.isRtl()">
+        <!-- Decoration -->
+        <div class="absolute inset-0 islamic-pattern opacity-[0.03] pointer-events-none"></div>
+        <span class="material-symbols-outlined absolute -top-2 text-6xl text-secondary/10 rotate-12 pointer-events-none"
+          [class.left-2]="!ts.isRtl()" [class.right-2]="ts.isRtl()">format_quote</span>
+        
+        <p class="font-headline italic text-xl text-on-surface/90 leading-relaxed mb-6 relative z-10">
           {{ ts.t('home.quoteText') }}
         </p>
-        <span class="text-secondary font-label font-bold">{{ ts.t('home.quoteAuthor') }}</span>
+        
+        <div class="flex items-center gap-3 relative z-10" [class.flex-row-reverse]="ts.isRtl()">
+          <div class="h-px w-8 bg-secondary/40"></div>
+          <span class="text-secondary font-label font-black tracking-widest uppercase text-xs">{{ ts.t('home.quoteAuthor') }}</span>
+        </div>
       </div>
     </aside>
   </section>

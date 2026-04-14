@@ -1,6 +1,6 @@
 import { Component, signal, OnInit, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ArticleService } from '../../../core/services/article.service';
 import { CategoryService } from '../../../core/services/category.service';
@@ -17,6 +17,7 @@ export class ArticlesManageComponent implements OnInit {
   private articleService = inject(ArticleService);
   private categoryService = inject(CategoryService);
   public ts: TranslationService = inject(TranslationService);
+  private route = inject(ActivatedRoute);
 
   confirmDeleteId = signal<number | null>(null);
   articles = signal<AdminArticle[]>([]);
@@ -102,6 +103,12 @@ export class ArticlesManageComponent implements OnInit {
   isLoading = signal(false);
 
   ngOnInit(): void {
+    // Check for search query param
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.searchQuery.set(params['search']);
+      }
+    });
     this.loadArticles();
     this.loadCategories();
   }

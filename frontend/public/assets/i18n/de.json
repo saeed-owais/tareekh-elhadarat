@@ -572,6 +572,7 @@
       "author": "Autor",
       "publishDate": "Veröffentlichungsdatum",
       "lastUpdate": "Zuletzt aktualisiert",
+      "tags": "Schlagwörter",
       "manageComments": "Artikelkommentare verwalten",
       "missingArticle": "Artikel fehlt",
       "missingArticleDesc": "Entschuldigung, wir konnten diesen Artikel nicht in unseren Unterlagen finden.",

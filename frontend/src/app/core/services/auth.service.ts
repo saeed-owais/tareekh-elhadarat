@@ -32,8 +32,8 @@ export class AuthService {
             }),
             map(res => res.data.jwtToken),
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل تسجيل الدخول';
-                return throwError(() => message);
+                const errors = err.error || (err.message ? [err.message] : ['فشل تسجيل الدخول']);
+                return throwError(() => Array.isArray(errors) ? errors : [errors]);
             })
         );
     }
@@ -42,8 +42,8 @@ export class AuthService {
     register(data: RegisterRequest): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/register`, data).pipe(
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل إنشاء الحساب';
-                return throwError(() => message);
+                const errors = err.error || (err.message ? [err.message] : ['فشل إنشاء الحساب']);
+                return throwError(() => Array.isArray(errors) ? errors : [errors]);
             })
         );
     }
@@ -52,8 +52,8 @@ export class AuthService {
     changePassword(data: ChangePasswordRequest): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/change-password`, data).pipe(
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل تغيير كلمة المرور';
-                return throwError(() => message);
+                const errors = err.error || (err.message ? [err.message] : ['فشل تغيير كلمة المرور']);
+                return throwError(() => Array.isArray(errors) ? errors : [errors]);
             })
         );
     }
@@ -62,8 +62,8 @@ export class AuthService {
     requestResetPassword(email: string): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/request-reset-password`, { email }).pipe(
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل إرسال طلب إعادة التعيين';
-                return throwError(() => message);
+                const errors = err.error || (err.message ? [err.message] : ['فشل إرسال طلب إعادة التعيين']);
+                return throwError(() => Array.isArray(errors) ? errors : [errors]);
             })
         );
     }
@@ -72,8 +72,8 @@ export class AuthService {
     resetPassword(data: ResetPasswordRequest): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/reset-password`, data).pipe(
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل إعادة تعيين كلمة المرور';
-                return throwError(() => message);
+                const errors = err.error || (err.message ? [err.message] : ['فشل إعادة تعيين كلمة المرور']);
+                return throwError(() => Array.isArray(errors) ? errors : [errors]);
             })
         );
     }
@@ -85,7 +85,7 @@ export class AuthService {
             null
         ).pipe(
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل تأكيد البريد الإلكتروني';
+                const message = err.error || 'فشل تأكيد البريد الإلكتروني';
                 return throwError(() => message);
             })
         );
@@ -98,7 +98,7 @@ export class AuthService {
             null
         ).pipe(
             catchError(err => {
-                const message = err.error?.errors?.[0] || 'فشل إعادة إرسال رسالة التأكيد';
+                const message = err.error || 'فشل إعادة إرسال رسالة التأكيد';
                 return throwError(() => message);
             })
         );

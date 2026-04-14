@@ -1,23 +1,23 @@
 <header
-  class="sticky top-0 z-40 bg-[#FBFBE2] dark:bg-[#061B0E] text-[#061B0E] shadow-[0_8px_32px_rgba(6,27,14,0.06)] px-4 md:px-8 py-3 md:py-4 flex justify-between items-center w-full font-['Newsreader'] antialiased"
+  class="sticky top-0 z-40 bg-surface text-on-surface shadow-[0_8px_32px_rgba(6,27,14,0.06)] px-4 md:px-8 py-3 md:py-4 flex justify-between items-center w-full font-['Newsreader'] antialiased"
   [dir]="ts.isRtl() ? 'rtl' : 'ltr'">
   
   @if (isMobileSearchOpen()) {
-    <div class="absolute inset-0 z-50 bg-[#FBFBE2] dark:bg-[#061B0E] px-4 flex items-center justify-between gap-3 md:hidden animate-in fade-in duration-200">
-      <div class="relative w-full flex-1">
+    <div class="absolute inset-0 z-50 bg-surface px-4 flex items-center justify-between gap-3 md:hidden animate-in fade-in duration-200">
+      <form (ngSubmit)="viewAllResults()" class="relative w-full flex-1">
         <input
           class="w-full bg-surface-container-low border-none rounded-full py-2 text-sm focus:ring-2 focus:ring-secondary/30 transition-all"
           [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()"
           [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
           [placeholder]="ts.t('admin.header.searchPlaceholder')" type="text"
-          [value]="searchQuery()"
-          (input)="onSearchInput($event)" />
+          [(ngModel)]="searchQuery" name="mobileSearch"
+          (input)="onSearchInput()" />
         <span class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface/50"
           [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()"
           data-icon="search">search</span>
         
         <!-- Mobile Search Results -->
-        @if (hasSearched()) {
+        @if (showResults()) {
           <div class="absolute top-full left-0 right-0 mt-4 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200">
             <div class="p-4 border-b border-outline-variant/5 bg-surface-container-low/30">
               <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface/40">{{ ts.t('admin.header.searchResultsFor') }} {{ searchQuery() }}</h4>
@@ -58,8 +58,8 @@
             </div>
           </div>
         }
-      </div>
-      <button (click)="toggleMobileSearch()" class="p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors">
+      </form>
+      <button (click)="toggleMobileSearch()" class="p-2 hover:bg-surface-container rounded-full transition-colors">
         <span class="material-symbols-outlined text-xl" data-icon="close">close</span>
       </button>
     </div>
@@ -67,32 +67,32 @@
 
   <!-- Left Side: Dashboard Title & Toggle -->
   <div class="flex items-center gap-2 md:gap-4">
-    <button (click)="layoutService.toggleSidebar()" class="lg:hidden p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors flex items-center justify-center shadow-sm" [title]="ts.t('admin.header.menu') || 'Menu'">
+    <button (click)="layoutService.toggleSidebar()" class="lg:hidden p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center shadow-sm" [title]="ts.t('admin.header.menu') || 'Menu'">
       <span class="material-symbols-outlined text-xl md:text-2xl" data-icon="menu">menu</span>
     </button>
     <div class="flex flex-col">
-      <span class="text-[10px] font-black uppercase tracking-widest text-[#061B0E]/40 mb-0.5">{{ ts.t('admin.header.adminSystem') }}</span>
-      <h1 class="text-xl md:text-2xl font-bold text-[#061B0E] dark:text-[#FBFBE2] whitespace-nowrap">{{ ts.t('admin.header.controlPanel') }}</h1>
+      <span class="text-[10px] font-black uppercase tracking-widest text-on-surface/40 mb-0.5">{{ ts.t('admin.header.adminSystem') }}</span>
+      <h1 class="text-xl md:text-2xl font-bold text-on-surface whitespace-nowrap">{{ ts.t('admin.header.controlPanel') }}</h1>
     </div>
   </div>
 
   <!-- Right Side: Search & User Actions -->
   <div class="flex items-center gap-3 md:gap-6">
     <!-- Desktop Search -->
-    <div class="relative group hidden md:block">
+    <form (ngSubmit)="viewAllResults()" class="relative group hidden md:block">
       <input
-        class="bg-surface-container-low border border-outline-variant/10 rounded-2xl py-2 text-sm w-48 lg:w-64 focus:ring-4 focus:ring-secondary/5 focus:border-secondary/30 transition-all"
+        class="bg-surface-container-low border border-outline-variant/10 rounded-2xl py-2 text-sm w-48 lg:w-64 focus:ring-4 focus:ring-secondary/5 focus:border-secondary/30 transition-all text-on-surface"
         [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()"
         [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
         [placeholder]="ts.t('admin.header.desktopSearchPlaceholder')" type="text"
-        [value]="searchQuery()"
-        (input)="onSearchInput($event)" />
+        [(ngModel)]="searchQuery" name="desktopSearch"
+        (input)="onSearchInput()" />
       <span class="material-symbols-outlined absolute top-1/2 -translate-y-1/2 text-on-surface/50 group-focus-within:text-secondary transition-colors"
         [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()"
         data-icon="search">search</span>
 
       <!-- Desktop Search Results -->
-      @if (hasSearched()) {
+      @if (showResults()) {
         <div class="absolute top-[calc(100%+12px)] w-80 lg:w-96 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-[100] animate-in slide-in-from-top-2 duration-200"
           [class.right-0]="ts.isRtl()" [class.left-0]="!ts.isRtl()"
           [class.left-auto]="ts.isRtl()" [class.right-auto]="!ts.isRtl()">
@@ -139,18 +139,24 @@
           }
         </div>
       }
-    </div>
+    </form>
 
     <div class="flex items-center gap-1 md:gap-4 border-outline-variant/10"
       [class.border-r]="ts.isRtl()" [class.border-l]="!ts.isRtl()"
       [class.pr-4]="ts.isRtl()" [class.pl-4]="!ts.isRtl()">
-      <button (click)="toggleMobileSearch()" class="md:hidden relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors" [title]="ts.t('admin.header.search')">
+      <button (click)="toggleMobileSearch()" class="md:hidden relative p-2 hover:bg-surface-container rounded-full transition-colors" [title]="ts.t('admin.header.search')">
         <span class="material-symbols-outlined text-xl" data-icon="search">search</span>
       </button>
       
-      <a routerLink="/" class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors group" [title]="ts.t('admin.header.returnMainSite')">
+      <a routerLink="/" class="relative p-2 hover:bg-surface-container rounded-full transition-colors group" [title]="ts.t('admin.header.returnMainSite')">
         <span class="material-symbols-outlined text-xl md:text-2xl transition-transform group-hover:scale-110" data-icon="home">home</span>
       </a>
+
+      <!-- Theme Toggle -->
+      <button aria-label="Toggle Dark Mode" (click)="themeService.toggleTheme()"
+        class="relative p-2 hover:bg-surface-container rounded-full transition-colors group">
+        <span class="material-symbols-outlined text-xl md:text-2xl transition-transform group-hover:scale-110">{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode' }}</span>
+      </button>
 
       <!-- Language Switcher -->
       <div class="relative">
@@ -187,12 +193,6 @@
           </div>
         }
       </div>
-
-      <button class="relative p-2 hover:bg-[#F5F5DC] dark:hover:bg-[#1B3022] rounded-full transition-colors group">
-        <span class="material-symbols-outlined text-xl md:text-2xl transition-transform group-hover:scale-110" data-icon="notifications">notifications</span>
-        <span class="absolute top-2.5 w-2 h-2 bg-error rounded-full border-2 border-[#FBFBE2] dark:border-[#061B0E]"
-          [class.right-2.5]="ts.isRtl()" [class.left-2.5]="!ts.isRtl()"></span>
-      </button>
 
       <!-- User Profile -->
       @if (userProfile$ | async; as user) {

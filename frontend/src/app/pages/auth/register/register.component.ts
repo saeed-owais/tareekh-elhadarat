@@ -17,7 +17,7 @@ export class RegisterComponent {
   showPassword = signal(false);
   showConfirmPassword = signal(false);
   isLoading = signal(false);
-  errorMessage = signal<string | null>(null);
+  errorMessages = signal<string[]>([]);
   isSuccess = signal(false);
 
   registerForm = new FormGroup({
@@ -67,7 +67,7 @@ export class RegisterComponent {
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set(null);
+    this.errorMessages.set([]);
 
     const { firstName, lastName, userName, email, password, confirmPassword } = this.registerForm.value;
 
@@ -85,9 +85,9 @@ export class RegisterComponent {
           this.isSuccess.set(true);
         }
       },
-      error: (err: string) => {
+      error: (err: string[]) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err);
+        this.errorMessages.set(err);
       }
     });
   }

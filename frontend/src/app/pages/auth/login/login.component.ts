@@ -16,7 +16,7 @@ export class LoginComponent {
 
   showPassword = signal(false);
   isLoading = signal(false);
-  errorMessage = signal<string | null>(null);
+  errorMessages = signal<string[]>([]);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -39,7 +39,7 @@ export class LoginComponent {
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set(null);
+    this.errorMessages.set([]);
 
     const { email, password, rememberMe } = this.loginForm.value;
 
@@ -48,9 +48,9 @@ export class LoginComponent {
         this.isLoading.set(false);
         this.router.navigate(['/']);
       },
-      error: (err: string) => {
+      error: (err: string[]) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err);
+        this.errorMessages.set(err);
       }
     });
   }

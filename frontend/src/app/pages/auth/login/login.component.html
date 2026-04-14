@@ -29,10 +29,14 @@
       </div>
 
       <!-- Error Alert -->
-      @if (errorMessage()) {
-      <div class="bg-error/10 border border-error/30 text-error rounded-xl p-4 mb-6 flex items-center gap-3">
-        <span class="material-symbols-outlined text-[20px]">error</span>
-        <span class="text-sm font-medium">{{ errorMessage() }}</span>
+      @if (errorMessages().length > 0) {
+      <div class="bg-error/10 border border-error/30 text-error rounded-xl p-4 mb-6 flex items-start gap-3">
+        <span class="material-symbols-outlined text-[20px] mt-0.5">error</span>
+        <div class="flex flex-col gap-1">
+          @for (msg of errorMessages(); track msg) {
+            <span class="text-sm font-medium">{{ msg }}</span>
+          }
+        </div>
       </div>
       }
 

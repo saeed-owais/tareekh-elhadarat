@@ -566,6 +566,7 @@
       "author": "Author",
       "publishDate": "Publish Date",
       "lastUpdate": "Last Updated",
+      "tags": "Tags",
       "manageComments": "Manage Article Comments",
       "missingArticle": "Article Missing",
       "missingArticleDesc": "Sorry, we couldn't find this article in our records.",
