@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Article } from '../../../../core/models/article.model';
 
 import { ThemeService } from '../../../../core/services/theme.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-header',
@@ -97,7 +98,7 @@ export class AdminHeaderComponent {
   }
 
   cleanUrl(url: string | null | undefined): string {
-    if (!url || url === 'https://modawanty.runasp.net/') return 'assets/images/avatar-placeholder.png';
+    if (!url || url === environment.apiBaseUrl + '/') return 'assets/images/avatar-placeholder.png';
     
     if (url.includes('/https://')) {
       return 'https://' + url.split('/https://')[1];

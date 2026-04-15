@@ -12,6 +12,7 @@ import { ScrollService } from '../../core/services/scroll.service';
 import { TranslationService, AppLang } from '../../core/services/translation.service';
 
 import { ThemeService } from '../../core/services/theme.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -135,7 +136,7 @@ export class HeaderComponent implements OnDestroy {
   }
 
   cleanUrl(url: string | null | undefined): string {
-    if (!url || url === 'https://modawanty.runasp.net/') return 'assets/images/avatar-placeholder.png';
+    if (!url || url === environment.apiBaseUrl + '/') return 'assets/images/avatar-placeholder.png';
     
     if (url.includes('/https://')) {
       return 'https://' + url.split('/https://')[1];

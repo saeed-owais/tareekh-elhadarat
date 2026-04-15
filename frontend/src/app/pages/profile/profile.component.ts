@@ -7,6 +7,7 @@ import { finalize } from 'rxjs';
 import { TranslationService } from '../../core/services/translation.service';
 
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -161,7 +162,7 @@ export class ProfileComponent implements OnInit {
   }
 
   cleanUrl(url: string | null | undefined): string {
-    if (!url || url === 'https://modawanty.runasp.net/') return 'assets/images/avatar-placeholder.png';
+    if (!url || url === environment.apiBaseUrl + '/') return 'assets/images/avatar-placeholder.png';
     if (url.includes('/https://')) {
       return 'https://' + url.split('/https://')[1];
     }
