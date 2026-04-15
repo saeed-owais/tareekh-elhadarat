@@ -159,7 +159,7 @@ export class ProfileComponent implements OnInit {
         this.savedArticles.update(list => list.filter(a => a.articleId !== articleId));
       }
     });
-  }
+  } 
 
   cleanUrl(url: string | null | undefined): string {
     if (!url || url === environment.apiBaseUrl + '/') return 'assets/images/avatar-placeholder.png';
