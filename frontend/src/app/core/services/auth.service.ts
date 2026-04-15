@@ -31,50 +31,35 @@ export class AuthService {
                 }
             }),
             map(res => res.data.jwtToken),
-            catchError(err => {
-                const errors = err.error || (err.message ? [err.message] : ['فشل تسجيل الدخول']);
-                return throwError(() => Array.isArray(errors) ? errors : [errors]);
-            })
+            catchError(err => this.handleErrors(err, 'فشل تسجيل الدخول'))
         );
     }
 
     // ================= REGISTER =================
     register(data: RegisterRequest): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/register`, data).pipe(
-            catchError(err => {
-                const errors = err.error || (err.message ? [err.message] : ['فشل إنشاء الحساب']);
-                return throwError(() => Array.isArray(errors) ? errors : [errors]);
-            })
+            catchError(err => this.handleErrors(err, 'فشل إنشاء الحساب'))
         );
     }
 
     // ================= CHANGE PASSWORD =================
     changePassword(data: ChangePasswordRequest): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/change-password`, data).pipe(
-            catchError(err => {
-                const errors = err.error || (err.message ? [err.message] : ['فشل تغيير كلمة المرور']);
-                return throwError(() => Array.isArray(errors) ? errors : [errors]);
-            })
+            catchError(err => this.handleErrors(err, 'فشل تغيير كلمة المرور'))
         );
     }
 
     // ================= REQUEST RESET PASSWORD =================
     requestResetPassword(email: string): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/request-reset-password`, { email }).pipe(
-            catchError(err => {
-                const errors = err.error || (err.message ? [err.message] : ['فشل إرسال طلب إعادة التعيين']);
-                return throwError(() => Array.isArray(errors) ? errors : [errors]);
-            })
+            catchError(err => this.handleErrors(err, 'فشل إرسال طلب إعادة التعيين'))
         );
     }
 
     // ================= RESET PASSWORD =================
     resetPassword(data: ResetPasswordRequest): Observable<ApiResponse<boolean>> {
         return this.http.post<ApiResponse<boolean>>(`${this.baseUrl}/reset-password`, data).pipe(
-            catchError(err => {
-                const errors = err.error || (err.message ? [err.message] : ['فشل إعادة تعيين كلمة المرور']);
-                return throwError(() => Array.isArray(errors) ? errors : [errors]);
-            })
+            catchError(err => this.handleErrors(err, 'فشل إعادة تعيين كلمة المرور'))
         );
     }
 
@@ -84,10 +69,7 @@ export class AuthService {
             `${this.baseUrl}/confirm-email?userId=${encodeURIComponent(userId)}&token=${encodeURIComponent(token)}`,
             null
         ).pipe(
-            catchError(err => {
-                const message = err.error || 'فشل تأكيد البريد الإلكتروني';
-                return throwError(() => message);
-            })
+            catchError(err => this.handleErrors(err, 'فشل تأكيد البريد الإلكتروني'))
         );
     }
 
@@ -97,10 +79,7 @@ export class AuthService {
             `${this.baseUrl}/resend-confirmation?email=${encodeURIComponent(email)}`,
             null
         ).pipe(
-            catchError(err => {
-                const message = err.error || 'فشل إعادة إرسال رسالة التأكيد';
-                return throwError(() => message);
-            })
+            catchError(err => this.handleErrors(err, 'فشل إعادة إرسال رسالة التأكيد'))
         );
     }
 
@@ -116,5 +95,32 @@ export class AuthService {
 
     isLoggedIn() {
         return this.tokenService.isLoggedIn();
+    }
+
+    private handleErrors(err: any, defaultMessage: string): Observable<never> {
+        // If the error was pre-handled by the interceptor (like status 0)
+        // it might already be an array of strings.
+        if (Array.isArray(err)) {
+            return throwError(() => err);
+        }
+
+        let errors: string[] = [];
+        if (err.error) {
+            if (err.error.errors) {
+                // ASP.NET ValidationProblemDetails
+                errors = Object.values(err.error.errors).flat() as string[];
+            } else if (typeof err.error === 'string') {
+                errors = [err.error];
+            } else if (err.error.message) {
+                errors = [err.error.message];
+            } else {
+                errors = [defaultMessage];
+            }
+        } else {
+            errors = [err.message || defaultMessage];
+        }
+
+        // Clean up any double-wrapped error objects if necessary
+        return throwError(() => errors.length > 0 ? errors : [defaultMessage]);
     }
 }

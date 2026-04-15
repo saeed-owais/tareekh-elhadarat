@@ -1,4 +1,9 @@
 {
+  "site": {
+    "name": "Tareekh Alshuob",
+    "description": "Tareekh Alshuob (Geschichte der Völker) ist eine spezialisierte digitale Plattform zur Erforschung der Menschheitsgeschichte, antiker Zivilisationen und des globalen kulturellen Erbes. Wir bieten eine kuratierte Sammlung intellektueller Artikel, dokumentierter Forschung sowie eine digitale Bibliothek seltener Bücher und Manuskripte mit dem Ziel, durch die Förderung des zivilisatorischen Bewusstseins eine Brücke zwischen Vergangenheit und Zukunft zu schlagen.",
+    "shortDescription": "Eine Reise durch Zivilisationen und Kulturen: Erforschen Sie die Menschheitsgeschichte durch intellektuelle Artikel und seltene digitale Bücher."
+  },
   "nav": {
     "home": "Startseite",
     "articles": "Artikel",
@@ -95,8 +100,8 @@
   "about": {
     "title": "Geschäftsbedingungen und Datenschutzrichtlinie",
     "visionTitle": "Unsere Vision",
-    "visionText1": "Bei „Tareekh Alshoop“ streben wir danach, ein zivilisatorisches Bewusstsein aufzubauen, das Authentizität und Modernität verbindet. Wir glauben, dass Wissen die Brücke ist, die Vergangenheit und Zukunft verbindet.",
-    "visionText2": "„Tareekh Alshoop“ ist nicht nur ein Blog — es ist eine intellektuelle Gemeinschaft, die Forscher, Intellektuelle und Leser an einem Tisch zusammenbringt.",
+    "visionText1": "Bei „Tareekh Alshuob“ streben wir danach, ein zivilisatorisches Bewusstsein aufzubauen, das Authentizität und Modernität verbindet. Wir glauben, dass Wissen die Brücke ist, die Vergangenheit und Zukunft verbindet.",
+    "visionText2": "„Tareekh Alshuob“ ist nicht nur ein Blog — es ist eine intellektuelle Gemeinschaft, die Forscher, Intellektuelle und Leser an einem Tisch zusammenbringt.",
     "missionTitle": "Unsere Mission",
     "spreadKnowledge": "Wissen verbreiten",
     "spreadKnowledgeDesc": "Bereitstellung reichhaltiger intellektueller und kultureller Inhalte.",
@@ -160,7 +165,7 @@
     "passwordMismatch": "Passwörter stimmen nicht überein.",
     "agreeTerms": "Ich stimme den",
     "termsLink": "Geschäftsbedingungen",
-    "heroTitle": "Tareekh Alshoop",
+    "heroTitle": "Tareekh Alshuob",
     "heroSubtitle": "Eine Reise durch Zivilisationen und Kulturen",
     "heroDesc": "Wir erforschen die Wurzeln der Menschheit und ihre Vielfalt durch die Zeitalter.",
     "registerBtn": "Konto erstellen",
@@ -226,9 +231,9 @@
     "contributions": "Beiträge & Aktivität",
     "savedArticles": "Gespeicherte Artikel",
     "publishedArticles": "Veröffentlichte Artikel",
-    "memberSince": "Mitglied bei „Tareekh Alshoop“ seit {{year}}",
+    "memberSince": "Mitglied bei „Tareekh Alshuob“ seit {{year}}",
     "newsForYou": "Neuigkeiten für Sie",
-    "newsDesc": "Werden Sie Teil der Geschichte von „Tareekh Alshoop“ und teilen Sie Ihre historische Forschung.",
+    "newsDesc": "Werden Sie Teil der Geschichte von „Tareekh Alshuob“ und teilen Sie Ihre historische Forschung.",
     "writeWithUsNow": "Jetzt mit uns schreiben",
     "profileUpdated": "Profil erfolgreich aktualisiert"
   },
@@ -237,7 +242,7 @@
     "terms": "Veröffentlichungsbedingungen",
     "privacy": "Datenschutzrichtlinie",
     "contact": "Kontakt",
-    "rights": "Tareekh Alshoop. Alle Rechte vorbehalten."
+    "rights": "Tareekh Alshuob. Alle Rechte vorbehalten."
   },
   "writeWithUs": {
     "title": "Schreiben Sie mit uns",
@@ -295,9 +300,9 @@
   },
   "terms": {
     "title": "Geschäftsbedingungen und Datenschutzrichtlinie",
-    "intro": "Willkommen bei <strong>Tareekh Alshoop</strong>. Durch die Nutzung dieser Website stimmen Sie diesen Geschäftsbedingungen zu. Wenn Sie nicht einverstanden sind, beenden Sie bitte die Nutzung der Website.",
+    "intro": "Willkommen bei <strong>Tareekh Alshuob</strong>. Durch die Nutzung dieser Website stimmen Sie diesen Geschäftsbedingungen zu. Wenn Sie nicht einverstanden sind, beenden Sie bitte die Nutzung der Website.",
     "section1Title": "Plattform & Nutzung",
-    "section1P1": "Tareekh Alshoop bietet einen digitalen Raum zum Veröffentlichen, Lesen und Teilen von Büchern, Artikeln und Textinhalten durch die Verwaltung und registrierte Benutzer.",
+    "section1P1": "Tareekh Alshuob bietet einen digitalen Raum zum Veröffentlichen, Lesen und Teilen von Büchern, Artikeln und Textinhalten durch die Verwaltung und registrierte Benutzer.",
     "section1P2": "Alle Benutzer müssen die Website rechtmäßig und in Übereinstimmung mit EU-Gesetzen nutzen und dürfen keine beleidigenden, illegalen oder rechtsverletzenden Inhalte veröffentlichen.",
     "section1P3": "Die Seitenverwaltung behält sich das Recht vor, violierende Inhalte zu löschen oder Benutzerkonten jederzeit ohne vorherige Ankündigung zu sperren.",
     "section2Title": "Konten & Verantwortung",
@@ -377,7 +382,7 @@
       "edit": "Bearbeiten"
     },
     "sidebar": {
-      "brand": "Tareekh Alshoop",
+      "brand": "Tareekh Alshuob",
       "controlPanel": "Kontrollzentrum",
       "returnMain": "Zurück zur Hauptseite",
       "overview": "Übersicht",

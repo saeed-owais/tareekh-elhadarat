@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "tareekh-alshoob": {
+    "tareekh-alshuob": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tareekh-alshoob:build:production"
+              "buildTarget": "tareekh-alshuob:build:production"
             },
             "development": {
-              "buildTarget": "tareekh-alshoob:build:development"
+              "buildTarget": "tareekh-alshuob:build:development"
             }
           },
           "defaultConfiguration": "development"
