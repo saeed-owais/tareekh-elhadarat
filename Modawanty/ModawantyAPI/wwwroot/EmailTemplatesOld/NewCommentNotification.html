@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .article-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+        .article-meta {
+            font-size: 13px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .comment-box {
+            background-color: #f0f4ff;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 15px;
+        }
+        .comment-text {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+            word-wrap: break-word;
+        }
+        .commenter-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .button-group {
+            text-align: center;
+            margin: 25px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 5px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #5568d3;
+            text-decoration: none;
+        }
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+            text-decoration: none;
+        }
+        .footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e0e0e0;
+        }
+        .highlight {
+            background-color: #fff9e6;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+        .divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 20px 0;
+        }
+        @media (max-width: 600px) {
+            .content {
+                padding: 20px 15px;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📝 New Comment Submitted</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <p style="color: #666; margin-top: 0;">Hello Admin,</p>
+            <p style="color: #666;">A new comment has been submitted on one of your articles and is awaiting your review.</p>
+
+            <!-- Article Information -->
+            <div class="section">
+                <div class="section-title">📄 Article Details</div>
+                <div class="article-info">
+                    <div class="article-title">{{ARTICLE_TITLE}}</div>
+                    <div class="article-meta"><strong>Category:</strong> {{ARTICLE_CATEGORY}}</div>
+                    <div class="article-meta"><strong>Article ID:</strong> {{ARTICLE_ID}}</div>
+                </div>
+            </div>
+
+            <!-- Comment Information -->
+            <div class="section">
+                <div class="section-title">💬 Comment Details</div>
+                <div class="comment-box">
+                    <p class="comment-text">{{COMMENT_TEXT}}</p>
+                    <div class="commenter-info">
+                        <strong>From:</strong> {{COMMENTER_NAME}} ({{COMMENTER_EMAIL}})<br>
+                        <strong>Date:</strong> {{COMMENT_DATE}}<br>
+                        <strong>Comment ID:</strong> {{COMMENT_ID}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <a href="{{ADMIN_DASHBOARD_URL}}" class="btn btn-primary">📋 View Comments Dashboard</a>
+                <a href="{{ARTICLE_URL}}" class="btn btn-secondary">👁️ View Article</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <p style="color: #999; font-size: 13px; margin-bottom: 0;">
+                <strong>Note:</strong> Please review and moderate this comment as per your community guidelines. 
+                You can approve, edit, or delete it from your admin dashboard.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p style="margin: 0; color: #999;">
+                This is an automated notification from Modawanty. 
+                <br>Please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

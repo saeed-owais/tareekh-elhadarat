@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Comment Notification - Tareekh AlShoop</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5dc;
+            color: #1b1d0e;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fbfbe2;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+            border: 1px solid rgba(115, 92, 0, 0.1);
+        }
+
+        .header {
+            background-color: #061b0e;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .greeting {
+            font-size: 20px;
+            font-weight: 700;
+            color: #061b0e;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #434843;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #735c00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-left: 3px solid #735c00;
+            padding-left: 10px;
+        }
+
+        .info-card {
+            background-color: #f5f5dc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .article-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #061b0e;
+            margin-bottom: 8px;
+        }
+
+        .meta-text {
+            font-size: 13px;
+            color: #737973;
+            margin: 5px 0;
+        }
+
+        .comment-box {
+            background-color: #f5f5e0;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(115, 92, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .comment-text {
+            color: #1b1d0e;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .commenter-meta {
+            font-size: 12px;
+            color: #737973;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 12px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            margin: 8px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #735C00 0%, #B18D48 100%);
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(115, 92, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #eaead1;
+            color: #061b0e !important;
+        }
+
+        .footer {
+            background-color: #eaead1;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #737973;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="logo-text">📝 New Comment Notification</h1>
+        </div>
+
+        <div class="content">
+            <p class="greeting">Hello Admin,</p>
+            <p class="message">A new comment has been submitted to the Tareekh AlShoop platform and is currently awaiting your review for approval.</p>
+
+            <div class="section-title">📄 Article Details</div>
+            <div class="info-card">
+                <div class="article-title">{{ARTICLE_TITLE}}</div>
+                <p class="meta-text"><strong>Category:</strong> {{ARTICLE_CATEGORY}}</p>
+                <p class="meta-text"><strong>Article ID:</strong> {{ARTICLE_ID}}</p>
+            </div>
+
+            <div class="section-title">💬 Comment Details</div>
+            <div class="comment-box">
+                <p class="comment-text">"{{COMMENT_TEXT}}"</p>
+                <div class="commenter-meta">
+                    <strong>From:</strong> {{COMMENTER_NAME}} ({{COMMENTER_EMAIL}})<br>
+                    <strong>Date:</strong> {{COMMENT_DATE}}<br>
+                    <strong>Comment ID:</strong> {{COMMENT_ID}}
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="{{ADMIN_DASHBOARD_URL}}" class="btn btn-primary">📋 View Comments Dashboard</a>
+                <a href="{{ARTICLE_URL}}" class="btn btn-secondary">👁️ View Article</a>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px;">
+                <p style="color: #737973; font-size: 13px; line-height: 1.6;">
+                    <strong>Note:</strong> Please review this comment according to our community guidelines. You can approve it to make it public, or edit/delete it as needed from your dashboard.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="footer-text">
+                This is an automated notification from Tareekh AlShoop.
+                <br>Please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

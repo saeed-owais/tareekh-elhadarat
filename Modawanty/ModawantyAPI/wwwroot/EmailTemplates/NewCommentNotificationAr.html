@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعليق جديد بانتظار المراجعة - تاريخ الشعوب</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Manrope:wght@400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5dc;
+            color: #1b1d0e;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fbfbe2;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+            border: 1px solid rgba(115, 92, 0, 0.1);
+        }
+
+        .header {
+            background-color: #061b0e;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo-text {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .greeting {
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #061b0e;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #434843;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #735c00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-right: 3px solid #735c00;
+            padding-right: 10px;
+        }
+
+        .info-card {
+            background-color: #f5f5dc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .article-title {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #061b0e;
+            margin-bottom: 10px;
+        }
+
+        .meta-text {
+            font-size: 13px;
+            color: #737973;
+            margin: 5px 0;
+        }
+
+        .comment-box {
+            background-color: #f5f5e0;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(115, 92, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .comment-text {
+            color: #1b1d0e;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .commenter-meta {
+            font-size: 12px;
+            color: #737973;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 12px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            margin: 8px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #735C00 0%, #B18D48 100%);
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(115, 92, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #eaead1;
+            color: #061b0e !important;
+        }
+
+        .footer {
+            background-color: #eaead1;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #737973;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="logo-text">📝 تعليق جديد بانتظار المراجعة</h1>
+        </div>
+
+        <div class="content">
+            <p class="greeting">مرحباً أدمن،</p>
+            <p class="message">تم تقديم تعليق جديد على أحد مقالاتك في منصة تاريخ الشعوب وهو الآن بانتظار مراجعتك للموافقة عليه.</p>
+
+            <div class="section-title">📄 تفاصيل المقال</div>
+            <div class="info-card">
+                <div class="article-title">{{ARTICLE_TITLE}}</div>
+                <p class="meta-text"><strong>التصنيف:</strong> {{ARTICLE_CATEGORY}}</p>
+                <p class="meta-text"><strong>معرف المقال:</strong> {{ARTICLE_ID}}</p>
+            </div>
+
+            <div class="section-title">💬 تفاصيل التعليق</div>
+            <div class="comment-box">
+                <p class="comment-text">"{{COMMENT_TEXT}}"</p>
+                <div class="commenter-meta">
+                    <strong>بواسطة:</strong> {{COMMENTER_NAME}} ({{COMMENTER_EMAIL}})<br>
+                    <strong>التاريخ:</strong> {{COMMENT_DATE}}<br>
+                    <strong>معرف التعليق:</strong> {{COMMENT_ID}}
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="{{ADMIN_DASHBOARD_URL}}" class="btn btn-primary">📋 لوحة تحكم التعليقات</a>
+                <a href="{{ARTICLE_URL}}" class="btn btn-secondary">👁️ عرض المقال</a>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px;">
+                <p style="color: #737973; font-size: 13px; line-height: 1.6;">
+                    <strong>ملاحظة:</strong> يرجى مراجعة هذا التعليق وفقاً لمعايير المجتمع الخاصة بنا. يمكنك الموافقة عليه ليظهر للعامة، أو تعديله، أو حذفه من لوحة التحكم.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="footer-text">
+                هذه رسالة تنبيه آلية من منصة تاريخ الشعوب.
+                <br>يرجى عدم الرد على هذا البريد الإلكتروني.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

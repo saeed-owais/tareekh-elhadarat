@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ModawantyAPI/ModawantyAPI.csproj" />
+  <Project Path="ModawantyBLL/ModawantyBLL.csproj" />
+  <Project Path="ModawantyDAL/ModawantyDAL.csproj" />
+</Solution>
