@@ -16,7 +16,7 @@ node_modules/
 .vscode/
 *.swp
 *.swo
-
+appsettings.json
 # Build output
 frontend/dist/
 frontend/tmp/

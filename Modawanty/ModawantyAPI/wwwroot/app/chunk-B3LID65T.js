@@ -1,0 +1,1 @@
+import{L as s,ga as o}from"./chunk-3J3OPYLX.js";var t=class r{scrollProgress=o(0);updateProgress(e){this.scrollProgress.set(e)}resetProgress(){this.scrollProgress.set(0)}static \u0275fac=function(a){return new(a||r)};static \u0275prov=s({token:r,factory:r.\u0275fac,providedIn:"root"})};export{t as a};

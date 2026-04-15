@@ -1,0 +1,6 @@
+@ModawantyAPI_HostAddress = http://localhost:5187
+
+GET {{ModawantyAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
