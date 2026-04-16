@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError, map } from 'rxjs';
 import { TokenService } from './token.service';
@@ -28,6 +28,8 @@ export class AuthService {
             tap(res => {
                 if (res.isSuccess) {
                     this.tokenService.saveToken(res.data.jwtToken, rememberMe);
+                    console.log(res);
+                    
                 }
             }),
             map(res => res.data.jwtToken),
@@ -105,22 +107,29 @@ export class AuthService {
         }
 
         let errors: string[] = [];
-        if (err.error) {
-            if (err.error.errors) {
-                // ASP.NET ValidationProblemDetails
-                errors = Object.values(err.error.errors).flat() as string[];
-            } else if (typeof err.error === 'string') {
-                errors = [err.error];
-            } else if (err.error.message) {
-                errors = [err.error.message];
-            } else {
-                errors = [defaultMessage];
+
+        if (err instanceof HttpErrorResponse) {
+            if (err.status === 401) {
+                // If the backend didn't provide a specific message, use the one requested by the user
+                const backendMsg = err.error?.message || err.error;
+                errors = [typeof backendMsg === 'string' ? backendMsg : 'البريد الإلكتروني أو كلمة المرور غير صحيحة'];
+            } else if (err.error) {
+                if (err.error.errors) {
+                    // ASP.NET ValidationProblemDetails
+                    errors = Object.values(err.error.errors).flat() as string[];
+                } else if (typeof err.error === 'string') {
+                    errors = [err.error];
+                } else if (err.error.message) {
+                    errors = [err.error.message];
+                }
             }
-        } else {
+        }
+
+        // Fallback to error message or default message
+        if (errors.length === 0) {
             errors = [err.message || defaultMessage];
         }
 
-        // Clean up any double-wrapped error objects if necessary
-        return throwError(() => errors.length > 0 ? errors : [defaultMessage]);
+        return throwError(() => errors);
     }
 }

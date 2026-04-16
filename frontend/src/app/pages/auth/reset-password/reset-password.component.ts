@@ -21,6 +21,8 @@ export class ResetPasswordComponent implements OnInit {
   isSubmitted = signal<boolean>(false);
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
+  showPassword = signal(false);
+  showConfirmPassword = signal(false);
   
   userId: string | null = null;
   token: string | null = null;
@@ -28,11 +30,11 @@ export class ResetPasswordComponent implements OnInit {
   resetForm = new FormGroup({
     newPassword: new FormControl('', [
       Validators.required, 
-      Validators.minLength(6),
-      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)
+      Validators.maxLength(250),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&]).{6,}$/)
     ]),
     confirmPassword: new FormControl('', [Validators.required])
-  }, { validators: this.passwordMatchValidator() });
+  }, { validators: this.passwordMatchValidator });
 
   ngOnInit() {
     this.userId = this.route.snapshot.queryParamMap.get('userId');
@@ -43,17 +45,20 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
 
-  get passwordControl() { return this.resetForm.get('newPassword'); }
-  get confirmPasswordControl() { return this.resetForm.get('confirmPassword'); }
+  get f() { return this.resetForm.controls; }
 
-  passwordMatchValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const password = control.get('newPassword');
-      const confirmPassword = control.get('confirmPassword');
-      return password && confirmPassword && password.value !== confirmPassword.value 
-        ? { passwordMismatch: true } 
-        : null;
-    };
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('newPassword');
+    const confirmPassword = control.get('confirmPassword');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ ...confirmPassword.errors, passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    if (confirmPassword?.errors?.['passwordMismatch']) {
+      const { passwordMismatch, ...rest } = confirmPassword.errors;
+      confirmPassword.setErrors(Object.keys(rest).length ? rest : null);
+    }
+    return null;
   }
 
   onSubmit() {
