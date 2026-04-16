@@ -6,5 +6,5 @@ export interface Book {
     releaseDate: string;
     about: string;
     poster: string;
-    book: string;
+    downloadLink: string;
 }
