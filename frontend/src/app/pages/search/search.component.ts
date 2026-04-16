@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TranslationService } from '../../core/services/translation.service';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-search',
@@ -17,6 +18,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private articleService = inject(ArticleService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private seoService = inject(SeoService);
   public ts = inject(TranslationService);
 
   searchQuery = signal(''); // Input value
@@ -44,10 +46,17 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchQuery.set(q);
         this.currentQuery.set(q);
         this.performSearch(q);
+
+        // Update SEO metadata with query
+        const baseTitle = this.ts.t('search.title');
+        this.seoService.updateMetadataByKey('search', {
+          title: `${baseTitle}: ${q}`
+        });
       } else {
         this.searchQuery.set('');
         this.currentQuery.set('');
         this.articles.set([]);
+        this.seoService.updateMetadataByKey('search');
       }
     });
   }

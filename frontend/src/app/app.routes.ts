@@ -6,63 +6,63 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
-    title: 'تاريخ الشعوب | منصة للوعي الحضاري المعاصر',
+    data: { seoKey: 'home' },
     children: [
       {
         path: '',
         loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
-        title: 'تاريخ الشعوب | منصة للوعي الحضاري المعاصر'
+        data: { seoKey: 'home' }
       },
       {
         path: 'articles',
         loadComponent: () => import('./pages/articles/articles.component').then(m => m.ArticlesComponent),
-        title: 'المقالات | تاريخ الشعوب'
+        data: { seoKey: 'articles' }
       },
       {
         path: 'articles/:id',
         loadComponent: () => import('./pages/article-detail/article-detail.component').then(m => m.ArticleDetailComponent),
-        title: 'تفاصيل المقال | تاريخ الشعوب'
+        data: { seoKey: 'articleDetail' }
       },
       {
         path: 'books',
         loadComponent: () => import('./pages/books/books.component').then(m => m.BooksComponent),
-        title: 'الكتب | تاريخ الشعوب'
+        data: { seoKey: 'books' }
       },
       {
         path: 'books/:id',
         loadComponent: () => import('./pages/book-detail/book-detail.component').then(m => m.BookDetailComponent),
-        title: 'تفاصيل الكتاب | تاريخ الشعوب'
+        data: { seoKey: 'bookDetail' }
       },
       {
         path: 'about',
         loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
-        title: 'من نحن | تاريخ الشعوب'
+        data: { seoKey: 'about' }
       },
       {
         path: 'contact',
         loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent),
-        title: 'تواصل معنا | تاريخ الشعوب'
+        data: { seoKey: 'contact' }
       },
       {
         path: 'write-with-us',
         loadComponent: () => import('./pages/write-with-us/write-with-us.component').then(m => m.WriteWithUsComponent),
-        title: 'اكتب معنا | تاريخ الشعوب'
+        data: { seoKey: 'writeWithUs' }
       },
       {
         path: 'search',
         loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent),
-        title: 'نتائج البحث | تاريخ الشعوب'
+        data: { seoKey: 'search' }
       },
       {
         path: 'profile',
         loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
-        title: 'الملف الشخصي | تاريخ الشعوب',
+        data: { seoKey: 'profile' },
         canActivate: [authGuard]
       },
       {
         path: 'terms',
         loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsComponent),
-        title: 'الشروط والأحكام وسياسة الخصوصية | تاريخ الشعوب'
+        data: { seoKey: 'terms' }
       },
     ]
   },
@@ -73,19 +73,19 @@ export const routes: Routes = [
       {
         path: 'login',
         loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent),
-        title: 'تسجيل الدخول | تاريخ الشعوب',
+        data: { seoKey: 'login' },
         canActivate: [guestGuard]
       },
       {
         path: 'register',
         loadComponent: () => import('./pages/auth/register/register.component').then(m => m.RegisterComponent),
-        title: 'حساب جديد | تاريخ الشعوب',
+        data: { seoKey: 'register' },
         canActivate: [guestGuard]
       },
       {
         path: 'forgot-password',
         loadComponent: () => import('./pages/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
-        title: 'نسيت كلمة المرور | تاريخ الشعوب',
+        data: { seoKey: 'forgotPassword' },
         canActivate: [guestGuard]
       },
     ]
@@ -97,7 +97,7 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./pages/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
-        title: 'إعادة تعيين كلمة المرور | تاريخ الشعوب',
+        data: { seoKey: 'resetPassword' },
         canActivate: [guestGuard]
       }
     ]
@@ -110,52 +110,52 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () => import('./pages/admin/dashboard/dashboard.component').then(m => m.DashboardComponent),
-        title: 'نظرة عامة | لوحة التحكم'
+        data: { seoKey: 'dashboard' }
       },
       {
         path: 'approvals',
         loadComponent: () => import('./pages/admin/approvals/approvals.component').then(m => m.ApprovalsComponent),
-        title: 'مركز الموافقات | لوحة التحكم'
+        data: { seoKey: 'approvals' }
       },
       {
         path: 'articles',
         loadComponent: () => import('./pages/admin/articles-manage/articles-manage.component').then(m => m.ArticlesManageComponent),
-        title: 'إدارة المقالات | لوحة التحكم'
+        data: { seoKey: 'manageArticles' }
       },
       {
         path: 'articles/add',
         loadComponent: () => import('./pages/admin/article-add/article-add.component').then(m => m.AdminArticleAddComponent),
-        title: 'إضافة مقال جديد | لوحة التحكم'
+        data: { seoKey: 'articleAdd' }
       },
       {
         path: 'articles/edit/:id',
         loadComponent: () => import('./pages/admin/article-edit/article-edit.component').then(m => m.AdminArticleEditComponent),
-        title: 'تعديل المقال | لوحة التحكم'
+        data: { seoKey: 'articleEdit' }
       },
       {
         path: 'articles/view/:id',
         loadComponent: () => import('./pages/admin/article-view/article-view.component').then(m => m.AdminArticleViewComponent),
-        title: 'تفاصيل المقال | لوحة التحكم'
+        data: { seoKey: 'articleView' }
       },
       {
         path: 'categories-tags',
         loadComponent: () => import('./pages/admin/categories-tags/categories-tags.component').then(m => m.CategoriesTagsComponent),
-        title: 'الفئات والوسوم | لوحة التحكم'
+        data: { seoKey: 'categoriesTags' }
       },
       {
         path: 'books',
         loadComponent: () => import('./pages/admin/books-manage/books-manage.component').then(m => m.BooksManageComponent),
-        title: 'إدارة الكتب | لوحة التحكم'
+        data: { seoKey: 'manageBooks' }
       },
       {
         path: 'books/add',
         loadComponent: () => import('./pages/admin/book-add/book-add.component').then(m => m.BookAddComponent),
-        title: 'إضافة كتاب جديد | لوحة التحكم'
+        data: { seoKey: 'bookAdd' }
       },
       {
         path: 'comments',
         loadComponent: () => import('./pages/admin/comments-manage/comments-manage.component').then(m => m.CommentsManageComponent),
-        title: 'إدارة التعليقات | لوحة التحكم'
+        data: { seoKey: 'manageComments' }
       },
       {
         path: '',

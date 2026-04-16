@@ -9,6 +9,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { TranslationService } from '../../core/services/translation.service';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-articles',
@@ -24,6 +25,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private seoService = inject(SeoService);
   public ts = inject(TranslationService);
 
   articles = signal<Article[]>([]);
@@ -47,21 +49,32 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 
     this.categoryService.getCategories().subscribe({
       next: (cats) => {
-        this.categories.set(cats.filter(c => c.isAvailable));
+        const activeCats = cats.filter(c => c.isAvailable);
+        this.categories.set(activeCats);
 
-        // Subscribe to query param changes (fires on every navigation, even same route)
+        // Subscribe to query param changes
         this.queryParamsSub = this.route.queryParams.subscribe(params => {
-          const category = params['category'];
+          const categoryId = params['category'];
 
-          if (category) {
-            this.filterByCategory(Number(category));
+          if (categoryId) {
+            const catId = Number(categoryId);
+            this.filterByCategory(catId);
+            
+            // Update SEO for category
+            const cat = activeCats.find(c => c.id === catId);
+            if (cat) {
+              const baseTitle = this.ts.t('articles.title');
+              this.seoService.updateMetadataByKey('articles', {
+                title: `${baseTitle}: ${cat.name}`
+              });
+            }
           } else {
-            // Only reload all if we're not already showing all
             if (this.selectedCategoryId() !== null || this.articles().length === 0) {
               this.selectedCategoryId.set(null);
               this.isLoading.set(true);
               this.loadAllArticles();
             }
+            this.seoService.updateMetadataByKey('articles');
           }
         });
       },

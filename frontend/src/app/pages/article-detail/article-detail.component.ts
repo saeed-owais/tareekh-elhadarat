@@ -11,6 +11,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { AddCommentRequest } from '../../core/models/add-comment.model';
 import { ScrollService } from '../../core/services/scroll.service';
 import { TranslationService } from '../../core/services/translation.service';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -28,6 +29,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private scrollService = inject(ScrollService);
   public ts = inject(TranslationService);
+  private seoService = inject(SeoService);
 
   article = signal<Article | null>(null);
   isLoading = signal(true);
@@ -92,6 +94,44 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       next: (article) => {
         this.article.set(article);
         this.isLoading.set(false);
+
+        // Update SEO Metadata
+        const plainDescription = article.content 
+          ? article.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...'
+          : '';
+        
+        this.seoService.updateMetadataByKey('articleDetail', {
+          title: article.title,
+          description: plainDescription,
+          image: article.imageUrl
+        });
+
+        // Set JSON-LD structured data
+        this.seoService.setJsonLd({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": article.title,
+          "description": plainDescription,
+          "image": article.imageUrl,
+          "author": {
+            "@type": "Organization",
+            "name": this.ts.t('site.name')
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": this.ts.t('site.name'),
+            "logo": {
+              "@type": "ImageObject",
+              "url": window.location.origin + "/assets/images/logo.png"
+            }
+          },
+          "datePublished": new Date().toISOString(), // Fallback if no specific date
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": window.location.href
+          }
+        });
+
         // Populate comments from the article object itself if available
         if (article.comments) {
           this.comments.set(article.comments);

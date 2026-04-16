@@ -5,6 +5,7 @@ import { BookService } from '../../core/services/book.service';
 import { Book } from '../../core/models/book.model';
 import { finalize } from 'rxjs';
 import { TranslationService } from '../../core/services/translation.service';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -14,6 +15,7 @@ import { TranslationService } from '../../core/services/translation.service';
 })
 export class BookDetailComponent implements OnInit {
   public ts = inject(TranslationService);
+  private seoService = inject(SeoService);
   book = signal<Book | null>(null);
   isLoading = signal(false);
   errorMessage = signal('');
@@ -36,7 +38,37 @@ export class BookDetailComponent implements OnInit {
     this.bookService.getBookById(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: (data) => this.book.set(data),
+        next: (data) => {
+          this.book.set(data);
+          this.seoService.updateMetadataByKey('bookDetail', {
+            title: data.title,
+            description: data.about?.substring(0, 160) + '...',
+            image: data.poster
+          });
+
+          // Set JSON-LD structured data
+          this.seoService.setJsonLd({
+            "@context": "https://schema.org",
+            "@type": "Book",
+            "name": data.title,
+            "description": data.about?.substring(0, 160) + '...',
+            "image": data.poster,
+            "author": {
+              "@type": "Person",
+              "name": data.author
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": this.ts.t('site.name')
+            },
+            "datePublished": data.releaseDate,
+            "numberOfPages": data.pageCount,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": window.location.href
+            }
+          });
+        },
         error: (err) => this.errorMessage.set(err)
       });
   }
