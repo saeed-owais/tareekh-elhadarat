@@ -342,7 +342,7 @@
         <div class="mt-auto">
           <p class="text-sm text-on-surface-variant font-label mb-4 whitespace-normal md:truncate"
             [title]="book.author">{{ book.author }}</p>
-          <a [href]="book.book" target="_blank"
+          <a [href]="book.downloadLink" target="_blank"
             class="block w-full py-3 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all rounded font-label text-sm text-center">
             {{ ts.t('home.downloadPdf') }}
           </a>

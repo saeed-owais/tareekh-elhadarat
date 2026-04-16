@@ -196,7 +196,20 @@
     "backToLogin": "Back to Login",
     "checkEmail": "Check Your Email",
     "resetLinkSent": "We've sent a password reset link to:",
-    "tryAgain": "Didn't receive the link? Try again"
+    "tryAgain": "Didn't receive the link? Try again",
+    "resetPasswordTitle": "Reset Password",
+    "resetPasswordDesc": "Set a new strong password to protect your account.",
+    "newPasswordLabel": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmNewPasswordLabel": "Confirm New Password",
+    "confirmNewPasswordPlaceholder": "Re-enter new password",
+    "resetBtn": "Reset Password",
+    "resetting": "Resetting...",
+    "resetSuccess": "Password reset successful!",
+    "resetSuccessDesc": "You can now log in with your new password.",
+    "invalidTokenOrUser": "Invalid or expired reset link.",
+    "resendBtn": "Resend Confirmation Link",
+    "resendSuccess": "Confirmation link sent successfully! Please check your email."
   },
   "search": {
     "title": "Search Results",

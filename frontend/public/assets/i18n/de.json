@@ -196,7 +196,20 @@
     "backToLogin": "Zurück zur Anmeldung",
     "checkEmail": "Überprüfen Sie Ihre E-Mail",
     "resetLinkSent": "Wir haben einen Link zum Zurücksetzen des Passworts gesendet an:",
-    "tryAgain": "Link nicht erhalten? Erneut versuchen"
+    "tryAgain": "Link nicht erhalten? Erneut versuchen",
+    "resetPasswordTitle": "Passwort zurücksetzen",
+    "resetPasswordDesc": "Legen Sie ein neues, starkes Passwort fest, um Ihr Konto zu schützen.",
+    "newPasswordLabel": "Neues Passwort",
+    "newPasswordPlaceholder": "Neues Passwort eingeben",
+    "confirmNewPasswordLabel": "Neues Passwort bestätigen",
+    "confirmNewPasswordPlaceholder": "Neues Passwort erneut eingeben",
+    "resetBtn": "Passwort zurücksetzen",
+    "resetting": "Wird zurückgesetzt...",
+    "resetSuccess": "Passwort erfolgreich zurückgesetzt!",
+    "resetSuccessDesc": "Sie können sich jetzt mit Ihrem neuen Passwort anmelden.",
+    "invalidTokenOrUser": "Ungültiger oder abgelaufener Reset-Link.",
+    "resendBtn": "Bestätigungslink erneut senden",
+    "resendSuccess": "Bestätigungslink erfolgreich gesendet! Bitte überprüfen Sie Ihre E-Mail."
   },
   "search": {
     "title": "Geschäftsbedingungen und Datenschutzrichtlinie",

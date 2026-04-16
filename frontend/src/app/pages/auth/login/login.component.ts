@@ -17,6 +17,8 @@ export class LoginComponent {
   showPassword = signal(false);
   isLoading = signal(false);
   errorMessages = signal<string[]>([]);
+  showResendButton = signal(false);
+  resendSuccess = signal<string | null>(null);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -40,6 +42,8 @@ export class LoginComponent {
 
     this.isLoading.set(true);
     this.errorMessages.set([]);
+    this.resendSuccess.set(null);
+    this.showResendButton.set(false);
 
     const { email, password, rememberMe } = this.loginForm.value;
 
@@ -47,6 +51,31 @@ export class LoginComponent {
       next: () => {
         this.isLoading.set(false);
         this.router.navigate(['/']);
+      },
+      error: (err: string[]) => {
+        this.isLoading.set(false);
+        this.errorMessages.set(err);
+        
+        const needsConfirmation = err.some(m => 
+            m.includes('تأكيد') || m.toLowerCase().includes('confirm')
+          );
+          if (needsConfirmation) {
+            this.showResendButton.set(true);
+          }
+      }
+    });
+  }
+
+  resendConfirmationEmail() {
+    const email = this.loginForm.get('email')?.value;
+    if (!email) return;
+
+    this.isLoading.set(true);
+    this.authService.resendConfirmation(email).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.resendSuccess.set(this.ts.t('auth.resendSuccess'));
+        this.showResendButton.set(false);
       },
       error: (err: string[]) => {
         this.isLoading.set(false);

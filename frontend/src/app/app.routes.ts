@@ -87,7 +87,20 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
         title: 'نسيت كلمة المرور | تاريخ الشعوب',
         canActivate: [guestGuard]
-      }]
+      },
+    ]
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./layout/auth-layout/auth-layout.component').then(m => m.AuthLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+        title: 'إعادة تعيين كلمة المرور | تاريخ الشعوب',
+        canActivate: [guestGuard]
+      }
+    ]
   },
   {
     path: 'admin',
