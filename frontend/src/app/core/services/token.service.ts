@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { User } from '../models/user.model';
 import { CLAIMS } from '../constants/claims.constant';
 import { DecodedToken } from '../models/decoded-token.model';
@@ -9,9 +10,11 @@ import { DecodedToken } from '../models/decoded-token.model';
 export class TokenService {
 
     private TOKEN_KEY = 'token';
+    private platformId = inject(PLATFORM_ID);
 
     // ================= SAVE =================
     saveToken(token: string, rememberMe: boolean = false) {
+        if (!isPlatformBrowser(this.platformId)) return;
         if (rememberMe) {
             localStorage.setItem(this.TOKEN_KEY, token);
         } else {
@@ -21,6 +24,7 @@ export class TokenService {
 
     // ================= GET =================
     getToken(): string | null {
+        if (!isPlatformBrowser(this.platformId)) return null;
         // Check localStorage first (remembered session)
         let token = localStorage.getItem(this.TOKEN_KEY);
         if (token) return token;
@@ -31,6 +35,7 @@ export class TokenService {
 
     // ================= CLEAR =================
     clear() {
+        if (!isPlatformBrowser(this.platformId)) return;
         localStorage.removeItem(this.TOKEN_KEY);
         sessionStorage.removeItem(this.TOKEN_KEY);
     }

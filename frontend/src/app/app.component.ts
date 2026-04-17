@@ -23,11 +23,12 @@ export class AppComponent implements OnInit {
   constructor() {
     this.translationService.init();
 
-    // Re-apply SEO metadata when language changes
+    // Re-apply SEO metadata when language changes, but only after translations load
     effect(() => {
       // Access currentLang to track the signal
       const lang = this.translationService.currentLang();
-      if (lang) {
+      const isLoaded = this.translationService.isLoaded();
+      if (lang && isLoaded) {
         this.updateSeo();
       }
     });
