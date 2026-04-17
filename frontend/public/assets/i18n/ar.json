@@ -77,6 +77,7 @@
     "yourComment": "تعليقك",
     "commentPlaceholder": "شاركنا رأيك أو استفسارك حول هذا الموضوع...",
     "maxChars": "الحد الأقصى: 500 حرف",
+    "minChars": "الحد الأدنى: 3 أحرف",
     "submitComment": "إرسال التعليق",
     "loginToComment": "يجب تسجيل الدخول للتعليق",
     "loginToCommentDesc": "كن جزءاً من مجتمعنا الثقافي وشارك أفكارك مع القراء والباحثين.",
@@ -294,7 +295,9 @@
     "submitAnother": "إرسال مقال جديد",
     "imageSizeError": "حجم الصورة يجب ألا يتجاوز 5 ميجابايت",
     "imageTypeError": "يُسمح فقط بصور JPG أو PNG أو WebP",
-    "fillRequired": "يرجى ملء جميع الحقول المطلوبة"
+    "fillRequired": "يرجى ملء جميع الحقول المطلوبة",
+    "authorNameRequired": "يرجى تعيين اسم الكاتب في ملفك الشخصي للمتابعة",
+    "goToProfile": "الذهاب للملف الشخصي"
   },
   "bookDetail": {
     "loading": "جاري تحميل تفاصيل الكتاب...",

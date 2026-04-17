@@ -77,6 +77,7 @@
     "yourComment": "Ihr Kommentar",
     "commentPlaceholder": "Teilen Sie Ihre Gedanken oder Fragen zu diesem Thema...",
     "maxChars": "Maximal: 500 Zeichen",
+    "minChars": "Minimal: 3 Zeichen",
     "submitComment": "Kommentar absenden",
     "loginToComment": "Anmeldung zum Kommentieren erforderlich",
     "loginToCommentDesc": "Werden Sie Teil unserer kulturellen Gemeinschaft und teilen Sie Ihre Ideen mit Lesern und Forschern.",
@@ -294,7 +295,9 @@
     "submitAnother": "Weiteren Artikel einreichen",
     "imageSizeError": "Bildgröße darf 5 MB nicht überschreiten",
     "imageTypeError": "Nur JPG-, PNG- oder WebP-Bilder sind erlaubt",
-    "fillRequired": "Bitte füllen Sie alle erforderlichen Felder aus"
+    "fillRequired": "Bitte füllen Sie alle erforderlichen Felder aus",
+    "authorNameRequired": "Bitte legen Sie einen Autorennamen im Profil fest, um fortzufahren",
+    "goToProfile": "Zum Profil gehen"
   },
   "bookDetail": {
     "loading": "Wird geladen...",

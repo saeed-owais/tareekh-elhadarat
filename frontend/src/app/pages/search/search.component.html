@@ -1,132 +1,129 @@
 <main class="pt-28 pb-20">
   <div class="container mx-auto px-8">
-    
+
     <!-- Page Header & Search Bar -->
     <div class="text-center mb-12">
       <h1 class="text-5xl font-headline font-bold text-primary mb-6">{{ ts.t('search.title') }}</h1>
-      
+
       <!-- Local Search Bar -->
       <div class="max-w-3xl mx-auto">
         <form (ngSubmit)="onSearchSubmit()" class="relative">
-          <input
-            type="text"
-            [ngModel]="searchQuery()"
-            (ngModelChange)="searchQuery.set($event)"
-            name="localSearch"
+          <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" name="localSearch"
             class="w-full px-6 py-4 rounded-2xl border border-outline-variant bg-surface-container-low focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all text-on-surface font-body text-lg"
-            [class.pr-14]="ts.isRtl()" [class.pl-14]="!ts.isRtl()"
-            [placeholder]="ts.t('search.placeholder')">
+            [class.pr-14]="ts.isRtl()" [class.pl-14]="!ts.isRtl()" [placeholder]="ts.t('search.placeholder')">
           <button type="submit"
             class="absolute top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary hover:bg-primary/90 transition-colors"
             [class.left-3]="!ts.isRtl()" [class.right-3]="ts.isRtl()">
             <span class="material-symbols-outlined text-xl">search</span>
           </button>
-          <span
-            class="absolute top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40 text-2xl"
+          <span class="absolute top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40 text-2xl"
             [class.right-5]="!ts.isRtl()" [class.left-5]="ts.isRtl()">search</span>
         </form>
       </div>
 
       <!-- Results Count -->
       @if (currentQuery() && !isLoading()) {
-        <p class="text-lg text-on-surface font-body mt-6">
-          {{ ts.t('search.resultsFound') }} <span class="font-bold text-primary">{{ totalItems() }}</span> {{ ts.t('search.resultsFor') }} <span class="font-bold text-secondary">"{{ currentQuery() }}"</span>
-        </p>
+      <p class="text-lg text-on-surface font-body mt-6">
+        {{ ts.t('search.resultsFound') }} <span class="font-bold text-primary">{{ totalItems() }}</span> {{
+        ts.t('search.resultsFor') }} <span class="font-bold text-secondary">"{{ currentQuery() }}"</span>
+      </p>
       }
     </div>
 
     <!-- Loading State -->
     @if (isLoading()) {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-          <div class="animate-pulse">
-            <div class="bg-surface-container-low rounded-2xl aspect-4/3 mb-6"></div>
-            <div class="bg-surface-container-low h-6 rounded w-3/4 mb-3"></div>
-            <div class="bg-surface-container-low h-4 rounded w-1/2"></div>
-          </div>
-        }
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+      <div class="animate-pulse">
+        <div class="bg-surface-container-low rounded-2xl aspect-4/3 mb-6"></div>
+        <div class="bg-surface-container-low h-6 rounded w-3/4 mb-3"></div>
+        <div class="bg-surface-container-low h-4 rounded w-1/2"></div>
       </div>
+      }
+    </div>
     } @else {
-      <!-- Results Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
-        @for (article of articles(); track article.id) {
-          <article class="group">
-            <a [routerLink]="['/articles', article.id]" class="block">
-              <div class="relative overflow-hidden rounded-2xl aspect-4/3 mb-6 shadow-[0_8px_32px_rgba(6,27,14,0.04)] group-hover:shadow-[0_16px_48px_rgba(115,92,0,0.1)] transition-all">
-                <img loading="lazy"
-                     [alt]="article.title"
-                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                     [src]="article.imageUrl">
-                <span class="absolute top-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary"
-                  [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()">
-                  {{ article.category }}
-                </span>
-              </div>
-              <h3 class="text-2xl font-headline font-bold mb-3 group-hover:text-secondary transition-colors leading-snug">
-                {{ article.title }}
-              </h3>
-            </a>
-            <div class="flex items-center gap-4 text-sm text-on-surface-variant font-label">
-              <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-sm">person</span>
-                {{ article.authorName }}
-              </span>
-              <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-sm">schedule</span>
-                {{ article.readTimeInMiniutes }} {{ ts.t('search.minutes') }}
-              </span>
-            </div>
-            @if (article.tags && article.tags.length > 0) {
-              <div class="flex flex-wrap gap-2 mt-3">
-                @for (tag of article.tags; track tag) {
-                  <span class="px-3 py-1 bg-surface-container-low rounded-full text-xs font-label text-on-surface-variant">{{ tag }}</span>
-                }
-              </div>
-            }
-          </article>
-        }
-      </div>
-
-      <!-- Empty State -->
-      @if (articles().length === 0 && currentQuery()) {
-        <div class="text-center py-20 bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm">
-          <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6 block">search_off</span>
-          <h3 class="text-2xl font-headline font-bold text-primary mb-3">{{ ts.t('search.noResults') }}</h3>
-          <p class="text-lg text-on-surface-variant mb-8 max-w-md mx-auto">{{ ts.t('search.noResultsDesc') }} "{{ currentQuery() }}"{{ ts.t('search.noResultsSuffix') }}</p>
-          <a routerLink="/articles" class="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-on-primary rounded-xl font-bold font-label hover:bg-primary/90 transition-colors">
-            {{ ts.t('search.browseAll') }}
-            <span class="material-symbols-outlined text-[18px]">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
-          </a>
+    <!-- Results Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+      @for (article of articles(); track article.id) {
+      <article class="group">
+        <a [routerLink]="['/articles', article.id]" class="block">
+          <div
+            class="relative overflow-hidden rounded-2xl aspect-4/3 mb-6 shadow-[0_8px_32px_rgba(6,27,14,0.04)] group-hover:shadow-[0_16px_48px_rgba(115,92,0,0.1)] transition-all">
+            <img loading="lazy" [alt]="article.title"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              [src]="article.imageUrl">
+            <span
+              class="absolute top-4 bg-surface-bright/90 backdrop-blur px-3 py-1 text-xs font-bold font-label rounded text-secondary"
+              [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()">
+              {{ article.category }}
+            </span>
+          </div>
+          <h3 class="text-2xl font-headline font-bold mb-3 group-hover:text-secondary transition-colors leading-snug">
+            {{ article.title }}
+          </h3>
+        </a>
+        <div class="flex items-center gap-4 text-sm text-on-surface-variant font-label">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">person</span>
+            {{ article.authorName }}
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">schedule</span>
+            {{ article.readTimeInMiniutes }} {{ ts.t('search.minutes') }}
+          </span>
         </div>
-      }
-
-      <!-- Pagination Controls -->
-      @if (totalPages() > 1) {
-        <div class="flex justify-center items-center gap-2" dir="ltr">
-          <!-- Previous Button -->
-          <button (click)="goToPage(currentPage() - 1)"
-                  [disabled]="currentPage() === 1"
-                  class="w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all border border-outline-variant/20 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-container-low hover:border-outline-variant">
-            <span class="material-symbols-outlined">chevron_left</span>
-          </button>
-
-          <!-- Page Numbers -->
-          @for (page of pageNumbers(); track page) {
-            <button (click)="goToPage(page)"
-                    class="w-10 h-10 flex items-center justify-center rounded-xl font-label font-bold transition-all border"
-                    [class]="currentPage() === page ? 'bg-primary border-primary text-on-primary shadow-md' : 'border-outline-variant/20 hover:bg-surface-container-low hover:border-outline-variant text-on-surface'">
-              {{ page }}
-            </button>
+        @if (article.tags && article.tags.length > 0) {
+        <div class="flex flex-wrap gap-2 mt-3">
+          @for (tag of article.tags; track tag) {
+          <span class="px-3 py-1 bg-surface-container-low rounded-full text-xs font-label text-on-surface-variant">{{
+            tag }}</span>
           }
-
-          <!-- Next Button -->
-          <button (click)="goToPage(currentPage() + 1)"
-                  [disabled]="currentPage() === totalPages()"
-                  class="w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all border border-outline-variant/20 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-container-low hover:border-outline-variant">
-            <span class="material-symbols-outlined">chevron_right</span>
-          </button>
         </div>
+        }
+      </article>
       }
+    </div>
+
+    <!-- Empty State -->
+    @if (articles().length === 0 && currentQuery()) {
+    <div class="text-center py-20 bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm">
+      <span class="material-symbols-outlined text-8xl text-on-surface-variant/20 mb-6 block">search_off</span>
+      <h3 class="text-2xl font-headline font-bold text-primary mb-3">{{ ts.t('search.noResults') }}</h3>
+      <p class="text-lg text-on-surface-variant mb-8 max-w-md mx-auto">{{ ts.t('search.noResultsDesc') }} "{{
+        currentQuery() }}"{{ ts.t('search.noResultsSuffix') }}</p>
+      <a routerLink="/articles"
+        class="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-on-primary rounded-xl font-bold font-label hover:bg-primary/90 transition-colors">
+        {{ ts.t('search.browseAll') }}
+        <span class="material-symbols-outlined text-[18px]">{{ ts.isRtl() ? 'arrow_back' : 'arrow_forward' }}</span>
+      </a>
+    </div>
+    }
+
+    <!-- Pagination Controls -->
+    @if (totalPages() > 1) {
+    <div class="flex justify-center items-center gap-2" dir="ltr">
+      <!-- Previous Button -->
+      <button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1"
+        class="w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all border border-outline-variant/20 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-container-low hover:border-outline-variant">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+
+      <!-- Page Numbers -->
+      @for (page of pageNumbers(); track page) {
+      <button (click)="goToPage(page)"
+        class="w-10 h-10 flex items-center justify-center rounded-xl font-label font-bold transition-all border"
+        [class]="currentPage() === page ? 'bg-primary border-primary text-on-primary shadow-md' : 'border-outline-variant/20 hover:bg-surface-container-low hover:border-outline-variant text-on-surface'">
+        {{ page }}
+      </button>
+      }
+
+      <!-- Next Button -->
+      <button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
+        class="w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all border border-outline-variant/20 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-container-low hover:border-outline-variant">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+    }
     }
   </div>
 </main>

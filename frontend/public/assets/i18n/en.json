@@ -77,6 +77,7 @@
     "yourComment": "Your Comment",
     "commentPlaceholder": "Share your thoughts or questions about this topic...",
     "maxChars": "Maximum: 500 characters",
+    "minChars": "Minimum: 3 characters",
     "submitComment": "Submit Comment",
     "loginToComment": "Login Required to Comment",
     "loginToCommentDesc": "Be part of our cultural community and share your ideas with readers and researchers.",
@@ -294,7 +295,9 @@
     "submitAnother": "Submit Another Article",
     "imageSizeError": "Image size must not exceed 5 MB",
     "imageTypeError": "Only JPG, PNG, or WebP images are allowed",
-    "fillRequired": "Please fill all required fields"
+    "fillRequired": "Please fill all required fields",
+    "authorNameRequired": "Please set author name in profile to continue",
+    "goToProfile": "Go to Profile"
   },
   "bookDetail": {
     "loading": "Loading book details...",

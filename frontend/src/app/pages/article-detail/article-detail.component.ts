@@ -178,7 +178,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
 
   initForm(): void {
     this.commentForm = this.fb.group({
-      content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
+      content: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]]
     });
   }
 

@@ -192,3 +192,63 @@ app-write-with-us .ql-toolbar button.ql-header {
   width: 32px;
   height: 32px;
 }
+
+/* ============ Dark Mode Overrides ============ */
+
+.dark app-write-with-us .quill-wrapper .ql-toolbar {
+  background-color: var(--surface-container-high);
+  border-bottom: 1px solid var(--outline-variant) !important;
+}
+
+.dark app-write-with-us .quill-wrapper .ql-toolbar .ql-stroke {
+  stroke: var(--on-surface-variant);
+}
+
+.dark app-write-with-us .quill-wrapper .ql-toolbar .ql-fill {
+  fill: var(--on-surface-variant);
+}
+
+.dark app-write-with-us .quill-wrapper .ql-toolbar button:hover .ql-stroke,
+.dark app-write-with-us .quill-wrapper .ql-toolbar .ql-active .ql-stroke {
+  stroke: var(--secondary) !important;
+}
+
+.dark app-write-with-us .quill-wrapper .ql-toolbar button:hover .ql-fill,
+.dark app-write-with-us .quill-wrapper .ql-toolbar .ql-active .ql-fill {
+  fill: var(--secondary) !important;
+}
+
+.dark app-write-with-us .quill-wrapper .ql-toolbar .ql-picker-label {
+  color: var(--on-surface-variant);
+}
+
+.dark app-write-with-us .quill-wrapper .ql-editor {
+  color: var(--on-surface);
+  background-color: var(--surface-container-lowest);
+}
+
+.dark app-write-with-us .quill-wrapper .ql-editor.ql-blank::before {
+  color: var(--outline);
+}
+
+.dark app-write-with-us .quill-wrapper .ql-editor h1,
+.dark app-write-with-us .quill-wrapper .ql-editor h2 {
+  color: var(--primary);
+}
+
+.dark app-write-with-us .quill-wrapper .ql-editor blockquote {
+  color: var(--on-surface-variant);
+  background-color: var(--surface-container-high);
+}
+
+.dark app-write-with-us .ql-toolbar button.ql-header[value="2"]::after,
+.dark app-write-with-us .ql-toolbar button.ql-header[value="3"]::after {
+  color: var(--on-surface-variant);
+}
+
+.dark app-write-with-us .ql-toolbar button.ql-header[value="2"]:hover::after,
+.dark app-write-with-us .ql-toolbar button.ql-header[value="2"].ql-active::after,
+.dark app-write-with-us .ql-toolbar button.ql-header[value="3"]:hover::after,
+.dark app-write-with-us .ql-toolbar button.ql-header[value="3"].ql-active::after {
+  color: var(--secondary);
+}

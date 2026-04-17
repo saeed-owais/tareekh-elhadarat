@@ -61,9 +61,33 @@
       </div>
     </section>
     }
+  
+    <!-- Profile Completion Check: Missing Author Name -->
+    @if (isLoggedIn() && mustSetAuthorName()) {
+    <section class="mb-12">
+      <div
+        class="bg-surface-container-lowest p-8 md:p-12 rounded-2xl ambient-shadow text-center relative overflow-hidden">
+        <div class="absolute inset-0 pattern-bg"></div>
+        <div class="relative z-10 flex flex-col items-center gap-6 text-center">
+          <div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-secondary text-5xl"
+                  style="font-variation-settings: 'FILL' 1;">person_edit</span>
+          </div>
+          <h2 class="font-headline text-3xl text-primary font-bold">{{ ts.t('writeWithUs.authorNameRequired') }}</h2>
+          <p class="text-on-surface-variant max-w-md mx-auto leading-relaxed">
+            {{ ts.t('profile.newsDesc') }}
+          </p>
+          <a routerLink="/profile"
+            class="bg-linear-to-r from-secondary to-secondary-fixed-dim text-on-secondary-fixed px-10 py-3 rounded-xl font-extrabold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all inline-block">
+            {{ ts.t('writeWithUs.goToProfile') }}
+          </a>
+        </div>
+      </div>
+    </section>
+    }
 
     <!-- Submission Form (Logged In Only) -->
-    @if (isLoggedIn() && !submitted()) {
+    @if (isLoggedIn() && !submitted() && !mustSetAuthorName()) {
     <section>
       <h2 class="text-2xl font-headline font-bold text-primary mb-8">{{ ts.t('writeWithUs.submitArticle') }}</h2>
       <form class="space-y-8" (submit)="onSubmit($event)">

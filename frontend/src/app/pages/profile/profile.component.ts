@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  updateProfile() {
+  async updateProfile() {
     if (!this.user()) return;
     
     this.isSaving.set(true);
@@ -134,8 +134,27 @@ export class ProfileComponent implements OnInit {
     formData.append('AuthorName', this.editData.authorName);
     formData.append('Bio', this.editData.bio);
     
+    // Check if we have a new photo or if we should send the existing one
     if (this.selectedPhoto) {
       formData.append('ProfilePhoto', this.selectedPhoto, this.selectedPhoto.name);
+    } else if (this.user()?.profilePhoto) {
+      try {
+        const imageUrl = this.cleanUrl(this.user()?.profilePhoto);
+        // Avoid fetching placeholder if that's what we have
+        if (imageUrl && !imageUrl.includes('avatar-placeholder.png')) {
+          const response = await fetch(imageUrl);
+          if (response.ok) {
+            const blob = await response.blob();
+            const contentType = blob.type || 'image/jpeg';
+            const extension = contentType.split('/')[1] || 'jpg';
+            const file = new File([blob], `profile_photo.${extension}`, { type: contentType });
+            formData.append('ProfilePhoto', file, file.name);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching existing profile photo:', error);
+        // Continue update even if photo fetch fails
+      }
     }
 
     this.profileService.editProfile(formData)

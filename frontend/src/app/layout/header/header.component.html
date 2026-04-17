@@ -1,7 +1,7 @@
 <!-- Header & TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
   <nav aria-label="Main Navigation"
-    class="flex justify-between items-center w-full px-8 max-w-[1440px] mx-auto"
+    class="relative flex justify-between items-center w-full px-8 max-w-[1440px] mx-auto"
     [class.flex-row-reverse]="ts.isRtl()">
 
     <!-- Left Side: Lang + Search + Auth + Mobile Menu -->
@@ -14,26 +14,24 @@
           <span class="text-xs font-bold hidden sm:inline uppercase">{{ ts.currentLang() }}</span>
         </button>
         @if (langMenuOpen()) {
-        <div class="absolute top-full mt-2 bg-surface rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-50 min-w-[140px]"
+        <div
+          class="absolute top-full mt-2 bg-surface rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-50 min-w-[140px]"
           [class.left-0]="!ts.isRtl()" [class.right-0]="ts.isRtl()">
           <button (click)="switchLang('ar')"
             class="w-full px-4 py-3 text-sm font-bold hover:bg-primary/5 transition-all flex items-center justify-between"
-            [class.bg-primary/10]="ts.currentLang() === 'ar'"
-            [class.text-primary]="ts.currentLang() === 'ar'">
+            [class.bg-primary/10]="ts.currentLang() === 'ar'" [class.text-primary]="ts.currentLang() === 'ar'">
             <span>عربي</span>
             <span class="text-[10px] bg-primary/10 px-1.5 py-0.5 rounded uppercase opacity-60">AR</span>
           </button>
           <button (click)="switchLang('en')"
             class="w-full px-4 py-3 text-sm font-bold hover:bg-primary/5 transition-all flex items-center justify-between"
-            [class.bg-primary/10]="ts.currentLang() === 'en'"
-            [class.text-primary]="ts.currentLang() === 'en'">
+            [class.bg-primary/10]="ts.currentLang() === 'en'" [class.text-primary]="ts.currentLang() === 'en'">
             <span>English</span>
             <span class="text-[10px] bg-primary/10 px-1.5 py-0.5 rounded uppercase opacity-60">EN</span>
           </button>
           <button (click)="switchLang('de')"
             class="w-full px-4 py-3 text-sm font-bold hover:bg-primary/5 transition-all flex items-center justify-between"
-            [class.bg-primary/10]="ts.currentLang() === 'de'"
-            [class.text-primary]="ts.currentLang() === 'de'">
+            [class.bg-primary/10]="ts.currentLang() === 'de'" [class.text-primary]="ts.currentLang() === 'de'">
             <span>Deutsch</span>
             <span class="text-[10px] bg-primary/10 px-1.5 py-0.5 rounded uppercase opacity-60">DE</span>
           </button>
@@ -51,12 +49,12 @@
       <!-- Theme Toggle -->
       <button aria-label="Toggle Dark Mode" (click)="themeService.toggleTheme()"
         class="p-2 rounded-xl hover:bg-primary/5 transition-all duration-300 text-on-surface-variant flex items-center justify-center">
-        <span class="material-symbols-outlined text-xl">{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode' }}</span>
+        <span class="material-symbols-outlined text-xl">{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode'
+          }}</span>
       </button>
 
       <!-- Hamburger Menu (Mobile & Tablet) -->
-      <button aria-label="Menu" class="lg:hidden p-2.5 rounded-xl hover:bg-primary/5 transition"
-        (click)="toggleMenu()">
+      <button aria-label="Menu" class="lg:hidden p-2.5 rounded-xl hover:bg-primary/5 transition" (click)="toggleMenu()">
         <span class="material-symbols-outlined text-on-surface">
           {{ mobileMenuOpen() ? 'close' : 'menu' }}
         </span>
@@ -66,16 +64,20 @@
       <div class="hidden lg:flex items-center gap-4">
         @if (!isLoggedIn) {
         <a routerLink="/auth/login"
-          class="text-on-surface font-bold hover:text-secondary active:opacity-80 active:scale-95 transition-all">{{ ts.t('nav.login') }}</a>
+          class="text-on-surface font-bold hover:text-secondary active:opacity-80 active:scale-95 transition-all">{{
+          ts.t('nav.login') }}</a>
         <a routerLink="/auth/register"
-          class="gold-gradient text-white px-6 py-2 rounded-lg font-bold hover:opacity-90 active:opacity-80 active:scale-95 transition-all">{{ ts.t('nav.register') }}</a>
+          class="gold-gradient text-white px-6 py-2 rounded-lg font-bold hover:opacity-90 active:opacity-80 active:scale-95 transition-all">{{
+          ts.t('nav.register') }}</a>
         } @else {
-        <a routerLink="/profile" class="flex items-center gap-3 p-1.5 rounded-full hover:bg-surface-container-high border-outline-variant/10 transition-all group"
+        <a routerLink="/profile"
+          class="flex items-center gap-3 p-1.5 rounded-full hover:bg-surface-container-high border-outline-variant/10 transition-all group"
           [class.pr-4]="ts.isRtl()" [class.pl-4]="!ts.isRtl()">
-          <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-secondary/40 transition-colors bg-surface flex items-center justify-center shrink-0">
+          <div
+            class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-secondary/40 transition-colors bg-surface flex items-center justify-center shrink-0">
             <img [src]="cleanUrl(user?.profilePhoto)" [alt]="user?.firstName  " class="w-full h-full object-cover">
           </div>
-          <span class="text-sm font-bold text-on-surface truncate max-w-[120px]">{{ user?.firstName  }}</span>
+          <span class="text-sm font-bold text-on-surface truncate max-w-[120px]">{{ user?.firstName }}</span>
         </a>
         <button (click)="logout()"
           class="text-on-surface-variant font-medium hover:text-error active:opacity-80 active:scale-95 transition-all flex items-center gap-1">
@@ -90,8 +92,8 @@
     <div class="hidden lg:flex gap-8 items-center">
       <a routerLink="/"
         routerLinkActive="after:absolute after:bottom-[-6px] after:w-full after:h-[2px] after:bg-linear-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-        [routerLinkActiveOptions]="{ exact: true }"
-        [class.after:right-0]="ts.isRtl()" [class.after:left-0]="!ts.isRtl()"
+        [routerLinkActiveOptions]="{ exact: true }" [class.after:right-0]="ts.isRtl()"
+        [class.after:left-0]="!ts.isRtl()"
         class="relative text-lg font-medium text-on-surface hover:text-secondary transition-colors duration-300">
         {{ ts.t('nav.home') }}
       </a>
@@ -126,12 +128,12 @@
         {{ ts.t('nav.contact') }}
       </a>
       @if (isAdmin) {
-        <a routerLink="/admin"
-          routerLinkActive="after:absolute after:bottom-[-6px] after:w-full after:h-[2px] after:bg-linear-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
-          [class.after:right-0]="ts.isRtl()" [class.after:left-0]="!ts.isRtl()"
-          class="relative text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors duration-300">
-          {{ ts.t('nav.admin') }}
-        </a>
+      <a routerLink="/admin"
+        routerLinkActive="after:absolute after:bottom-[-6px] after:w-full after:h-[2px] after:bg-linear-to-r after:from-[#CFAF5B] after:to-[#E6C97A]"
+        [class.after:right-0]="ts.isRtl()" [class.after:left-0]="!ts.isRtl()"
+        class="relative text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors duration-300">
+        {{ ts.t('nav.admin') }}
+      </a>
       }
     </div>
 
@@ -140,103 +142,97 @@
       class="w-20 sm:w-20 md:w-24 lg:w-24 xl:w-24 shrink-0 font-bold text-on-surface tracking-wide font-headline">
       <img class="w-full h-full object-contain" src="./logo.png" alt="">
     </a>
-  </nav>
 
-  <!-- Search Overlay -->
-  @if (searchOpen()) {
-  <div
-    class="search-overlay-container absolute top-[72px] z-40 w-[calc(100%-2rem)] sm:w-[450px] bg-[#1a1e29] text-gray-200 rounded-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-[#2a2e39] animate-fade-in origin-top-left overflow-hidden"
-    [class.left-4]="!ts.isRtl()" [class.right-4]="ts.isRtl()"
-    [class.md:left-8]="!ts.isRtl()" [class.md:right-8]="ts.isRtl()">
-    <div class="flex flex-col">
+    <!-- Search Overlay (Far Left) -->
+    @if (searchOpen()) {
+    <div
+      class="search-overlay-container absolute top-full left-0 mt-0 z-50 w-[calc(100vw-2rem)] sm:w-[500px] bg-[#1a1e29] text-gray-200 rounded-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-[#2a2e39] animate-fade-in origin-top-left overflow-hidden">
+      <div class="flex flex-col">
 
-      <!-- Search Input Top Bar -->
-      <form (ngSubmit)="onSearch()" class="flex items-center px-2 py-2 border-b border-[#2a2e39] bg-[#1a1e29]">
+        <!-- Search Input Top Bar -->
+        <form (ngSubmit)="onSearch()" class="flex items-center px-2 py-2 border-b border-[#2a2e39] bg-[#1a1e29]">
 
-        <button type="submit"
-          class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white">
-          <span class="material-symbols-outlined text-[20px]">search</span>
-        </button>
+          <button type="submit"
+            class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white">
+            <span class="material-symbols-outlined text-[20px]">search</span>
+          </button>
 
-        <input id="navbar-search-input" type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" name="search"
-          autocomplete="off"
-          class="flex-1 w-full bg-transparent px-3 py-2 text-gray-200 font-body text-[15px] placeholder:text-gray-500 focus:outline-none border-none ring-0 focus:ring-0"
-          [placeholder]="ts.t('nav.searchPlaceholder')">
+          <input id="navbar-search-input" type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" name="search"
+            autocomplete="off"
+            class="flex-1 w-full bg-transparent px-3 py-2 text-gray-200 font-body text-[15px] placeholder:text-gray-500 focus:outline-none border-none ring-0 focus:ring-0"
+            [placeholder]="ts.t('nav.searchPlaceholder')">
 
-        <button type="button" (click)="viewAllResults()"
-          class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white">
-          <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-        </button>
-      </form>
+          <button type="button" (click)="viewAllResults()"
+            class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white">
+            <span class="material-symbols-outlined text-[20px]">@if(ts.isRtl()){arrow_back} @else {arrow_forward}</span>
+          </button>
+        </form>
 
-      <!-- Live Search Results Dropdown -->
-      <div class="flex flex-col max-h-[75vh] overflow-y-auto bg-[#1a1e29]">
-        @if (isSearching()) {
-        <div class="p-8 text-center text-gray-400">
-          <span class="material-symbols-outlined animate-spin text-3xl mb-2">progress_activity</span>
-          <p class="font-body text-sm">{{ ts.t('nav.searching') }}</p>
-        </div>
-        } @else if (showResults() && searchResults().length > 0) {
-        <div class="flex flex-col">
-          @for (article of searchResults(); track article.id) {
-          <button (click)="goToArticle(article.id)"
-            class="flex gap-4 p-4 hover:bg-white/5 transition-colors border-b border-[#2a2e39] last:border-0 group items-center"
-            [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
+        <!-- Live Search Results Dropdown -->
+        <div class="flex flex-col max-h-[75vh] overflow-y-auto bg-[#1a1e29]">
+          @if (isSearching()) {
+          <div class="p-8 text-center text-gray-400">
+            <span class="material-symbols-outlined animate-spin text-3xl mb-2">progress_activity</span>
+            <p class="font-body text-sm">{{ ts.t('nav.searching') }}</p>
+          </div>
+          } @else if (showResults() && searchResults().length > 0) {
+          <div class="flex flex-col">
+            @for (article of searchResults(); track article.id) {
+            <button (click)="goToArticle(article.id)"
+              class="flex gap-4 p-4 hover:bg-white/5 transition-colors border-b border-[#2a2e39] last:border-0 group items-center"
+              [class.text-right]="ts.isRtl()" [class.text-left]="!ts.isRtl()">
 
-            <div class="flex flex-col justify-center flex-1">
-              <h4
-                class="font-headline font-bold text-[15px] text-gray-100 group-hover:text-[#cca35e] transition-colors leading-relaxed line-clamp-2">
-                {{ article.title }}</h4>
-              <div
-                class="mt-2 text-[13px] text-gray-500 font-body w-full flex items-center gap-3"
-                [class.text-left]="!ts.isRtl()" [class.text-right]="ts.isRtl()"
-                [class.justify-end]="ts.isRtl()" [class.ml-auto]="ts.isRtl()">
-                <span class="flex items-center gap-1"><span
-                    class="material-symbols-outlined text-[14px]">category</span>{{ article.category }}</span>
-                <span class="flex items-center gap-1"><span
-                    class="material-symbols-outlined text-[14px]">person</span>{{ article.authorName }}</span>
+              <div class="flex flex-col justify-center flex-1">
+                <h4
+                  class="font-headline font-bold text-[15px] text-gray-100 group-hover:text-[#cca35e] transition-colors leading-relaxed line-clamp-2">
+                  {{ article.title }}</h4>
+                <div class="mt-2 text-[13px] text-gray-500 font-body w-full flex items-center gap-3"
+                  [class.text-left]="!ts.isRtl()" [class.text-right]="ts.isRtl()" [class.justify-end]="ts.isRtl()"
+                  [class.ml-auto]="ts.isRtl()">
+                  <span class="flex items-center gap-1"><span
+                      class="material-symbols-outlined text-[14px]">category</span>{{ article.category }}</span>
+                  <span class="flex items-center gap-1"><span
+                      class="material-symbols-outlined text-[14px]">person</span>{{ article.authorName }}</span>
+                </div>
               </div>
-            </div>
 
-            <img [src]="article.imageUrl" [alt]="article.title"
-              class="w-[105px] h-[65px] rounded-lg object-cover shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
-          </button>
+              <img [src]="article.imageUrl" [alt]="article.title"
+                class="w-[105px] h-[65px] rounded-lg object-cover shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
+            </button>
+            }
+
+            <button (click)="viewAllResults()"
+              class="p-4 text-center text-[#cca35e] font-bold hover:bg-white/5 transition-colors text-sm font-label bg-[#1a1e29] border-t border-[#2a2e39]">
+              {{ ts.t('nav.viewAllResults') }}
+            </button>
+          </div>
+          } @else if (showResults() && searchQuery().trim() !== '') {
+          <div class="p-8 text-center text-gray-400">
+            <span class="material-symbols-outlined text-4xl mb-3 opacity-50">search_off</span>
+            <p class="font-body">{{ ts.t('nav.noResults') }}</p>
+          </div>
           }
-
-          <button (click)="viewAllResults()"
-            class="p-4 text-center text-[#cca35e] font-bold hover:bg-white/5 transition-colors text-sm font-label bg-[#1a1e29] border-t border-[#2a2e39]">
-            {{ ts.t('nav.viewAllResults') }}
-          </button>
         </div>
-        } @else if (showResults() && searchQuery().trim() !== '') {
-        <div class="p-8 text-center text-gray-400">
-          <span class="material-symbols-outlined text-4xl mb-3 opacity-50">search_off</span>
-          <p class="font-body">{{ ts.t('nav.noResults') }}</p>
-        </div>
-        }
       </div>
     </div>
-
-  </div>
-  }
+    }
+  </nav>
 
   <!-- Mobile & Tablet Menu Overlay -->
   @if (mobileMenuOpen()) {
-  <div class="lg:hidden bg-surface/95 backdrop-blur-md border-t border-outline-variant/20 animate-fade-in-up">
+  <div class="lg:hidden bg-surface/95 backdrop-blur-md border-t border-outline-variant/20 animate-fade-in-up max-h-[calc(100vh-72px)] overflow-y-auto">
     <div class="flex flex-col gap-4 px-8 py-6">
       <!-- Mobile Search -->
       <form (ngSubmit)="onSearch()" class="relative mb-2">
         <input type="text" [(ngModel)]="searchQuery" name="mobileSearch"
           class="w-full px-5 py-3 rounded-xl bg-surface-container-low border border-outline-variant/20 focus:outline-none focus:border-primary transition-all text-on-surface font-body"
-          [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()"
-          [placeholder]="ts.t('nav.mobileSearchPlaceholder')">
+          [class.pr-12]="ts.isRtl()" [class.pl-12]="!ts.isRtl()" [placeholder]="ts.t('nav.mobileSearchPlaceholder')">
         <button type="submit"
           class="absolute top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary"
           [class.left-3]="ts.isRtl()" [class.right-3]="!ts.isRtl()">
           <span class="material-symbols-outlined text-lg">search</span>
         </button>
-        <span
-          class="absolute top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40"
+        <span class="absolute top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40"
           [class.right-4]="ts.isRtl()" [class.left-4]="!ts.isRtl()">search</span>
       </form>
 
@@ -265,19 +261,25 @@
         {{ ts.t('nav.contact') }}
       </a>
       @if (isAdmin) {
-        <a routerLink="/admin" (click)="closeMenu()"
-          class="text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors py-2">
-          {{ ts.t('nav.admin') }}
-        </a>
+      <a routerLink="/admin" (click)="closeMenu()"
+        class="text-lg font-medium text-on-surface-variant hover:text-secondary transition-colors py-2">
+        {{ ts.t('nav.admin') }}
+      </a>
       }
 
       <hr class="border-outline-variant/20">
 
       <!-- Mobile Language Switcher -->
       <div class="flex items-center gap-2 py-2">
-        <button (click)="switchLang('ar')" class="px-3 py-1.5 rounded-lg text-sm font-bold transition-all" [class.bg-primary]="ts.currentLang() === 'ar'" [class.text-on-primary]="ts.currentLang() === 'ar'" [class.text-on-surface-variant]="ts.currentLang() !== 'ar'">عربي AR</button>
-        <button (click)="switchLang('en')" class="px-3 py-1.5 rounded-lg text-sm font-bold transition-all" [class.bg-primary]="ts.currentLang() === 'en'" [class.text-on-primary]="ts.currentLang() === 'en'" [class.text-on-surface-variant]="ts.currentLang() !== 'en'">EN</button>
-        <button (click)="switchLang('de')" class="px-3 py-1.5 rounded-lg text-sm font-bold transition-all" [class.bg-primary]="ts.currentLang() === 'de'" [class.text-on-primary]="ts.currentLang() === 'de'" [class.text-on-surface-variant]="ts.currentLang() !== 'de'">DE</button>
+        <button (click)="switchLang('ar')" class="px-3 py-1.5 rounded-lg text-sm font-bold transition-all"
+          [class.bg-primary]="ts.currentLang() === 'ar'" [class.text-on-primary]="ts.currentLang() === 'ar'"
+          [class.text-on-surface-variant]="ts.currentLang() !== 'ar'">عربي AR</button>
+        <button (click)="switchLang('en')" class="px-3 py-1.5 rounded-lg text-sm font-bold transition-all"
+          [class.bg-primary]="ts.currentLang() === 'en'" [class.text-on-primary]="ts.currentLang() === 'en'"
+          [class.text-on-surface-variant]="ts.currentLang() !== 'en'">EN</button>
+        <button (click)="switchLang('de')" class="px-3 py-1.5 rounded-lg text-sm font-bold transition-all"
+          [class.bg-primary]="ts.currentLang() === 'de'" [class.text-on-primary]="ts.currentLang() === 'de'"
+          [class.text-on-surface-variant]="ts.currentLang() !== 'de'">DE</button>
       </div>
 
       @if (!isLoggedIn) {
@@ -293,10 +295,11 @@
       <a routerLink="/profile" (click)="closeMenu()"
         class="flex items-center gap-4 text-lg font-bold text-on-surface hover:text-secondary transition-colors py-3 px-4 bg-surface-container rounded-2xl border border-outline-variant/10"
         [class.flex-row-reverse]="ts.isRtl()">
-        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 flex items-center justify-center shrink-0 bg-surface">
+        <div
+          class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 flex items-center justify-center shrink-0 bg-surface">
           <img [src]="cleanUrl(user?.profilePhoto)" [alt]="user?.firstName  " class="w-full h-full object-cover">
         </div>
-        <span class="truncate">{{ user?.firstName  || ts.t('nav.profile') }}</span>
+        <span class="truncate">{{ user?.firstName || ts.t('nav.profile') }}</span>
       </a>
       <button (click)="logout(); closeMenu()"
         class="flex items-center gap-2 text-lg font-medium text-on-surface-variant hover:text-error transition-colors py-2">

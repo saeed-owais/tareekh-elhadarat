@@ -10,6 +10,7 @@ import { TranslationService } from '../../core/services/translation.service';
 import { Category } from '../../core/models/category.model';
 import { Tag } from '../../core/models/tag.model';
 import { User } from '../../core/models/user.model';
+import { ProfileService } from '../../core/services/profile.service';
 
 declare const Quill: any;
 
@@ -30,6 +31,7 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   private categoryService = inject(CategoryService);
   private tagService = inject(TagService);
   private eRef = inject(ElementRef);
+  private profileService = inject(ProfileService);
   public ts = inject(TranslationService);
 
   // State
@@ -39,6 +41,8 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   isSubmitting = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
+  mustSetAuthorName = signal(false);
+  isLoadingAuthCheck = signal(false);
 
   // Form data
   title = signal('');
@@ -57,10 +61,30 @@ export class WriteWithUsComponent implements OnInit, AfterViewInit, OnDestroy {
   private quillLoaded = false;
 
   ngOnInit(): void {
-    this.isLoggedIn.set(this.authService.isLoggedIn());
+    const loggedIn = this.authService.isLoggedIn();
+    this.isLoggedIn.set(loggedIn);
     this.user.set(this.authService.getUser());
     this.loadCategories();
     this.loadTags();
+
+    if (loggedIn) {
+      this.checkAuthorProfile();
+    }
+  }
+
+  private checkAuthorProfile(): void {
+    this.isLoadingAuthCheck.set(true);
+    this.profileService.getUserProfile().subscribe({
+      next: (profile) => {
+        if (!profile.authorName || profile.authorName.trim() === '') {
+          this.mustSetAuthorName.set(true);
+        }
+        this.isLoadingAuthCheck.set(false);
+      },
+      error: () => {
+        this.isLoadingAuthCheck.set(false);
+      }
+    });
   }
 
   // ================= LOAD CATEGORIES =================
