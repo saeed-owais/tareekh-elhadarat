@@ -107,7 +107,7 @@
                     <button (click)="acceptArticle(article.id)" class="p-2.5 hover:bg-green-100 rounded-full text-green-700 transition-all border border-transparent hover:border-green-200 shadow-sm active:scale-90" [title]="ts.t('admin.approvals.approve')">
                       <span class="material-symbols-outlined text-xl" data-icon="check_circle">check_circle</span>
                     </button>
-                    <button class="p-2.5 hover:bg-error/10 rounded-full text-error transition-all border border-transparent hover:border-error/20 shadow-sm active:scale-90" [title]="ts.t('admin.approvals.reject')">
+                    <button (click)="rejectArticle(article.id)" class="p-2.5 hover:bg-error/10 rounded-full text-error transition-all border border-transparent hover:border-error/20 shadow-sm active:scale-90" [title]="ts.t('admin.approvals.reject')">
                       <span class="material-symbols-outlined text-xl" data-icon="cancel">cancel</span>
                     </button>
                   </div>

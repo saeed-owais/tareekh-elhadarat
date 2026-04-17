@@ -96,6 +96,22 @@ export class ApprovalsComponent implements OnInit {
     });
   }
 
+  rejectArticle(id: number) {
+    this.isLoading.set(true);
+    this.articleService.toggleArticle(id).subscribe({
+      next: () => {
+        this.articles.update(list => list.filter(a => a.id !== id));
+        this.successMessage.set(this.ts.t('admin.approvals.systemUpdated'));
+        this.isLoading.set(false);
+        setTimeout(() => this.successMessage.set(''), 3000);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
   // --- Comment Actions ---
   acceptComment(id: number) {
     this.isLoading.set(true);
