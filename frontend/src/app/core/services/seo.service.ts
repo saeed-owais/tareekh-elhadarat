@@ -51,7 +51,8 @@ export class SeoService {
     });
 
     this.updateCanonicalURL(config.url || window.location.href);
-    this.clearJsonLd();
+    this.updateHreflangTags();
+    this.updateWebsiteSchema();
   }
 
   /**
@@ -87,6 +88,48 @@ export class SeoService {
       this.document.head.appendChild(link);
     }
     link.setAttribute('href', url);
+  }
+
+  updateHreflangTags() {
+    const langs = ['ar', 'en', 'de'];
+    const currentUrl = window.location.href.split('?')[0];
+
+    // Remove existing hreflang tags
+    const existingTags = this.document.querySelectorAll('link[hreflang]');
+    existingTags.forEach(tag => this.document.head.removeChild(tag));
+
+    // Add new ones
+    langs.forEach(lang => {
+      const link = this.document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', lang);
+      link.setAttribute('href', currentUrl); // Since paths are currently not language-prefixed
+      this.document.head.appendChild(link);
+    });
+
+    // Add x-default (using Arabic as default)
+    const xDefault = this.document.createElement('link');
+    xDefault.setAttribute('rel', 'alternate');
+    xDefault.setAttribute('hreflang', 'x-default');
+    xDefault.setAttribute('href', currentUrl);
+    this.document.head.appendChild(xDefault);
+  }
+
+  updateWebsiteSchema() {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "تاريخ الشعوب",
+      "alternateName": ["Tareekh Alshuob", "History of Peoples"],
+      "url": "https://tareekhalshuob.com/",
+      "description": "منصة تاريخ الشعوب لاستكشاف التاريخ الإنساني والحضارات والموروث الثقافي العالمي.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://tareekhalshuob.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    };
+    this.setJsonLd(schema);
   }
 
   setJsonLd(schema: any) {
